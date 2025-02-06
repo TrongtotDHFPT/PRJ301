@@ -7,6 +7,8 @@ package Test;
 
 import dao.UserDAO;
 import dto.UserDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,6 +30,22 @@ public class UserTest {
 //        UserDTO u = new UserDTO("TLN01", "Le Nhat Nam", "US", "Update 6/2/2025");
 //        userDAO.update(u);
 //Test delete
-        userDAO.delete("TLN03");
-    }
+       // userDAO.delete("TLN03");
+//Test readAll
+//        List<UserDTO> l1 = UserDAO.getInstance().readAll();
+//        for (UserDTO u : l1) {
+//            System.out.println(u);
+//        }
+
+//readById
+//    UserDTO u = UserDAO.getInstance().readById("TLN01");
+//        System.out.println(u.toString());
+        
+//search by searchTerm
+    List<UserDTO> list =UserDAO.getInstance().search("6");
+        for (UserDTO userDTO : list) {
+            System.out.println(userDTO.toString());
+        }
+//    UserDAO.getInstance().search("SE");
+    }    
 }

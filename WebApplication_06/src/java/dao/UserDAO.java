@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,9 @@ import utils.DBUtils;
  * @author trong
  */
 public class UserDAO implements IDAO<UserDTO ,String> {
-
+    public static UserDAO getInstance(){
+        return new UserDAO();
+    }
     @Override
     public boolean create(UserDTO entity) {
         String sql = "INSERT [dbo].[tblUsers] ([userID], [fullName], [roleID], [password]) "
@@ -43,12 +46,54 @@ public class UserDAO implements IDAO<UserDTO ,String> {
 
     @Override
     public List<UserDTO> readAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<UserDTO> list = new ArrayList<>();
+        String sql = "Select * from [dbo].[tblUsers]";
+        Connection con ;
+        try {
+            con = DBUtils.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                UserDTO user = new UserDTO(rs.getString("userID"),
+                        rs.getString("fullName"),
+                        rs.getString("roleID"), 
+                        rs.getString("password"));
+                list.add(user);
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return list;
     }
 
     @Override
     public UserDTO readById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "Select * from [dbo].[tblUsers]"
+                + "where [userID] = N'"+id+"'";
+        Connection con ;
+        try {
+            con = DBUtils.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()){
+                UserDTO user = new UserDTO(
+                        rs.getString("userID"),
+                        rs.getString("fullName"),
+                        rs.getString("roleID"), 
+                        rs.getString("password"));
+                return user;
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return null;
+        
     }
 
     @Override
@@ -93,8 +138,35 @@ public class UserDAO implements IDAO<UserDTO ,String> {
     }
 
     @Override
-    public List<UserDTO> search(String seachTerm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<UserDTO> search(String searchTerm) {
+        List<UserDTO> list = new ArrayList<>();
+        String sql ="select [userID], [fullName], [roleID], [password] FROM [tblUsers] Where"
+                + "[userID] like N'%"+searchTerm+"%' "
+                + "OR [fullName] like N'%"+searchTerm+"%'"
+                + "OR [roleID] like N'%"+searchTerm+"%'";
+        
+        Connection con ;
+        try {
+            con = DBUtils.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                UserDTO u = new UserDTO (
+                        rs.getString("userID"),
+                        rs.getString("fullName"),
+                        rs.getString("roleID"),
+                        rs.getString("password"));
+                list.add(u);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+        
     }
+
     
 }
