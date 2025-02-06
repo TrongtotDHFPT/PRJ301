@@ -56,16 +56,14 @@ public class UserDAO implements IDAO<UserDTO ,String> {
         String sql = "update [dbo].[tblUsers] set "
                 + "[fullName] = N'"+entity.getFullName()+"',"
                 + "[password] = N'"+entity.getPassword()+"',"
-                + "[roleID] = N'"+entity.getRoleID()+"',"
+                + "[roleID] = N'"+entity.getRoleID()+"'"
                 + "Where [userID] = N'" +entity.getUserID()+"'";
         try {
             Connection con  = DBUtils.getConnection();
             Statement st = con.createStatement();  
             
-            ResultSet  rs = st.executeUpdate(sql);
-            while(rs.next()){
-                
-            }
+            int  rs = st.executeUpdate(sql);
+            return rs > 0;
         }catch (ClassNotFoundException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

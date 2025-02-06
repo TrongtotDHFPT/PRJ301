@@ -12,8 +12,8 @@ import java.util.List;
  * @author trong
  */
 public interface IDAO<T, K> {
-    //T là kiểu dữ liệu 
-    //K là...... 10h45
+    //T là kiểu dữ liệu  của Model
+    //K là              của khóa chính của Model
     
     public boolean create (T entity);
     public List<T> readAll();

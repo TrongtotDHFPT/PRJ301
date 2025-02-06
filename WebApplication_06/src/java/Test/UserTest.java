@@ -25,7 +25,7 @@ public class UserTest {
 
 
 //Test update
-        UserDTO u = new UserDTO("TLN01", "Le Nhat Nam", "US", "Nothing");
+        UserDTO u = new UserDTO("TLN01", "Le Nhat Nam", "US", "Update 6/2/2025");
         userDAO.update(u);
     }
 }
