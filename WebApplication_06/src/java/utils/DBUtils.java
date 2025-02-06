@@ -32,7 +32,7 @@ public class DBUtils {
         try {
             Connection con = getConnection();
             System.out.println(con);
-            //SQLSQLSQL
+            //SQLSQLSQL 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBUtils.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
