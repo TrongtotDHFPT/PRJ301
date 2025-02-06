@@ -7,6 +7,7 @@ package dao;
 
 import dto.UserDTO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -52,7 +53,25 @@ public class UserDAO implements IDAO<UserDTO ,String> {
 
     @Override
     public boolean update(UserDTO entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "update [dbo].[tblUsers] set "
+                + "[fullName] = N'"+entity.getFullName()+"',"
+                + "[password] = N'"+entity.getPassword()+"',"
+                + "[roleID] = N'"+entity.getRoleID()+"',"
+                + "Where [userID] = N'" +entity.getUserID()+"'";
+        try {
+            Connection con  = DBUtils.getConnection();
+            Statement st = con.createStatement();  
+            
+            ResultSet  rs = st.executeUpdate(sql);
+            while(rs.next()){
+                
+            }
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
