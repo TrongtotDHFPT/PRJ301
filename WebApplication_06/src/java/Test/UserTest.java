@@ -25,7 +25,9 @@ public class UserTest {
 
 
 //Test update
-        UserDTO u = new UserDTO("TLN01", "Le Nhat Nam", "US", "Update 6/2/2025");
-        userDAO.update(u);
+//        UserDTO u = new UserDTO("TLN01", "Le Nhat Nam", "US", "Update 6/2/2025");
+//        userDAO.update(u);
+//Test delete
+        userDAO.delete("TLN03");
     }
 }

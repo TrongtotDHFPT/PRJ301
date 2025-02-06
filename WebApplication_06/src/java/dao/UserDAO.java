@@ -74,7 +74,22 @@ public class UserDAO implements IDAO<UserDTO ,String> {
 
     @Override
     public boolean delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "delete from [dbo].[tblUsers] "
+                + "where [userID] =N'" +id+"'" ;
+        Connection con;
+        try {
+            con = DBUtils.getConnection();
+            Statement st = con.createStatement();
+            
+            int rs =  st.executeUpdate(sql);
+            return rs > 0;
+            
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
