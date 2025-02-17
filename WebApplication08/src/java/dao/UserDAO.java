@@ -69,7 +69,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
 
     @Override
     public UserDTO readById(String id) {
-        String sql = "SELECT * FROM [tblUsers] WHERE [userID] = N'" + id + "'\"";
+        String sql = "SELECT * FROM tblUsers   WHERE  userID  = N'" + id + "'";
         try {
             Connection conn = DBUtils.getConnection();
             Statement st = conn.createStatement();
@@ -92,7 +92,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
 
     @Override
     public boolean update(UserDTO entity) {
-        String sql = "UPDATE [tblUsers] SET "
+        String sql = "UPDATE  tblUsers  SET "
                 + "[fullName] = N'" + entity.getFullName() + "', "
                 + "[roleID] = N'" + entity.getRoleID() + "', "
                 + "[password] = N'" + entity.getPassword() + "' "
@@ -113,7 +113,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
 
     @Override
     public boolean delete(String id) {
-        String sql = "DELETE FROM [tblUsers] WHERE [userID] = N'" + id + "'";
+        String sql = "DELETE FROM  tblUsers  WHERE  userID  = N'" + id + "'";
         Connection conn;
         try {
             conn = DBUtils.getConnection();
