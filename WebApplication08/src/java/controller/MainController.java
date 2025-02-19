@@ -32,8 +32,7 @@ public class MainController extends HttpServlet {
 //            return false;
         //  or
         return  strUserID!= null &&  user.getPassword().equals(strPassWord);
-        
-    }
+    } 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
