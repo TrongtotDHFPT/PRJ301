@@ -12,11 +12,13 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="header.jsp" %> 
         <h1>
             <font color="red">
             Invalid username or password!
             </font>
         </h1>
         <a href="login.jsp">Click here to try again</a>
+         <jsp:include page="footer.jsp"/> 
     </body>
 </html>

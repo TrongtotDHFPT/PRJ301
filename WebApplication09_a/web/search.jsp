@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body> 
+        <%@include file="header.jsp" %> 
         <%
             UserDTO user = (UserDTO)request.getAttribute("user");
         %>
@@ -22,5 +23,6 @@
             Search Value: <input type="submit" name="txtSearchValue"/><br/>
             <input type="submit" name="Search"/>
         </form> <h1>Hello World!</h1>
+         <jsp:include page="footer.jsp"/> 
     </body>
 </html>

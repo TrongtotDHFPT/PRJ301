@@ -20,13 +20,10 @@
             Password <input type="password" name="txtPassword"/><br/>
             <input type="submit" value="Login"/>
         </form>
-        
-                    <%
-                        String message = request.getAttribute("message")+"";
-                        if(!message.isEmpty()){
-                           System.out.println(message);
-                        }
-                    %>
+        <%
+            String message = request.getAttribute("message")+"";
+        %>
+           <%=message.equals("null")?"": message%>
                     
         
     </body>
