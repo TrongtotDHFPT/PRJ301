@@ -10,6 +10,7 @@ import dto.UserDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.DBUtils;
@@ -51,9 +52,6 @@ public class BookDAO implements IDAO<BookDTO, String>{
     }
     
     public List<BookDTO> searchByTitle(String searchTerm) {
-        if(searchTerm.equals("") || searchTerm == null){//phòng trường hợp để trống
-            return null;
-        }
         String sql = "SELECT  * FROM  tblBooks WHERE [Title] LIKE ?";
         List<BookDTO> list = new ArrayList<>();
         try {
@@ -77,5 +75,45 @@ public class BookDAO implements IDAO<BookDTO, String>{
         }
         
         return list;
+    }
+    public List<BookDTO> searchByTitle2(String searchTerm) {
+
+        String sql = "SELECT  * FROM  tblBooks WHERE [Title] LIKE ? AND Quantity > 0";
+        List<BookDTO> list = new ArrayList<>();
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,"%"+searchTerm+"%");
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                BookDTO book = new BookDTO(
+                        rs.getString("BookID"), 
+                        rs.getString("Title"), 
+                        rs.getString("Author"), 
+                        rs.getInt("PublishYear"),
+                        rs.getDouble("Price"), 
+                        rs.getInt("Quantity"));
+                list.add(book);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        
+        return list;
+    }
+    
+    public boolean updateQuantityToZero(String id) throws ClassNotFoundException, SQLException{
+        String sql = "UPDATE tblBooks SET Quantity = 0 WHERE BookID = ?";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            int i = ps.executeUpdate();
+            return i>0;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return false;
     }
 }
