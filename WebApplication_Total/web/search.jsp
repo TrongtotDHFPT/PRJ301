@@ -24,17 +24,16 @@
         <form action="MainController">
                 <input type="hidden" name="action" value="logout"/>
                 <input type="submit" value="Logout"/>
-        </form>
-        <br/>
+        </form> 
         
         <%
-//            Xử lí searchTerm
             String searchTerm = request.getAttribute("searchTerm")+"";
-            searchTerm = searchTerm.equals("null") ? "" : searchTerm;
+            searchTerm = searchTerm.equals("null")?"": searchTerm;
         %>
-        <form action="MainController" method="get">
+        <br/>
+        <form action="MainController">
             <input  type="hidden" name="action" value="search"/>
-            Search Books : <input type="text" name ="searchTerm"  vale ="<%=searchTerm%>"/>
+            Search Books : <input type="text" name ="searchTerm"  value ="<%=searchTerm%>"/>
             <input type="submit" value="Search"/>
         </form>
         <%
@@ -66,7 +65,7 @@
                         <td><%=b.getPrice()%></td>
                         <td><%=b.getQuantity()%></td>
                         <td>
-                            <a href="MainController?action=delete&searchTerm=<%=searchTerm%>">
+                            <a href="MainController?action=delete&searchTerm=<%=searchTerm%>&id=<%=b.getBookID()%>">
                                 <img src="assets/images/Martz90-Circle-Trash.512.png" style="height : 25px;margin-left: 12px;">
                             </a>
                         </td>

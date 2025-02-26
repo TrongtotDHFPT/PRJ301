@@ -57,13 +57,13 @@ public class MainController extends HttpServlet {
                         url = "login.jsp";
                     }
                 }else if(action.equals("search")){
-                    url = "search.jsp";
+                    
                     BookDAO bdao = new BookDAO();
                     String searchTerm = request.getParameter("searchTerm");
                     List<BookDTO> list = bdao.readByTitle(searchTerm);
                     request.setAttribute("searchTerm", searchTerm);
                     request.setAttribute("list", list);
-                    
+                    url = "search.jsp";
                 }else if(action.equals("logout")){
                     request.getSession().invalidate();//hủy bỏ session
                     url = "login.jsp";

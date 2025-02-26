@@ -78,7 +78,6 @@
             <input type="submit" name="Search"/>
         </form>
         <%
-             
              if(request.getAttribute("books") != null){
                  List<BookDTO>  books =(List<BookDTO>) request.getAttribute("books");
         %>
