@@ -66,11 +66,8 @@
                         <td><%=b.getPrice()%></td>
                         <td><%=b.getQuantity()%></td>
                         <td>
-                            <a href="MainController?action=delete
-                               &id=<%=b.getBookID()%>
-                               &searchTerm=<%=searchTerm%>">
-                                <img src="assets/images/Martz90-Circle-Trash.512.png" 
-                                     style="height : 25px;margin-left: 12px;">
+                            <a href="MainController?action=delete&searchTerm=<%=searchTerm%>">
+                                <img src="assets/images/Martz90-Circle-Trash.512.png" style="height : 25px;margin-left: 12px;">
                             </a>
                         </td>
                     </tr>

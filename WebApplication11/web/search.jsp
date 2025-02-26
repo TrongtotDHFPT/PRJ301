@@ -110,7 +110,8 @@
                      <td><%=b.getQuantity()%></td>
                      <td><a href="MainController?action=delete&id=<%=b.getBookID()%>&searchTerm=<%=searchTerm%>"> 
                              <img src ="assets/images/Trash-can-icon.png" style="height: 25px;margin-left: 16px;">
-                         </a></td>
+                         </a>
+                     </td>
                 </tr>
                 <%  } %>
             </tbody>
