@@ -66,6 +66,7 @@
                 <input type="hidden" name="action" value="logout"/>
                 <input type="submit" value="Logout"/>
         </form>
+        <a href="bookForm.jsp">Adding new Book</a>
         
         <%
             String searchTerm = request.getAttribute("searchTerm")+"";

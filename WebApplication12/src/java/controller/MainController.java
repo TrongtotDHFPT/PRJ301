@@ -65,7 +65,6 @@ public class MainController extends HttpServlet {
                         UserDTO user = getUser(strUserID);
                         request.getSession().setAttribute("user", user);
                         search(request,response);
-                        
                     }else {
                         request.setAttribute("message", "Error UserID or Password");
                         url = "login.jsp";
@@ -82,6 +81,41 @@ public class MainController extends HttpServlet {
                     //search
                     search(request,response);
                     url="search.jsp";
+                }else if(action.equals("add")){
+                    try {
+                        String bookID = request.getParameter("txtBookID");
+                        String title = request.getParameter("txtTitle");
+                        String author = request.getParameter("txtAuthor");
+                        int publishYear = Integer.parseInt(request.getParameter("txtPublishYear"));
+                        double price = Double.parseDouble(request.getParameter("txtPrice"));
+                        int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
+
+                        boolean errorCheck = false;
+                        if(bookID == null || bookID.trim().isEmpty()){
+                            errorCheck = true;
+                            request.setAttribute("txtBookID_error","Book ID can't be empty!");
+                        }
+                        if(quantity <0){
+                            errorCheck = true;
+                            request.setAttribute("txtQuantity_error","Quantity must be greater than 0!");
+                        }
+                        
+                        BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity);
+
+                        if(!errorCheck){
+                            BookDAO.create(book);
+                            search(request, response);
+                            url ="search.jsp";
+                        }else{
+                            url = "bookFrom.jsp";
+                            request.setAttribute("book", book);
+                        }
+                        
+                        
+                        
+                    } catch (Exception e) {
+                    }
+                    
                 }
             }
         } catch (Exception e) {
