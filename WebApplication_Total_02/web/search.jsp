@@ -21,7 +21,7 @@
               UserDTO user = (UserDTO)session.getAttribute("user");
          
         %>
-       
+        <h1>Hello <%=user.getFullName()%></h1>
         <form action="MainController">
             <input type="hidden" name = "action" value ="logout"/>
             <input type="submit" value="logout"/> 
@@ -67,6 +67,7 @@
                     <td><%=b.getPrice()%></td>
                     <td><%=b.getQuantity()%></td>
                     <td>
+                        
                         <a href="MainController?action=delete&id=<%=b.getBookID()%>&searchTerm=<%=searchTerm%>">
                             <img src="assets/images/Martz90-Circle-Trash.512.png" style="height: 25px;margin-left: 14px;"/>
                         </a>

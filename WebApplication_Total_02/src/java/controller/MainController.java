@@ -63,15 +63,15 @@ public class MainController extends HttpServlet {
                     request.setAttribute("searchTerm", searchTerm);
                      url ="search.jsp";
                 }else if(action.equals("delete")){
-                    String id = request.getParameter("id");
                     BookDAO bdao = new BookDAO();
+                    String id = request.getParameter("id");
                     bdao.setQuantityToZero(id);
                     
                     String searchTerm = request.getParameter("searchTerm");
                     List<BookDTO> books = bdao.searchByTitle(searchTerm);
                     request.setAttribute("books", books);
                     request.setAttribute("searchTerm", searchTerm);
-                     url ="search.jsp";
+                    url ="search.jsp";
                 }
             }
         } catch (Exception e) {
