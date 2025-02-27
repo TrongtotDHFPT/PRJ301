@@ -95,24 +95,34 @@ public class MainController extends HttpServlet {
                             errorCheck = true;
                             request.setAttribute("txtBookID_error","Book ID can't be empty!");
                         }
+                        if(title == null || title.trim().isEmpty()){
+                            errorCheck = true;
+                            request.setAttribute("txtTitle_error", "Title can't be empty!");
+                        }
+                        if(publishYear <= 0 && publishYear > 2025 ){
+                            errorCheck = true;
+                            request.setAttribute("txtPublishYear_error", "PublishYear is invalid!");
+                        }
+                        if(price <= 0){
+                            errorCheck = true;
+                            request.setAttribute("txtPrice_error", "Price must be greater than 0!");
+                        }
                         if(quantity <0){
                             errorCheck = true;
                             request.setAttribute("txtQuantity_error","Quantity must be greater than 0!");
                         }
                         
+                        
                         BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity);
 
-                        if(!errorCheck){
+                        if(!errorCheck){//Nếu không có lỗi => check vẫn là : false
                             BookDAO.create(book);
                             search(request, response);
                             url ="search.jsp";
                         }else{
-                            url = "bookFrom.jsp";
+                            url = "bookForm.jsp";
                             request.setAttribute("book", book);
                         }
-                        
-                        
-                        
                     } catch (Exception e) {
                     }
                     
