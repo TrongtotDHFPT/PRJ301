@@ -77,15 +77,11 @@
                 <img src ="assets/images/images.png"> 
             </div> 
             <h2>User Login</h2>
-            <%
-                String message = request.getAttribute("message") + "";
-                message = message.equals("null") ? "" : message;
-            %>
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="login" />
                 <input type="text" name="txtUserID" placeholder="User ID" required /><br/>
                 <input type="password" name="txtPassword" placeholder="Password" required /> <br/>
-                <h1><%=message != null ? message : ""%></h1> 
+
                 <input class="submit" type="submit" value="Login" />
             </form>
         </div>
