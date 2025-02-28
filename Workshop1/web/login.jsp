@@ -16,7 +16,8 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
-                background: linear-gradient(to right, #3b82f6, #d946ef);
+                margin: 0;
+                background: linear-gradient(to right, #4A90E2, #A34ACB); /* Gradient xanh - tím */
                 font-family: Arial, sans-serif;
             }
 
@@ -24,50 +25,50 @@
                 background: white;
                 padding: 30px;
                 border-radius: 10px;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                width: 400px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
                 text-align: center;
-                position: relative;
-            }
-            .login-container img {
-                width: 127px;
-                height: 127px;
-                border-radius: 50%;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
+                width: 350px;
             }
 
+            .user-image img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-bottom: 10px;
+            }
 
             h2 {
-                margin-bottom: 20px;
+                margin: 10px 0;
+                font-size: 22px;
+                font-weight: bold;
                 color: #333;
             }
-
             input[type="text"],
             input[type="password"] {
-                width: 100%;
+                width: 90%;
                 padding: 10px;
-                margin: 10px -8px;
+                margin: 8px 0;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 font-size: 16px;
             }
-
             .submit {
                 width: 100%;
-                padding: 10px;
-                background-color: #22c55e; /* Màu xanh lá cây */
+                background: #28a745; /* Xanh lá */
                 color: white;
+                padding: 12px;
                 border: none;
                 border-radius: 5px;
-                cursor: pointer;
                 font-size: 16px;
+                cursor: pointer;
                 margin-top: 10px;
+                transition: 0.3s;
             }
 
-            h1 {
-                color: red;
-                font-size: 15px;
+            .submit:hover {
+                background: #218838;
             }
+
         </style>
     </head>
 
@@ -77,12 +78,16 @@
                 <img src ="assets/images/images.png"> 
             </div> 
             <h2>User Login</h2>
+            <%
+                String message = request.getAttribute("message") + "";
+                message = message.equals("null") ? "" : message;
+            %>
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="login" />
                 <input type="text" name="txtUserID" placeholder="User ID" required /><br/>
                 <input type="password" name="txtPassword" placeholder="Password" required /> <br/>
-
-                <input class="submit" type="submit" value="Login" />
+                <h1 style="color :red;font-size: 15px;"><%=message %><h1/> 
+                    <input class="submit" type="submit" value="Login" />
             </form>
         </div>
     </body>
