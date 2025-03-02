@@ -10,6 +10,7 @@ import dto.UserDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,30 +23,33 @@ import utils.DBUtils;
 public class StartupProjectDAO implements IDAO<StartupProjectDTO , Integer> {
 
     @Override
-    public boolean create(StartupProjectDTO entity) {
-        String sql = "INSERT INTO tblStartupProjects (Project_id,Project_name,Description,Status,Estimated_launch)"
-                + "VALUES(?,?,?,?,?) ";
-        try {
-            Connection con = DBUtils.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            
-            ps.setString(2,entity.getProject_name());
-            ps.setString(3,entity.getDescription());
-            ps.setString(4,entity.getStatus());
-            ps.setDate(5,entity.getEstimated_launch());
-            ResultSet rs = ps.executeQuery();
-            int count = 1;
-            while(rs.next()){
-                count++;
-            }
-            ps.setInt(1,count);
-            int result = ps.executeUpdate();
-            return result >0;
-        } catch (Exception e) {
-            System.out.println(e.toString());
+    
+public boolean create(StartupProjectDTO entity) {
+    String sql = "INSERT INTO tblStartupProjects (Project_id,Project_name, Description, Status, Estimated_launch)"
+            + " VALUES (?,?, ?, ?, ?)";
+    try {
+        Connection con = DBUtils.getConnection();
+        String getMaxID = "SELECT MAX(Project_id) FROM tblStartupProjects";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(getMaxID);
+        int entity_project_id = 1;
+        if(rs.next()){
+            entity_project_id = rs.getInt(1)+1;//Lấy giá trị từ cột đầu tiên của ResultSet
         }
-        return false;
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, entity_project_id);
+        ps.setString(2, entity.getProject_name());
+        ps.setString(3, entity.getDescription());
+        ps.setString(4, entity.getStatus());
+        ps.setDate(5, entity.getEstimated_launch());
+
+        int result = ps.executeUpdate(); 
+        return result > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return false;
+}
 
     @Override
     public List<StartupProjectDTO> readAll() {

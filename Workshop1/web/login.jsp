@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <style>
+<!--        <style>
             body {
                 display: flex;
                 justify-content: center;
@@ -69,7 +69,7 @@
                 background: #218838;
             }
 
-        </style>
+        </style>-->
     </head>
 
     <body>

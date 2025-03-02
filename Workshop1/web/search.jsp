@@ -26,9 +26,10 @@
             <input type="submit" value="Logout"/>
         </form>
         <br/>
-        
-        
-        
+        <%
+            if(user.getRole().equals("Founder")){
+        %>
+        <a href="bookForm.jsp">Create New Project</a>
         <%
             String searchTerm = request.getAttribute("searchTerm") + "";
             searchTerm = searchTerm.equals("null") ? "" : searchTerm;
@@ -39,6 +40,10 @@
             <input type="submit" value="Search"/>
         </form>
         <br/>
+        <%}%>
+        
+        
+        
         
         <br/>
         <%
