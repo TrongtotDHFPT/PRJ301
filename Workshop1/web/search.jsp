@@ -4,13 +4,15 @@
     Author     : trong
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="dto.StartupProjectDTO"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Search Page</title>
     </head>
 
     <body>
@@ -18,57 +20,56 @@
             if (session.getAttribute("user") != null) {
                 UserDTO user = (UserDTO) session.getAttribute("user");
         %>
-
-        <h1>Project Dashboard</h1>
+        <h1>Hello <%= user.getName() %> </h1> <br/>
         <form action="MainController">
-            <input type ="hidden" name="action" value="logout"/>
-            <input type="submit" value="logout"/>
+            <input type="hidden" name="action" value="logout"/>
+            <input type="submit" value="Logout"/>
         </form>
         <br/>
         
+        
+        
+        <%
+            String searchTerm = request.getAttribute("searchTerm") + "";
+            searchTerm = searchTerm.equals("null") ? "" : searchTerm;
+        %>
         <form action="MainController">
-            <input type ="hidden" name="action" value="search"/>
-            Seach Project :<input type="text" name="txtsearchTerm"value="#"/>
-            <input type="submit" value="search"/>
+            <input type="hidden" name="action" value="search"/>
+            Search Project: <input type="text" name="txtsearchTerm" value="<%= searchTerm %>"/>
+            <input type="submit" value="Search"/>
         </form>
         <br/>
+        
+        <br/>
         <%
-            
+            if (request.getAttribute("list") != null) {
+                List<StartupProjectDTO> list = (List<StartupProjectDTO>) request.getAttribute("list");
         %>
-        <div class="information_User">
-            <img src="assets/images/images.png">
-            <h3>Name : <%=user.getName()%> </h3> <br/>
-            <h3>Role : <%=user.getRole()%> </h3><br/>
-            <div/>    
-            <table border = 1>
-                <thead>
-                    <tr>
-                        <td>Project ID<td/>
-                        <td>Project Name<td/>
-                        <td>Description <td/>
-                        <td>Status<td/>
-                        <td>Estimated Launch<td/>
-                        <td>Action<td/>
-                    <tr/>
-                <thead/>    
-
-                <tbody>
-                    <%
-                        
-                    %>
-                    <tr>
-                        <th><th/>
-                        <th><th/>
-                        <th><th/>
-                        <th><th/>
-                        <th><th/>
-                        <th><th/>
-                    <tr/>
-                </tbody>
-                <table/>
-
-                <%}//ngoặc của  if (session.getAttribute("user") != null) {%>
-
-                </body>
-
-                </html>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Estimated Launch</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    for (StartupProjectDTO project : list) {
+                %>
+                <tr>
+                    <td><%= project.getProject_name() %></td>
+                    <td><%= project.getDescription() %></td>
+                    <td><%= project.getStatus() %></td>
+                    <td><%= project.getEstimated_launch().toString() %></td>
+                </tr>
+                <%}%>
+            </tbody>
+        </table>
+        <%}%>
+        <%}else {%>
+        <p>Please <a href="login.jsp">login</a> to access this page.</p>
+        <%}%>
+    </body>
+</html>

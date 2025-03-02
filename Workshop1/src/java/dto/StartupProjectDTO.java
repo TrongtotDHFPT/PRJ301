@@ -5,7 +5,7 @@
  */
 package dto;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 
 /**
@@ -17,12 +17,12 @@ public class StartupProjectDTO {
     private String project_name;
     private String description;
     private String status;
-    private LocalDate estimated_launch;
+    private Date estimated_launch;
 
     public StartupProjectDTO() {
     }
 
-    public StartupProjectDTO(int project_id, String project_name, String description, String status, LocalDate estimated_launch) {
+    public StartupProjectDTO(int project_id, String project_name, String description, String status, Date estimated_launch) {
         this.project_id = project_id;
         this.project_name = project_name;
         this.description = description;
@@ -62,11 +62,11 @@ public class StartupProjectDTO {
         this.status = status;
     }
 
-    public LocalDate getEstimated_launch() {
+    public Date getEstimated_launch() {
         return estimated_launch;
     }
 
-    public void setEstimated_launch(LocalDate estimated_launch) {
+    public void setEstimated_launch(Date estimated_launch) {
         this.estimated_launch = estimated_launch;
     }
     

@@ -5,9 +5,12 @@
  */
 package controller;
 
+import dao.StartupProjectDAO;
 import dao.UserDAO;
+import dto.StartupProjectDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +58,19 @@ public class MainController extends HttpServlet {
                        request.getSession().invalidate();
                        url ="login.jsp";
                 }else if(action.equals("search")){
-                    
+                    StartupProjectDAO spdao = new StartupProjectDAO();
+                    String searchTerm = request.getParameter("txtsearchTerm");
+                    List<StartupProjectDTO> list = spdao.searchByTerm(searchTerm);
+                    request.setAttribute("searchTerm", searchTerm);
+                    request.setAttribute("list", list);
+                    url = "search.jsp";
+                }else if(action.equals("create")){
+                    StartupProjectDAO spdao = new StartupProjectDAO();
+                    String searchTerm = request.getParameter("txtsearchTerm");
+                    List<StartupProjectDTO> list = spdao.searchByTerm(searchTerm);
+                    request.setAttribute("searchTerm", searchTerm);
+                    request.setAttribute("list", list);
+                    url = "search.jsp";
                 }
             }
         } catch (Exception e) {
