@@ -94,7 +94,6 @@ public class UserDAO implements IDAO<UserDTO, String> {
         return null;
     }
 
-
     @Override
     public boolean update(UserDTO entity) {
         String sql = "UPDATE [tblUsers] SET "

@@ -1,3 +1,4 @@
+<%@page import="utils.AuthUtils"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style>
@@ -114,7 +115,7 @@
 
 <header class="header">
     <%
-        int x = 100;
+
     %>
     <div class="container">
         <nav class="nav">
@@ -125,22 +126,24 @@
                 <li class="menu-item"><a href="#">Giỏ hàng</a></li>
                 <li class="menu-item"><a href="#">Liên hệ</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Tìm kiếm...">
-                <button class="search-button">🔍</button>
+            <div class="right-section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm...">
+                    <button class="search-button">🔍</button>
+                </div>
+                <%  if (AuthUtils.isLoggedIn(session)) {
+                        UserDTO userHeader = AuthUtils.getUser(session);
+
+                %>
+                <div class="user-section">
+                    <span class="welcome-text">Xin chào, <span class="user-name"><%=userHeader.getFullName()%></span>!</span>
+                    <form action="MainController" method="post" style="margin: 0;">
+                        <input type="hidden" name="action" value="logout"/>
+                        <input type="submit" value="Đăng xuất" class="logout-btn"/>
+                    </form>
+                </div>
+                <%}%>
             </div>
-            <%
-                if (session.getAttribute("user") != null) {
-                    UserDTO userHeader = (UserDTO) session.getAttribute("user");
-            %>
-            <div class="user-section">
-                <span class="welcome-text">Xin chào, <span class="user-name"><%=userHeader.getFullName()%></span>!</span>
-                <form action="MainController" method="post">
-                    <input type="hidden" name="action" value="logout"/>
-                    <input type="submit" value="Đăng xuất" class="logout-btn"/>
-                </form>
-            </div>
-            <%}%>
         </nav>
     </div>
 </header>

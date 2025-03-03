@@ -7,7 +7,7 @@ package dto;
 
 /**
  *
- * @author trong
+ * @author tungi
  */
 public class BookDTO {
     private String bookID;
