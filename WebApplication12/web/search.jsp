@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <style>
+                <style>
             .book-table {
                 width: 100%;
                 border-collapse: collapse;
@@ -52,123 +52,37 @@
                 background-color: #f5f5f5;
                 transition: 0.3s ease;
             }
-            /* Add button styles */
-            .add-btn {
-                display: inline-block;
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                padding: 10px 15px;
-                margin-bottom: 20px;
-                font-weight: bold;
-                transition: background-color 0.3s;
-            }
-
-            .add-btn:hover {
-                background-color: #0069d9;
-                text-decoration: none;
-            }
-
-            /* Add a nice icon to the add button */
-            .add-btn::before {
-                content: "+";
-                margin-right: 5px;
-                font-weight: bold;
-            }
-            /* Search section styles */
-            .search-section {
-                background-color: #fff;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                display: flex;
-                align-items: center;
-            }
-
-            .search-section form {
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-            }
-
-            .search-section label {
-                margin-right: 10px;
-                font-weight: bold;
-                color: #333;
-            }
-            .search-input {
-                flex-grow: 1;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 14px;
-                margin-right: 10px;
-                transition: border-color 0.3s;
-            }
-
-            .search-input:focus {
-                border-color: #009879;
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(0, 152, 121, 0.2);
-            }
-
-            .search-btn {
-                background-color: #009879;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                padding: 10px 15px;
-                cursor: pointer;
-                font-weight: bold;
-                transition: background-color 0.3s;
-            }
-
-            .search-btn:hover {
-                background-color: #00806a;
-            }
-
-        </style> 
+            
+           </style> 
     </head>
-
+    
     <body> 
-        <%@include file="header.jsp" %>
         <%
-            if (session.getAttribute("user") != null) {
-                UserDTO user = (UserDTO) session.getAttribute("user");
+            if(session.getAttribute("user") != null){
+            UserDTO user = (UserDTO)session.getAttribute("user");
         %>
-
-
+        <h1>Hello <%=user.getFullName()%> </h1>
+        <form action="MainController">
+                <input type="hidden" name="action" value="logout"/>
+                <input type="submit" value="Logout"/>
+        </form>
+        <a href="bookForm.jsp">Adding new Book</a>
+        
         <%
-            String searchTerm = request.getAttribute("searchTerm") + "";
-            searchTerm = searchTerm.equals("null") ? "" : searchTerm;
+            String searchTerm = request.getAttribute("searchTerm")+"";
+            searchTerm =searchTerm.equals("null") ? "": searchTerm;
         %>
         <br/>
-        <div class="search-section">
-            <form action="MainController">
-                <input type="hidden" name="action" value="search"/>
-                <label for="searchInput">Search Books:</label>
-                <input type="text" id="searchInput" name="searchTerm" value="<%=searchTerm%>" class="search-input" placeholder="Enter book title, author or ID..."/>
-                <input type="submit" value="Search" class="search-btn"/>
-            </form>
-        </div>
+        <form action="MainController">
+            <input type="hidden" name = "action" value = "search"> 
+            Search Books : <input type="text" name="searchTerm" value ="<%=searchTerm%>"/> 
+            <input type="submit" name="Search"/>
+        </form>
         <%
-            if (session.getAttribute("user") != null) {
-                UserDTO user1 = (UserDTO) session.getAttribute("user");
-                if (user1.getRoleID().equals("AD")) {
+             if(request.getAttribute("books") != null){
+                 List<BookDTO>  books =(List<BookDTO>) request.getAttribute("books");
         %>
-        <a href="bookForm.jsp" class="add-btn">
-            Add New Book    
-        </a>
-        <%}
-            }%>
-        <%
-            if (request.getAttribute("books") != null) {
-                List<BookDTO> books = (List<BookDTO>) request.getAttribute("books");
-        %>
-
-
+        
         <table class ="book-table" border = "1"> 
             <thead>
                 <tr>
@@ -178,50 +92,36 @@
                     <th>PublishYear</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <%
-            if (session.getAttribute("user") != null) {
-                    UserDTO user1 = (UserDTO) session.getAttribute("user");
-                    if (user1.getRoleID().equals("AD")) {
-                    %>
                     <th>Action</th>
-                    
                 </tr>
-            <%}
-                    }%>   
+                
             </thead>
-
+            
             <tbody>
                 <%
-                    for (BookDTO b : books) {
+                    for(BookDTO b : books){
                 %>
                 <tr>
-                    <td><%=b.getBookID()%></td>
-                    <td><%=b.getTitle()%></td>
-                    <td><%=b.getAuthor()%></td>
-                    <td><%=b.getPublishYear()%></td>
-                    <td><%=b.getPrice()%></td>
-                    <td><%=b.getQuantity()%></td>
-                    <%
-            if (session.getAttribute("user") != null) {
-                    UserDTO user1 = (UserDTO) session.getAttribute("user");
-                    if (user1.getRoleID().equals("AD")) {
-                    %>
-                    <td><a href="MainController?action=delete&id=<%=b.getBookID()%>&searchTerm=<%=searchTerm%>"> 
-                            <img src ="assets/images/Trash-can-icon.png" style="height: 25px;margin-left: 16px;">
-                        </a>
-                    </td>
-            <%}
-                }%>
+                     <td><%=b.getBookID()%></td>
+                     <td><%=b.getTitle()%></td>
+                     <td><%=b.getAuthor()%></td>
+                     <td><%=b.getPublishYear()%></td>
+                     <td><%=b.getPrice()%></td>
+                     <td><%=b.getQuantity()%></td>
+                     <td><a href="MainController?action=delete&id=<%=b.getBookID()%>&searchTerm=<%=searchTerm%>"> 
+                             <img src ="assets/images/Trash-can-icon.png" style="height: 25px;margin-left: 16px;">
+                         </a>
+                     </td>
                 </tr>
                 <%  } %>
             </tbody>
         </table>
         <%      }
-        } else {%>
-        You do not have permission to access this content!
-        <%}%>
+            }else{%>
+            You do not have permission to access this content!
+            <%}%>
         <br/>
-
-
+        
+        
     </body>
 </html>
