@@ -30,13 +30,6 @@ public class StartupProjectDTO {
         this.estimated_launch = estimated_launch;
     }
 
-    public StartupProjectDTO(String project_name, String description, String status, java.util.Date estimated_launch) {
-        this.project_name = project_name;
-        this.description = description;
-        this.status = status;
-        this.estimated_launch = (Date) estimated_launch;
-        
-    }
  
     public int getProject_id() {
         return project_id;

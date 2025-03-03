@@ -79,22 +79,7 @@ public class MainController extends HttpServlet {
                     String project_name = request.getParameter("txtProjectName");
                     String description = request.getParameter("txtDescription");
                     String status = request.getParameter("txtStatus");
-                    String txtDate = request.getParameter("txtDate");
-
-//                    System.out.println("Action hiện tại:"+action);
-                    //Chuyển đổi String thành java.sql.Date
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng đúng
-                    java.util.Date utilDate = sdf.parse(txtDate);
-                    Date estimated_launch = new Date(utilDate.getTime()); // Chuyển sang java.sql.Date
-                    StartupProjectDTO spdto = new StartupProjectDTO(project_name, description, status, estimated_launch);
-                    spdao.create(spdto);
-                    boolean result = spdao.create(spdto);
-                    System.out.println("✅ Kết quả create(): " + result);
-                    if (!result) {
-                        System.out.println("❌ Lỗi khi tạo project! Kiểm tra SQL.");
-                        url = "search.jsp"; // Redirect đến trang lỗi thay vì login
-                    }
-
+//                    String txtDate = request.getParameter("txtDate");
                     url = "search.jsp";
                 }
             }
