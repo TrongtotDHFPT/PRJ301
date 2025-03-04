@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="utils.AuthUtils"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -114,9 +115,9 @@
 
         %>
         <div class="form-container">
-            <%                if (session.getAttribute("user") != null) {
-                    UserDTO user1 = (UserDTO) session.getAttribute("user");
-                    if (user1.getRoleID().equals("AD")) {
+            <% if(AuthUtils.isLoggedIn(session)){
+                UserDTO user = (UserDTO)session.getAttribute("user");
+                if (AuthUtils.isAdmin(session)) {
             %>
             <h2>Book Form</h2>
             <form action="MainController" method="post">
@@ -173,10 +174,15 @@
                 </div>
             </form>
 
-            <%      } else { %>
+            <%  } 
+                }else { %>
             <h2 style="color: red;">403 Error</h2>
-            <%    }
-                }%>     
+            <div>
+                <h1>Access Denied</h1>
+                <p>Please login to access this page</p>
+                <a href="login.jsp">Go to Login page</a>
+            </div>
+            <%}%>     
         </div>
 
     </body>
