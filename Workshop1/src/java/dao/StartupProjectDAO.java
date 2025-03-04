@@ -37,8 +37,7 @@ public class StartupProjectDAO implements IDAO<StartupProjectDTO, Integer> {
     }
 
     public boolean create(StartupProjectDTO entity) {
-        String sql = "INSERT INTO tblStartupProjects (Project_id,Project_name, Description, Status, Estimated_launch)"
-                + " VALUES (?,?, ?, ?, ?)";
+        
         try {
             Connection con = DBUtils.getConnection();
             String getMaxID = "SELECT MAX(Project_id) FROM tblStartupProjects";
@@ -48,6 +47,9 @@ public class StartupProjectDAO implements IDAO<StartupProjectDTO, Integer> {
             if (rs.next()) {
                 entity_project_id = rs.getInt(1) + 1;//Lấy giá trị từ cột đầu tiên của ResultSet
             }
+            
+            String sql = "INSERT INTO tblStartupProjects (Project_id,Project_name, Description, Status, Estimated_launch)"
+                + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, entity_project_id);
             ps.setString(2, entity.getProject_name());

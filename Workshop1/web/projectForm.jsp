@@ -18,7 +18,7 @@
             Project Name :<input type ="text" name="txtProjectName"/><br/>
             Description  :<input type ="text" name="txtDescription"/><br/>
             Status       :<input type ="text" name="txtStatus"/><br/>
-            Launch Date  :<input type ="text" name="txtDate"/><br/>
+            Launch Date  :<input type ="date" name="txtDate"/><br/>
             <input type="submit" value="Save"/>
             <input type="submit" value="Reset"/>
         </form>

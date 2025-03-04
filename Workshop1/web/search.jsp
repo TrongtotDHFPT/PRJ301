@@ -29,7 +29,7 @@
         <%
                 if (user.getRole().equals("Founder")) {
         %>
-        <a href="bookForm.jsp">Create New Project</a>
+        <a href="projectForm.jsp">Create New Project</a>
         <%
                 String searchTerm = request.getAttribute("searchTerm") + "";
                 searchTerm = searchTerm.equals("null") ? "" : searchTerm;

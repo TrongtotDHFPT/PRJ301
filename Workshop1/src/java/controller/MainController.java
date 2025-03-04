@@ -10,6 +10,8 @@ import dao.UserDAO;
 import dto.StartupProjectDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -111,7 +113,18 @@ public class MainController extends HttpServlet {
                     request.setAttribute("project", project);
                     request.setAttribute("status", status);
                     url = "update.jsp";
-                    
+                }else if (action.equals("create")) {
+                    String projectName = request.getParameter("txtProjectName");
+                    String description = request.getParameter("txtDescription");
+                    String status = request.getParameter("txtStatus");
+                    String launchDate = request.getParameter("txtDate"); //kiểu "yyyy-MM-dd" 
+                    System.out.println(launchDate);
+                    LocalDate localDate = LocalDate.parse(launchDate);// Chuyển  chuỗi "yyyy-MM-dd" thành LocalDate
+                    // Chuyển từ LocalDate sang java.sql.Date || vừa để tương thích với DTO 
+                    Date sqlDate = Date.valueOf(localDate);
+                    StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
+                    spdao.create(project);
+                    url = "search.jsp";
                 }
             }
         } catch (Exception e) {
