@@ -1,3 +1,4 @@
+<%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style>
     * {
@@ -70,11 +71,50 @@
         cursor: pointer;
         color: #2c3e50;
     }
+
+    /* Styles for welcome and logout */
+    .user-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-left: 1.5rem;
+    }
+
+    .welcome-text {
+        color: #fff;
+        font-size: 0.95rem;
+    }
+
+    .user-name {
+        color: #3498db;
+        font-weight: bold;
+    }
+
+    .logout-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+        background-color: #c0392b;
+    }
+
+    /* Adjust layout for user section */
+    .right-section {
+        display: flex;
+        align-items: center;
+    }
 </style>
 
 <header class="header">
     <%
-        int x = 100;
+
     %>
     <div class="container">
         <nav class="nav">
@@ -85,9 +125,22 @@
                 <li class="menu-item"><a href="#">Giỏ hàng</a></li>
                 <li class="menu-item"><a href="#">Liên hệ</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Tìm kiếm...">
-                <button class="search-button">🔍</button>
+            <div class="right-section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm...">
+                    <button class="search-button">🔍</button>
+                </div>
+                <%      if (session.getAttribute("user") != null) {
+                        UserDTO userHeader = (UserDTO) session.getAttribute("user");
+                %>
+                <div class="user-section">
+                    <span class="welcome-text">Xin chào, <span class="user-name"><%=userHeader.getFullName()%></span>!</span>
+                    <form action="MainController" method="post" style="margin: 0;">
+                        <input type="hidden" name="action" value="logout"/>
+                        <input type="submit" value="Đăng xuất" class="logout-btn"/>
+                    </form>
+                </div>
+                <%}%>
             </div>
         </nav>
     </div>

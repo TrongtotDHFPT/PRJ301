@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -98,6 +99,7 @@
     </head>
 
     <body>
+
         <%
             String txtBookID_error = request.getAttribute("txtBookID_error") + "";
             txtBookID_error = txtBookID_error.equals("null") ? "" : txtBookID_error;
@@ -112,6 +114,10 @@
 
         %>
         <div class="form-container">
+            <%                if (session.getAttribute("user") != null) {
+                    UserDTO user1 = (UserDTO) session.getAttribute("user");
+                    if (user1.getRoleID().equals("AD")) {
+            %>
             <h2>Book Form</h2>
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="add"/>
@@ -166,6 +172,11 @@
                     <input type="reset" value="Reset" class="reset-btn"/>
                 </div>
             </form>
+
+            <%      } else { %>
+            <h2 style="color: red;">403 Error</h2>
+            <%    }
+                }%>     
         </div>
 
     </body>
