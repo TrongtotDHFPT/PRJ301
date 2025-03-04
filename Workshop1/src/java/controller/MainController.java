@@ -36,7 +36,7 @@ public class MainController extends HttpServlet {
         return user != null && (user.getPassword().equals(strPassword));
     }
 
-    public void search(HttpServletRequest request, HttpServletResponse response)
+    public void processSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String searchTerm = request.getParameter("txtsearchTerm");
         if (searchTerm == null) {
@@ -45,6 +45,25 @@ public class MainController extends HttpServlet {
         List<StartupProjectDTO> list = spdao.searchByTerm(searchTerm);
         request.setAttribute("searchTerm", searchTerm);
         request.setAttribute("list", list);
+    }
+
+    public String processLogin(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String url = LOGIN_PAGE;
+        //
+        String strUsername = request.getParameter("txtUserID");
+        String strPassword = request.getParameter("txtPassword");
+        if (isValidLogin(strUsername, strPassword)) {
+            UserDAO udao = new UserDAO();
+            UserDTO user = udao.readByUsername(strUsername);
+            request.getSession().setAttribute("user", user);
+            processSearch(request, response);
+            url = "search.jsp";
+        } else {
+            request.setAttribute("message", "Incorrect Username or Password!");
+            url = "login.jsp";
+        }
+        return url;
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -57,29 +76,28 @@ public class MainController extends HttpServlet {
                 url = LOGIN_PAGE;
             } else {
                 if (action.equals("login")) {
-                    String strUsername = request.getParameter("txtUserID");
-                    String strPassword = request.getParameter("txtPassword");
-                    if (isValidLogin(strUsername, strPassword)) {
-                        UserDAO udao = new UserDAO();
-                        UserDTO user = udao.readByUsername(strUsername);
-                        request.getSession().setAttribute("user", user);
-                        search(request, response);
-                        url = "search.jsp";
-                    } else {
-                        request.setAttribute("message", "Incorrect Username or Password!");
-                        url = "login.jsp";
-                    }
+                    url = processLogin(request, response);
                 } else if (action.equals("logout")) {
                     request.getSession().invalidate();
                     url = "login.jsp";
                 } else if (action.equals("search")) {
-                    search(request, response);
+                    processSearch(request, response);
                     url = "search.jsp";
-                } else if (action.equals("create")) {
-                    String project_name = request.getParameter("txtProjectName");
-                    String description = request.getParameter("txtDescription");
-                    String status = request.getParameter("txtStatus");
-//                    String txtDate = request.getParameter("txtDate");
+                } else if (action.equals("update")) {
+                    int project_id = Integer.parseInt(request.getParameter("project_id"));
+
+                    StartupProjectDAO spdao = new StartupProjectDAO();
+                    StartupProjectDTO project = spdao.readByID(project_id);
+                    System.out.println(project);
+                    request.setAttribute("project_id", project_id);
+                    request.setAttribute("project", project);
+                    url = "update.jsp";
+                } else if (action.equals("updateStatus")) {
+                    int project_id = Integer.parseInt(request.getParameter("project_id"));
+                    System.out.println(project_id);
+                    String status = request.getParameter("status");
+                    StartupProjectDAO spdao = new StartupProjectDAO();
+                    spdao.updateStatusByID(project_id,status);
                     url = "search.jsp";
                 }
             }
@@ -89,6 +107,12 @@ public class MainController extends HttpServlet {
             request.getRequestDispatcher(url).forward(request, response);
         }
 
+    }
+
+    public StartupProjectDTO getProjectByID(int project_id) {
+        StartupProjectDAO spdao = new StartupProjectDAO();
+        StartupProjectDTO project = spdao.readByID(project_id);
+        return project;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

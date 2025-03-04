@@ -70,5 +70,11 @@ public class StartupProjectDTO {
     public void setEstimated_launch(Date estimated_launch) {
         this.estimated_launch = estimated_launch;
     }
+
+    @Override
+    public String toString() {
+        return "StartupProjectDTO{" + "project_id=" + project_id + ", project_name=" + project_name + ", description=" + description + ", status=" + status + ", estimated_launch=" + estimated_launch + '}';
+    }
+    
     
 }

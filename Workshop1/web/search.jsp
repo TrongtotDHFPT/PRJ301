@@ -20,14 +20,14 @@
             if (session.getAttribute("user") != null) {
                 UserDTO user = (UserDTO) session.getAttribute("user");
         %>
-        <h1>Hello <%= user.getName() %> </h1> <br/>
+        <h1>Hello <%= user.getName()%> </h1> <br/>
         <form action="MainController">
             <input type="hidden" name="action" value="logout"/>
             <input type="submit" value="Logout"/>
         </form>
         <br/>
         <%
-            if(user.getRole().equals("Founder")){
+            if (user.getRole().equals("Founder")) {
         %>
         <a href="bookForm.jsp">Create New Project</a>
         <%
@@ -36,15 +36,16 @@
         %>
         <form action="MainController">
             <input type="hidden" name="action" value="search"/>
-            Search Project: <input type="text" name="txtsearchTerm" value="<%= searchTerm %>"/>
+            Search Project: <input type="text" name="txtsearchTerm" value="<%= searchTerm%>"/>
             <input type="submit" value="Search"/>
         </form>
         <br/>
+
         <%}%>
-        
-        
-        
-        
+
+
+
+
         <br/>
         <%
             if (request.getAttribute("list") != null) {
@@ -57,6 +58,11 @@
                     <th>Description</th>
                     <th>Status</th>
                     <th>Estimated Launch</th>
+                        <%
+                            if (user.getRole().equals("Founder")) {
+                        %>
+                    <th>Action</th>
+                        <%}%>
                 </tr>
             </thead>
             <tbody>
@@ -64,16 +70,23 @@
                     for (StartupProjectDTO project : list) {
                 %>
                 <tr>
-                    <td><%= project.getProject_name() %></td>
-                    <td><%= project.getDescription() %></td>
-                    <td><%= project.getStatus() %></td>
-                    <td><%= project.getEstimated_launch().toString() %></td>
+                    <td><%= project.getProject_name()%></td>
+                    <td><%= project.getDescription()%></td>
+                    <td><%= project.getStatus()%></td>
+                    <td><%= project.getEstimated_launch().toString()%></td>
+                    <%
+                        if (user.getRole().equals("Founder")) {
+                    %>
+                    <td>
+                        <a href="MainController?action=update&project_id=<%=project.getProject_id()%>&status=<%=project.getStatus()%>">Update Status</a>
+                    </td>
+                    <%}%>
                 </tr>
                 <%}%>
             </tbody>
         </table>
         <%}%>
-        <%}else {%>
+        <%} else {%>
         <p>Please <a href="login.jsp">login</a> to access this page.</p>
         <%}%>
     </body>
