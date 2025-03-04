@@ -57,7 +57,7 @@
     </head>
 
     <body>
-        <%@include file="header.jsp" %>
+        <%--<%@include file="header.jsp" %>--%>
         <div class="login-container">
         <h2>Login</h2>
         <%
@@ -72,6 +72,6 @@
             <input class="submit" type="submit" value="Login" />
         </form>
         </div>
-            <jsp:include page="footer.jsp"/>
+            <%--<jsp:include page="footer.jsp"/>--%>
     </body>
 </html>

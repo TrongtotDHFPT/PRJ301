@@ -57,6 +57,7 @@
     </head>
     
     <body> 
+         <%@include file="header.jsp" %>
         <%
             if(session.getAttribute("user") != null){
             UserDTO user = (UserDTO)session.getAttribute("user");
@@ -121,7 +122,7 @@
             You do not have permission to access this content!
             <%}%>
         <br/>
-        
+        <jsp:include page="footer.jsp"/>
         
     </body>
 </html>
