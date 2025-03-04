@@ -72,6 +72,6 @@
             <input class="submit" type="submit" value="Login" />
         </form>
         </div>
-        <jsp:include page="footer.jsp"/>
+            <jsp:include page="footer.jsp"/>
     </body>
 </html>
