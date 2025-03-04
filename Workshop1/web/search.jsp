@@ -27,12 +27,12 @@
         </form>
         <br/>
         <%
-            if (user.getRole().equals("Founder")) {
+                if (user.getRole().equals("Founder")) {
         %>
         <a href="bookForm.jsp">Create New Project</a>
         <%
-            String searchTerm = request.getAttribute("searchTerm") + "";
-            searchTerm = searchTerm.equals("null") ? "" : searchTerm;
+                String searchTerm = request.getAttribute("searchTerm") + "";
+                searchTerm = searchTerm.equals("null") ? "" : searchTerm;
         %>
         <form action="MainController">
             <input type="hidden" name="action" value="search"/>
@@ -40,13 +40,8 @@
             <input type="submit" value="Search"/>
         </form>
         <br/>
-
         <%}%>
 
-
-
-
-        <br/>
         <%
             if (request.getAttribute("list") != null) {
                 List<StartupProjectDTO> list = (List<StartupProjectDTO>) request.getAttribute("list");
@@ -78,7 +73,7 @@
                         if (user.getRole().equals("Founder")) {
                     %>
                     <td>
-                        <a href="MainController?action=update&project_id=<%=project.getProject_id()%>&status=<%=project.getStatus()%>">Update Status</a>
+                        <a href="MainController?action=update&project_id=<%=project.getProject_id()%>">Update Status</a>
                     </td>
                     <%}%>
                 </tr>

@@ -88,7 +88,6 @@ public class MainController extends HttpServlet {
                     url = "search.jsp";
                 } else if (action.equals("update")) {
                     int project_id = Integer.parseInt(request.getParameter("project_id"));
-
                     StartupProjectDAO spdao = new StartupProjectDAO();
                     StartupProjectDTO project = spdao.readByID(project_id);
                     System.out.println(project);

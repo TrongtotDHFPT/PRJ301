@@ -10,8 +10,6 @@ import dao.UserDAO;
 import dto.StartupProjectDTO;
 import dto.UserDTO;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +32,11 @@ public class MainController extends HttpServlet {
     public boolean isValidLogin(String strUsername, String strPassword) {
         UserDTO user = getUser(strUsername);
         return user != null && (user.getPassword().equals(strPassword));
+    }
+    
+    public boolean isValidStatus(String status){
+        return status!= null &&(status.trim().equalsIgnoreCase("Ideation")||status.trim().equalsIgnoreCase("Development")
+                                ||status.trim().equalsIgnoreCase("Launch")||status.trim().equalsIgnoreCase("Scaling"));
     }
 
     public void processSearch(HttpServletRequest request, HttpServletResponse response)
@@ -85,22 +88,30 @@ public class MainController extends HttpServlet {
                     url = "search.jsp";
                 } else if (action.equals("update")) {
                     int project_id = Integer.parseInt(request.getParameter("project_id"));
-
-                    StartupProjectDAO spdao = new StartupProjectDAO();
                     StartupProjectDTO project = spdao.readByID(project_id);
                     System.out.println(project);
-//                    System.out.println(project_id);
-//                    request.setAttribute("project_id", project_id);
                     request.setAttribute("project", project);
                     url = "update.jsp";
                 } else if (action.equals("updateStatus")) {
                     int project_id = Integer.parseInt(request.getParameter("project_id"));
                     String status = request.getParameter("status");
                     
-                    StartupProjectDAO spdao = new StartupProjectDAO();
-                    spdao.updateStatusByID(project_id, status);
-//                    System.out.println("Heloooooo3");
+                    if(isValidStatus(status)){
+                        boolean isUpdated = spdao.updateStatusByID(project_id, status);
+                        if(isUpdated){
+                            request.setAttribute("message", "Updated status successfully!");
+                        }else{
+                            request.setAttribute("message", "Updated status fail!");
+                        }
+                    }else{
+                        request.setAttribute("message", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
+                    }
+                    
+                    StartupProjectDTO project = spdao.readByID(project_id);
+                    request.setAttribute("project", project);
+                    request.setAttribute("status", status);
                     url = "update.jsp";
+                    
                 }
             }
         } catch (Exception e) {
