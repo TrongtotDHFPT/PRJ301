@@ -14,22 +14,33 @@
     </head>
     <body>
         <%
-            String project_id = request.getAttribute("project") + "";
+//            String project_id =  request.getAttribute("project_id")+"";
             StartupProjectDTO project = (StartupProjectDTO) request.getAttribute("project");
+            
         %>
-        <h1>Update Status Of Project</h1>
-        <h1><%=project.toString()%></h1>
-        <h1><%=project_id%></h1>
-        Ideation
-        Development
-        Launch
-        Scaling
+        <table border = 1>
+            <thead>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Old Status</th>
+                <th>Estimated Launch</th>
+            </thead>
+
+
+        <tbody>
+            <td><%= project.getProject_name()%></td>
+            <td><%= project.getDescription()%></td>
+            <td><%= project.getStatus()%></td>
+            <td><%= project.getEstimated_launch().toString()%></td>
+        </tbody>
+</table>
         <form action="MainController">
             <input type="hidden" name="action" value="updateStatus"/>
-            Project ID :<input type="number" name="project_id" value ="<%=project.getProject_id()%>"/> <br/>
+            <input type="hidden" name = "project_id" value="<%=project.getProject_id()%>"/>
             Update Status:<input type="text" name="status"/>
             <input type="submit" value="Update">
         </form>
 
-    </body>
+
+</body>
 </html>

@@ -65,6 +65,9 @@ public class MainController extends HttpServlet {
         }
         return url;
     }
+    private boolean isValidStatus(String status) {
+    return status != null && (status.equals("Ideation") || status.equals("Development") || status.equals("Launch") || status.equals("Scaling"));
+}
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -89,17 +92,25 @@ public class MainController extends HttpServlet {
                     StartupProjectDAO spdao = new StartupProjectDAO();
                     StartupProjectDTO project = spdao.readByID(project_id);
                     System.out.println(project);
-//                    System.out.println(project_id);
-//                    request.setAttribute("project_id", project_id);
                     request.setAttribute("project", project);
                     url = "update.jsp";
                 } else if (action.equals("updateStatus")) {
                     int project_id = Integer.parseInt(request.getParameter("project_id"));
                     String status = request.getParameter("status");
-                    
-                    StartupProjectDAO spdao = new StartupProjectDAO();
-                    spdao.updateStatusByID(project_id, status);
-//                    System.out.println("Heloooooo3");
+
+                    if (isValidStatus(status)) {
+                        boolean isUpdated = spdao.updateStatusByID(project_id, status);
+                        if (isUpdated) {
+                            request.setAttribute("message", "Status updated successfully!");
+                        } else {
+                            request.setAttribute("message", "Failed to update status!");
+                        }
+                    } else {
+                        request.setAttribute("message", "Invalid status! Status must be one of: Ideation, Development, Launch, Scaling.");
+                    }
+
+                    StartupProjectDTO project = spdao.readByID(project_id);
+                    request.setAttribute("project", project);
                     url = "update.jsp";
                 }
             }
