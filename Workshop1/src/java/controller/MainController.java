@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import utils.AuthUtils;
 
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
@@ -27,76 +28,85 @@ public class MainController extends HttpServlet {
     public static final String LOGIN_PAGE = "login.jsp";
     private static final StartupProjectDAO spdao = new StartupProjectDAO();
 
-    
-
     public String processSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "search.jsp";
-
-        String searchTerm = request.getParameter("txtsearchTerm");
-        if (searchTerm == null) {
-            searchTerm = "";
+        HttpSession session = request.getSession();
+        if (AuthUtils.isLoggedIn(session)) {
+            String searchTerm = request.getParameter("txtsearchTerm");
+            if (searchTerm == null) {
+                searchTerm = "";
+            }
+            List<StartupProjectDTO> list = spdao.searchByTerm(searchTerm);
+            request.setAttribute("searchTerm", searchTerm);
+            request.setAttribute("list", list);
         }
-        List<StartupProjectDTO> list = spdao.searchByTerm(searchTerm);
-        request.setAttribute("searchTerm", searchTerm);
-        request.setAttribute("list", list);
         return url;
     }
 
     public String processUpdate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "update.jsp";
-        int project_id = Integer.parseInt(request.getParameter("project_id"));
-        StartupProjectDTO project = spdao.readByID(project_id);
-        System.out.println(project);
-        request.setAttribute("project", project);
+
+        HttpSession session = request.getSession();
+        if (AuthUtils.isFounder(session)) {
+            int project_id = Integer.parseInt(request.getParameter("project_id"));
+            StartupProjectDTO project = spdao.readByID(project_id);
+            System.out.println(project);
+            request.setAttribute("project", project);
+        }
+
         return url;
     }
 
     public String processCreate(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
-        String projectName = request.getParameter("txtProjectName");
-        String description = request.getParameter("txtDescription");
-        String status = request.getParameter("txtStatus");
-        String launchDate = request.getParameter("txtDate"); //kiểu "yyyy-MM-dd" 2025-02-23
-        
-        Date sqlDate = null;
-        boolean check = false;
-        if (projectName == null || projectName.trim().equals("")) {
-            check = true;
-            request.setAttribute("txt_projectName_Error", "Project Name can't be empty!");
-        }
-        if (status == null || !AuthUtils.isValidStatus(status) || status.trim().equals("")) {
-            check = true;
-            request.setAttribute("txt_statusInValid_Error", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
-        }
-        if (launchDate == null || launchDate.trim().equals("")) {
-            check = true;
-            request.setAttribute("txt_dateError", "Launch date cannot be empty!");
-        } else {
-            try {
-                LocalDate localDate = LocalDate.parse(launchDate);
-                sqlDate = Date.valueOf(localDate);
-            } catch (DateTimeParseException e) {
+
+        HttpSession session = request.getSession();
+        if (AuthUtils.isFounder(session)) {
+            String projectName = request.getParameter("txtProjectName");
+            String description = request.getParameter("txtDescription");
+            String status = request.getParameter("txtStatus");
+            String launchDate = request.getParameter("txtDate"); //kiểu "yyyy-MM-dd" 2025-02-23
+
+            Date sqlDate = null;
+            boolean check = false;
+            if (projectName == null || projectName.trim().equals("")) {
                 check = true;
-                request.setAttribute("txt_dateError", "Invalid date format! Please use yyyy-MM-dd.");
+                request.setAttribute("txt_projectName_Error", "Project Name can't be empty!");
+            }
+            if (status == null || !AuthUtils.isValidStatus(status) || status.trim().equals("")) {
+                check = true;
+                request.setAttribute("txt_statusInValid_Error", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
+            }
+            if (launchDate == null || launchDate.trim().equals("")) {
+                check = true;
+                request.setAttribute("txt_dateError", "Launch date cannot be empty!");
+            } else {
+                try {
+                    LocalDate localDate = LocalDate.parse(launchDate);
+                    sqlDate = Date.valueOf(localDate);
+                } catch (DateTimeParseException e) {
+                    check = true;
+                    request.setAttribute("txt_dateError", "Invalid date format! Please use yyyy-MM-dd.");
+                }
+            }
+
+            StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
+            if (check == false) {
+                spdao.create(project);
+                request.setAttribute("message", "Create Project Successfully!");
+                url = "projectForm.jsp";
+            } else {
+                request.setAttribute("projectName", projectName);
+                request.setAttribute("description", description);
+                request.setAttribute("status", status);
+                request.setAttribute("launchDate", launchDate);
+                url = "projectForm.jsp";
             }
         }
 
-        StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
-        if (check == false) {
-            spdao.create(project);
-            request.setAttribute("message", "Create Project Successfully!");
-            url = "projectForm.jsp";
-        }
-        else {
-            request.setAttribute("projectName",projectName );
-            request.setAttribute("description",description );
-            request.setAttribute("status",status );
-            request.setAttribute("launchDate",launchDate );
-            url = "projectForm.jsp";
-        }
         return url;
     }
 
@@ -104,24 +114,29 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
 
-        int project_id = Integer.parseInt(request.getParameter("project_id"));
-        String status = request.getParameter("status");
+        HttpSession session = request.getSession();
+        if (AuthUtils.isLoggedIn(session)) {
+            if (AuthUtils.isFounder(session)) {
+                int project_id = Integer.parseInt(request.getParameter("project_id"));
+                String status = request.getParameter("status");
 
-        if (AuthUtils.isValidStatus(status)) {
-            boolean isUpdated = spdao.updateStatusByID(project_id, status);
-            if (isUpdated) {
-                request.setAttribute("message", "Updated status successfully!");
-            } else {
-                request.setAttribute("message", "Updated status fail!");
+                if (AuthUtils.isValidStatus(status)) {
+                    boolean isUpdated = spdao.updateStatusByID(project_id, status);
+                    if (isUpdated) {
+                        request.setAttribute("message", "Updated status successfully!");
+                    } else {
+                        request.setAttribute("message", "Updated status fail!");
+                    }
+                } else {
+                    request.setAttribute("message", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
+                }
+
+                StartupProjectDTO project = spdao.readByID(project_id);
+                request.setAttribute("project", project);
+                request.setAttribute("status", status);
+                url = "update.jsp";
             }
-        } else {
-            request.setAttribute("message", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
         }
-
-        StartupProjectDTO project = spdao.readByID(project_id);
-        request.setAttribute("project", project);
-        request.setAttribute("status", status);
-        url = "update.jsp";
         return url;
     }
 
@@ -129,6 +144,7 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         String url = LOGIN_PAGE;
         //
+
         String strUsername = request.getParameter("txtUserID");
         String strPassword = request.getParameter("txtPassword");
         if (AuthUtils.isValidLogin(strUsername, strPassword)) {
@@ -141,12 +157,14 @@ public class MainController extends HttpServlet {
             request.setAttribute("message", "Incorrect Username or Password!");
             url = "login.jsp";
         }
+
         return url;
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         String action = request.getParameter("action");
         String url = LOGIN_PAGE;
         try {
@@ -166,7 +184,7 @@ public class MainController extends HttpServlet {
                     url = processUpdateStatus(request, response);
                 } else if (action.equals("create")) {
                     url = processCreate(request, response);
-                } 
+                }
             }
         } catch (Exception e) {
             log("Error at MainController :" + e.toString());

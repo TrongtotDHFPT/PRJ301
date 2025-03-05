@@ -21,6 +21,10 @@ public class AuthUtils {
         UserDTO user = udao.readByUsername(strUsername);
         return user;
     }
+    public static UserDTO getUser(HttpSession session) {
+        Object obj = session.getAttribute("user");
+        return (obj!=null)?(UserDTO)obj:null;
+    }
 
     public static boolean isValidLogin(String strUsername, String strPassword) {
         UserDTO user = getUser(strUsername);
