@@ -110,6 +110,7 @@ public class MainController extends HttpServlet {
 
                     StartupProjectDTO project = spdao.readByID(project_id);
                     request.setAttribute("project", project);
+                    request.setAttribute("status", status);
                     url = "update.jsp";
                 }
             }

@@ -9,12 +9,8 @@
     <body>
         <%
             StartupProjectDTO project = (StartupProjectDTO) request.getAttribute("project");
-            String message = (String) request.getAttribute("message");
-            if (message != null) {
-        %>
-            <p style="color: red;"><%= message %></p>
-        <%
-            }
+            String message = request.getAttribute("message")+"";
+            message = (message.equals("null"))?"" : message;
         %>
         <table border="1">
             <thead>
@@ -39,6 +35,7 @@
             <input type="hidden" name="project_id" value="<%= project.getProject_id() %>"/>
             Update Status: <input type="text" name="status" required/>
             <input type="submit" value="Update"/>
+            <p style="color: red;"><%= message %></p>   
         </form>
             <a href="MainController?action=search">Come back Project Dashboard</a>
     </body>

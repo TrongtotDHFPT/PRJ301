@@ -45,7 +45,7 @@
         <h3 style="color:red;"><%=message%></h3>
         <br/>
         <br/>
-            <a href="MainController?action=search">Come back Project Dashboard</a>
+            <a href="MainController?action=search&txtsearchTerm=">Come back Project Dashboard</a>
 
 
 </body>

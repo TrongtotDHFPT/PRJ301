@@ -12,6 +12,7 @@ import dto.UserDTO;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,10 +36,10 @@ public class MainController extends HttpServlet {
         UserDTO user = getUser(strUsername);
         return user != null && (user.getPassword().equals(strPassword));
     }
-    
-    public boolean isValidStatus(String status){
-        return status!= null &&(status.trim().equalsIgnoreCase("Ideation")||status.trim().equalsIgnoreCase("Development")
-                                ||status.trim().equalsIgnoreCase("Launch")||status.trim().equalsIgnoreCase("Scaling"));
+
+    public boolean isValidStatus(String status) {
+        return status != null && (status.trim().equalsIgnoreCase("Ideation") || status.trim().equalsIgnoreCase("Development")
+                || status.trim().equalsIgnoreCase("Launch") || status.trim().equalsIgnoreCase("Scaling"));
     }
 
     public void processSearch(HttpServletRequest request, HttpServletResponse response)
@@ -97,34 +98,103 @@ public class MainController extends HttpServlet {
                 } else if (action.equals("updateStatus")) {
                     int project_id = Integer.parseInt(request.getParameter("project_id"));
                     String status = request.getParameter("status");
-                    
-                    if(isValidStatus(status)){
+
+                    if (isValidStatus(status)) {
                         boolean isUpdated = spdao.updateStatusByID(project_id, status);
-                        if(isUpdated){
+                        if (isUpdated) {
                             request.setAttribute("message", "Updated status successfully!");
-                        }else{
+                        } else {
                             request.setAttribute("message", "Updated status fail!");
                         }
-                    }else{
+                    } else {
                         request.setAttribute("message", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
                     }
-                    
+
                     StartupProjectDTO project = spdao.readByID(project_id);
                     request.setAttribute("project", project);
                     request.setAttribute("status", status);
                     url = "update.jsp";
-                }else if (action.equals("create")) {
+                } else if (action.equals("create")) {
                     String projectName = request.getParameter("txtProjectName");
                     String description = request.getParameter("txtDescription");
                     String status = request.getParameter("txtStatus");
                     String launchDate = request.getParameter("txtDate"); //kiểu "yyyy-MM-dd" 
-                    System.out.println(launchDate);
-                    LocalDate localDate = LocalDate.parse(launchDate);// Chuyển  chuỗi "yyyy-MM-dd" thành LocalDate
-                    // Chuyển từ LocalDate sang java.sql.Date || vừa để tương thích với DTO 
-                    Date sqlDate = Date.valueOf(localDate);
+                    
+                    Date sqlDate = null;
+                    
+                    boolean check = false;
+                    if (projectName == null || projectName.trim().equals("")) {
+                        check = true;
+                        request.setAttribute("txt_projectName_Error", "Project Name can't be empty!");
+                    }
+                    if (status == null || !isValidStatus(status) || status.trim().equals("")) {
+                        check = true;
+                        request.setAttribute("txt_statusInValid_Error", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
+                    }
+                    if(launchDate == null || launchDate.trim().equals("")){
+                        check = true;
+                        request.setAttribute("txt_dateError", "Launch date cannot be empty!");
+                    }else{
+                        try {
+                            LocalDate localDate = LocalDate.parse(launchDate);
+                            sqlDate = Date.valueOf(localDate);
+                        } catch (DateTimeParseException e) {
+                            check = true;
+                            request.setAttribute("txt_dateError", "Invalid date format! Please use yyyy-MM-dd.");
+                        }
+                    }
+
                     StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
-                    spdao.create(project);
-                    url = "search.jsp";
+                    if (check == false) {
+                        spdao.create(project);
+                        request.setAttribute("message", "Create Project Successfully!");
+                        url = "search.jsp";
+                    } else {
+//                        request.setAttribute("project", project);
+                        url = "projectForm.jsp";
+                    }
+
+                } else if (action.equals("abc")) {
+                    String projectName = request.getParameter("txtProjectName");
+                    String description = request.getParameter("txtDescription");
+                    String status = request.getParameter("txtStatus");
+                    String launchDate = request.getParameter("txtDate"); // Lấy giá trị từ request
+                    Date sqlDate = null;
+                     boolean check = false;
+                    if (launchDate == null || launchDate.trim().isEmpty()) {
+                        // Xử lý lỗi nếu launchDate rỗng hoặc null
+                        check = true;
+                        request.setAttribute("txt_dateError", "Launch date cannot be empty!");
+                    } else {
+                        try {
+                            LocalDate localDate = LocalDate.parse(launchDate); // Phân tích chuỗi thành LocalDate
+                            sqlDate = Date.valueOf(localDate); // Chuyển đổi thành java.sql.Date
+                        } catch (DateTimeParseException e) {
+                            // Xử lý lỗi nếu chuỗi không đúng định dạng
+                            check = true;
+                            request.setAttribute("txt_dateError", "Invalid date format! Please use yyyy-MM-dd.");
+                        }
+                    }
+                    // Kiểm tra projectName
+                    if (projectName == null || projectName.trim().isEmpty()) {
+                        check = true;
+                        request.setAttribute("txt_projectName_Error", "Project Name cannot be empty!");
+                    }
+
+                    // Kiểm tra status
+                    if (!isValidStatus(status) || status.trim().isEmpty()) {
+                        check = true;
+                        request.setAttribute("txt_statusInValid_Error", "Invalid status! Status must be one of: Ideation, Development, Launch, Scaling.");
+                    }
+                    // Nếu không có lỗi, tạo dự án
+                    if (!check) {
+                        StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
+                        spdao.create(project);
+                        request.setAttribute("message", "Create Project Successfully!");
+                        url = "search.jsp";
+                    } else {
+                        url = "projectForm.jsp"; // Chuyển hướng về trang tạo dự án nếu có lỗi
+                    }
                 }
             }
         } catch (Exception e) {
