@@ -45,7 +45,7 @@ public class StartupProjectDAO implements IDAO<StartupProjectDTO, Integer> {
             ResultSet rs = st.executeQuery(getMaxID);
             int entity_project_id = 1;
             if (rs.next()) {
-                entity_project_id = rs.getInt(1) + 1;//Lấy giá trị từ cột đầu tiên của ResultSet
+                entity_project_id = rs.getInt(1) + 1;
             }
             
             String sql = "INSERT INTO tblStartupProjects (Project_id,Project_name, Description, Status, Estimated_launch)"

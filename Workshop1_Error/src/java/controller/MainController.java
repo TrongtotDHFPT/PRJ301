@@ -80,8 +80,8 @@ public class MainController extends HttpServlet {
             } else {
                 try {
                     LocalDate localDate = LocalDate.parse(launchDate);
-                    LocalDate today = LocalDate.now(); // Lấy ngày hiện tại
-                    if (localDate.isBefore(today)) { // Kiểm tra nếu ngày nhập vào trước ngày hôm nay
+                    LocalDate today = LocalDate.now(); 
+                    if (localDate.isBefore(today)) { 
                         check = true;
                         request.setAttribute("txt_dateError", "Launch date cannot be in the past!");
                     } else {
