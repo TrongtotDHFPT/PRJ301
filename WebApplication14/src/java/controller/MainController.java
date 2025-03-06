@@ -67,7 +67,8 @@ public class MainController extends HttpServlet {
 
     public String processSearch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "search.jsp";
+        String url = LOGIN_PAGE;
+        
         HttpSession session = request.getSession();
         if (AuthUtils.isLoggedIn(session)) {
             // search
@@ -79,6 +80,7 @@ public class MainController extends HttpServlet {
             request.setAttribute("books", books);
             request.setAttribute("searchTerm", searchTerm);
         }
+        url = "search.jsp";
         return url;
     }
 
