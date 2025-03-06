@@ -72,14 +72,8 @@ public class MainController extends HttpServlet {
 
             Date sqlDate = null;
             boolean check = false;
-            if (projectName == null || projectName.trim().equals("")) {
-                check = true;
-                request.setAttribute("txt_projectName_Error", "Project Name can't be empty!");
-            }
-            if (status == null || !AuthUtils.isValidStatus(status) || status.trim().equals("")) {
-                check = true;
-                request.setAttribute("txt_statusInValid_Error", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
-            }
+            
+           
             if (launchDate == null || launchDate.trim().equals("")) {
                 check = true;
                 request.setAttribute("txt_dateError", "Launch date cannot be empty!");
@@ -97,6 +91,16 @@ public class MainController extends HttpServlet {
                     check = true;
                     request.setAttribute("txt_dateError", "Invalid date format! Please use yyyy-MM-dd.");
                 }
+            }
+            
+             if (projectName == null || projectName.trim().equals("")) {
+                check = true;
+                request.setAttribute("txt_projectName_Error", "Project Name can't be empty!");
+            }
+             
+            if (status == null || !AuthUtils.isValidStatus(status) || status.trim().equals("")) {
+                check = true;
+                request.setAttribute("txt_statusInValid_Error", "Invalid status!Status must be one of: Ideation, Development, Launch, Scaling.");
             }
 
             StartupProjectDTO project = new StartupProjectDTO(0, projectName, description, status, sqlDate);
