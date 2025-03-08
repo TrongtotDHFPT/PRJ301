@@ -96,7 +96,6 @@
                 <input type="text" name="txtUserID" placeholder="User ID" required /><br/>
                 <input type="password" name="txtPassword" placeholder="Password" required /> <br/>
 
-                <!-- Hiển thị thông báo lỗi nếu có -->
                 <% if (!message.isEmpty()) {%>
                 <h1><%= message%></h1>
                 <% }%>

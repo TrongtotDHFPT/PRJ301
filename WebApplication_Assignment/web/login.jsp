@@ -23,16 +23,16 @@
             %>
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="login" />
-                <input type="text" name="txtUserID" placeholder="User ID" required /><br/>
-                <input type="password" name="txtPassword" placeholder="Password" required /> <br/>
+                UserName <input type="text" name="txtUserName" placeholder="User Name" required /><br/>
+                Password <input type="password" name="txtPassword" placeholder="Password" required /> <br/>
                 <h1 style="color :red;font-size: 15px;"><%=message%><h1/> 
                     <input class="submit" type="submit" value="Login" />
             </form>
                     
                     
-            <form action="MainController" method="post">
-                <input type="hidden" name="action" value="register" />
-                <input class="submit" type="submit" value="Register" />
+            <form action="signup.jsp" method="post">
+                <input type="hidden" name="action" value="signup" />
+                <input class="submit" type="submit" value="sign Up"/>
             </form>
         </div>
 

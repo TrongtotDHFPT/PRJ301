@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IDAO <T, K> {
     public List<T> readByAll();
-    public boolean  create();
+    public boolean  create(T entity);
     public boolean delete();
     public boolean update();
 }
