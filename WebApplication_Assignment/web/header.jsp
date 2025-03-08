@@ -3,7 +3,8 @@
     Created on : Mar 8, 2025, 4:44:25 PM
     Author     : trong
 --%>
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>

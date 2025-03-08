@@ -44,8 +44,6 @@ public class MainController extends HttpServlet {
                         request.setAttribute("message","Incorrec UserName or PassWord.Please try again!");
                         url ="login.jsp";
                     }
-                }else if(action.equals("signup")){
-                    
                 }else if(action.equals("logout")){
                     request.getSession().invalidate();
                     url = "login.jsp";

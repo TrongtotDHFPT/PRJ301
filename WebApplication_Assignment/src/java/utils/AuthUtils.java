@@ -20,13 +20,8 @@ public class AuthUtils {
         
         AccountDAO acDAO = new AccountDAO();
         AccountDTO account = acDAO.readByUsername(strUsername);
-        List<AccountDTO> list = acDAO.readByAll();
-        for (AccountDTO accountDTO : list) {
-            if(account.getUserName().equals(accountDTO.getUserName())){
-                return false;
-            }
-        }
-        return true;
+        
+        return account == null;
     }
     
     public static boolean isValidLogin(String strUsername , String strPassword){

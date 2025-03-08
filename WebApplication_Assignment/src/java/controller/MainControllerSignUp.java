@@ -42,13 +42,11 @@ public class MainControllerSignUp extends HttpServlet {
 
                     boolean hasError = false; 
                     
-                    // Kiểm traname
                     if (strName == null || strName.trim().isEmpty()) {
                         request.setAttribute("errorName", "Name không được để trống");
                         hasError = true;
                     }
                     
-                    // Kiểm tra username
                     if (strUsername == null || strUsername.trim().isEmpty()) {
                         request.setAttribute("errorUsername", "Username không được để trống");
                         hasError = true;
@@ -57,7 +55,6 @@ public class MainControllerSignUp extends HttpServlet {
                         hasError = true;
                     }
 
-                    // Kiểm tra password
                     if (strPassword == null || strPassword.trim().isEmpty()) {
                         request.setAttribute("errorPassword", "Mật khẩu không được để trống");
                         hasError = true;
@@ -66,7 +63,6 @@ public class MainControllerSignUp extends HttpServlet {
                         hasError = true;
                     }
 
-                    // Kiểm tra confirm password
                     if (strConfirmPassword == null || !strConfirmPassword.equals(strPassword)) {
                         request.setAttribute("errorConfirmPassword", "Confirm Password không khớp với Password");
                         hasError = true;
