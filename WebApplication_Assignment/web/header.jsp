@@ -119,6 +119,7 @@
             <div class="search-bar">
                 <img src="search-icon.svg" alt="Search">
                 <input type="text" placeholder="Search products...">
+                <button class="search-button">🔍</button>
             </div>
 
 

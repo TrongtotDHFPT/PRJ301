@@ -8,7 +8,7 @@
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%@taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>%>
+<%@taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE html>
@@ -106,87 +106,86 @@
     <body>
 
         <%
-            String txtBookID_error = request.getAttribute("txtBookID_error") + "";
-            txtBookID_error = txtBookID_error.equals("null") ? "" : txtBookID_error;
-            String txtQuantity_error = request.getAttribute("txtQuantity_error") + "";
-            txtQuantity_error = txtQuantity_error.equals("null") ? "" : txtQuantity_error;
-            String txtTitle_error = request.getAttribute("txtTitle_error") + "";
-            txtTitle_error = txtTitle_error.equals("null") ? "" : txtTitle_error;
-            String txtPublishYear_error = request.getAttribute("txtPublishYear_error") + "";
-            txtPublishYear_error = txtPublishYear_error.equals("null") ? "" : txtTitle_error;
-            String txtPrice_error = request.getAttribute("txtPrice_error") + "";
-            txtPrice_error = txtPrice_error.equals("null") ? "" : txtTitle_error;
-
+//            String txtBookID_error = request.getAttribute("txtBookID_error") + "";
+//            txtBookID_error = txtBookID_error.equals("null") ? "" : txtBookID_error;
+//            String txtQuantity_error = request.getAttribute("txtQuantity_error") + "";
+//            txtQuantity_error = txtQuantity_error.equals("null") ? "" : txtQuantity_error;
+//            String txtTitle_error = request.getAttribute("txtTitle_error") + "";
+//            txtTitle_error = txtTitle_error.equals("null") ? "" : txtTitle_error;
+//            String txtPublishYear_error = request.getAttribute("txtPublishYear_error") + "";
+//            txtPublishYear_error = txtPublishYear_error.equals("null") ? "" : txtTitle_error;
+//            String txtPrice_error = request.getAttribute("txtPrice_error") + "";
+//            txtPrice_error = txtPrice_error.equals("null") ? "" : txtTitle_error;
         %>
         <div class="form-container">
-            <% if(AuthUtils.isLoggedIn(session)){
-                UserDTO user = (UserDTO)session.getAttribute("user");
-                if (AuthUtils.isAdmin(session)) {
-            %>
-            <h2>Book Form</h2>
-            <form action="MainController" method="post">
-                <input type="hidden" name="action" value="add"/>
+            <c:set var="isLoggedIn" value="<%=AuthUtils.isLoggedIn(session)%>"/>
+            <c:set var="isAdmin" value="<%=AuthUtils.isAdmin(session)%>"/>
 
-                <div class="form-group">
-                    <label for="txtBookID">Book ID:</label>
-                    <input type="text" id="txtBookID" name="txtBookID"/>
-                    <% if (request.getAttribute("txtBookID_error") != null) {%>
-                    <div class="error_message"><%= request.getAttribute("txtBookID_error")%></div>
-                    <% } %>
+            <c:if test="${isAdmin}">
+                <h2>Book Form</h2>
+                <form action="MainController" method="post">
+                    <input type="hidden" name="action" value="add"/>
+
+                    <div class="form-group">
+                        <label for="txtBookID">Book ID:</label>
+                        <input type="text" id="txtBookID" name="txtBookID"/>
+                        <c:if test="${not empty requestScope.txtBookID_error}">
+                            <div class="error_message"><%= request.getAttribute("txtBookID_error")%></div>
+                        </c:if>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtTitle">Title:</label>
+                        <input type="text" id="txtTitle" name="txtTitle"/>
+                        <c:if test="${not empty requestScope.txtTitle_error}">
+                            <div class="error_message"><%= request.getAttribute("txtTitle_error")%></div>
+                        </c:if>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtAuthor">Author:</label>
+                        <input type="text" id="txtAuthor" name="txtAuthor"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtPublishYear">Publish Year:</label>
+                        <input type="number" id="txtPublishYear" name="txtPublishYear"/>
+                        <c:if test="${not empty requestScope.txtPublishYear_error}">
+                            <div class="error_message"><%= request.getAttribute("txtPublishYear_error")%></div>
+                        </c:if>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtPrice">Price:</label>
+                        <input type="number" id="txtPrice" name="txtPrice"/>
+                        <c:if test="${not empty requestScope.txtPrice_error}">
+                            <div class="error_message"><%= request.getAttribute("txtPrice_error")%></div>
+                        </c:if>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtQuantity">Quantity:</label>
+                        <input type="number" id="txtQuantity" name="txtQuantity"/>
+                        <c:if test="${not empty requestScope.txtQuantity_error}">
+                            <div class="error_message"><%= request.getAttribute("txtQuantity_error")%></div>
+                        </c:if>
+                    </div>
+
+                    <div class="button-group">
+                        <input type="submit" value="Save" class="save-btn"/>
+                        <input type="reset" value="Reset" class="reset-btn"/>
+                    </div>
+                </form>
+            </c:if>
+
+            <c:if test="${not isAdmin}">
+                <h2 style="color: red;">403 Error</h2>
+                <div>
+                    <h1>Access Denied</h1>
+                    <p>Please login to access this page</p>
+                    <a href="login.jsp">Go to Login page</a>
                 </div>
-
-                <div class="form-group">
-                    <label for="txtTitle">Title:</label>
-                    <input type="text" id="txtTitle" name="txtTitle"/>
-                    <% if (request.getAttribute("txtTitle_error") != null) {%>
-                    <div class="error_message"><%= request.getAttribute("txtTitle_error")%></div>
-                    <% } %>
-                </div>
-
-                <div class="form-group">
-                    <label for="txtAuthor">Author:</label>
-                    <input type="text" id="txtAuthor" name="txtAuthor"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="txtPublishYear">Publish Year:</label>
-                    <input type="number" id="txtPublishYear" name="txtPublishYear"/>
-                    <% if (request.getAttribute("txtPublishYear_error") != null) {%>
-                    <div class="error_message"><%= request.getAttribute("txtPublishYear_error")%></div>
-                    <% } %>
-                </div>
-
-                <div class="form-group">
-                    <label for="txtPrice">Price:</label>
-                    <input type="number" id="txtPrice" name="txtPrice"/>
-                    <% if (request.getAttribute("txtPrice_error") != null) {%>
-                    <div class="error_message"><%= request.getAttribute("txtPrice_error")%></div>
-                    <% } %>
-                </div>
-
-                <div class="form-group">
-                    <label for="txtQuantity">Quantity:</label>
-                    <input type="number" id="txtQuantity" name="txtQuantity"/>
-                    <% if (request.getAttribute("txtQuantity_error") != null) {%>
-                    <div class="error_message"><%= request.getAttribute("txtQuantity_error")%></div>
-                    <% }%>
-                </div>
-
-                <div class="button-group">
-                    <input type="submit" value="Save" class="save-btn"/>
-                    <input type="reset" value="Reset" class="reset-btn"/>
-                </div>
-            </form>
-
-            <%  } 
-                }else { %>
-            <h2 style="color: red;">403 Error</h2>
-            <div>
-                <h1>Access Denied</h1>
-                <p>Please login to access this page</p>
-                <a href="login.jsp">Go to Login page</a>
-            </div>
-            <%}%>     
+            </c:if>
         </div>
 
     </body>
