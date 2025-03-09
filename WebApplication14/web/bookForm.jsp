@@ -104,7 +104,6 @@
     </head>
 
     <body>
-
         <%
 //            String txtBookID_error = request.getAttribute("txtBookID_error") + "";
 //            txtBookID_error = txtBookID_error.equals("null") ? "" : txtBookID_error;
