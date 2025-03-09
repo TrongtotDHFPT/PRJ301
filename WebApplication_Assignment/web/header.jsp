@@ -3,6 +3,7 @@
     Created on : Mar 8, 2025, 4:44:25 PM
     Author     : trong
 --%>
+<%@page import="utils.AuthUtils"%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -77,6 +78,31 @@
                 text-decoration: none;
                 color: inherit;
             }
+            .search-bar {
+                position: relative;
+                display: flex;
+                align-items: center;
+                width: 300px; /* Điều chỉnh chiều rộng theo ý muốn */
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 5px;
+                background-color: #fff;
+            }
+
+            .search-bar i {
+                font-size: 18px;
+                color: gray;
+                margin-left: 10px;
+            }
+
+            .search-bar input {
+                border: none;
+                outline: none;
+                padding: 8px;
+                flex: 1;
+                font-size: 16px;
+            }
+
         </style>
     </head>
     <body>
@@ -87,18 +113,23 @@
             <div class="logo_header">
                 <a href="login.jsp"><img src="assets/img/logo_header.png" alt="Logo Shop" class="logo"></a>
             </div>
-            
+            <%
+                if (AuthUtils.isLoggedIn(session)) {
+            %>
             <div class="search-bar">
+                <img src="search-icon.svg" alt="Search">
                 <input type="text" placeholder="Search products...">
             </div>
+
 
             <a href="cart.jsp">
                 <button>Giỏ hàng</button>
             </a>
 
-            <a href="logout.jsp">
+            <a href="login.jsp">
                 <button>Logout</button>
             </a>
+            <%}%>
         </div>
     </body>
 </html>

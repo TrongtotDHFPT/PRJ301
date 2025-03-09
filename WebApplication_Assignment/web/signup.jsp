@@ -16,6 +16,7 @@
                 color :red;
                 font-size: 15px;
             }
+            
         </style>
     </head>
     <body>
@@ -64,6 +65,7 @@
             <input type="submit" value="Sign Up"/>
             <h3><%=message%></h3>
         </form>
-
+        
+        <a href="login.jsp" class="btn">Back to Login Page</a>
     </body>
 </html>
