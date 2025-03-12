@@ -55,7 +55,8 @@ public class BookDAO implements IDAO<BookDTO, String>{
 
     @Override
     public boolean update(BookDTO entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
+        
     }
 
     @Override

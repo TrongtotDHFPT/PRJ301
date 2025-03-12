@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="dto.BookDTO"%>
 <%@page import="utils.AuthUtils"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -122,12 +123,27 @@
 
             <c:if test="${isAdmin}">
                 <h2>Book Form</h2>
+                <%                   
+                    BookDTO book = new BookDTO();
+                    if(request.getAttribute("book") == null){
+                        
+                        request.setAttribute("book", book);
+                    }else{
+                        book = (BookDTO)request.getAttribute("book");
+                    }
+                        
+                    String action = request.getAttribute("action")+"";
+                    if(!action.equals("update")){
+                        action = "add";
+                    }
+                %>
+
                 <form action="MainController" method="post">
-                    <input type="hidden" name="action" value="add"/>
+                    <input type="hidden" name="action" value="${action}"/>
 
                     <div class="form-group">
                         <label for="txtBookID">Book ID:</label>
-                        <input type="text" id="txtBookID" name="txtBookID"/>
+                        <input type="text" id="txtBookID" name="txtBookID" value="${book.bookID}"/>
                         <c:if test="${not empty requestScope.txtBookID_error}">
                             <div class="error_message"><%= request.getAttribute("txtBookID_error")%></div>
                         </c:if>
@@ -135,7 +151,7 @@
 
                     <div class="form-group">
                         <label for="txtTitle">Title:</label>
-                        <input type="text" id="txtTitle" name="txtTitle"/>
+                        <input type="text" id="txtTitle" name="txtTitle" value="${book.title}"/>
                         <c:if test="${not empty requestScope.txtTitle_error}">
                             <div class="error_message"><%= request.getAttribute("txtTitle_error")%></div>
                         </c:if>
@@ -143,12 +159,12 @@
 
                     <div class="form-group">
                         <label for="txtAuthor">Author:</label>
-                        <input type="text" id="txtAuthor" name="txtAuthor"/>
+                        <input type="text" id="txtAuthor" name="txtAuthor" value="${book.author}"/>
                     </div>
 
                     <div class="form-group">
                         <label for="txtPublishYear">Publish Year:</label>
-                        <input type="number" id="txtPublishYear" name="txtPublishYear"/>
+                        <input type="number" id="txtPublishYear" name="txtPublishYear" value="${book.publishYear}"/>
                         <c:if test="${not empty requestScope.txtPublishYear_error}">
                             <div class="error_message"><%= request.getAttribute("txtPublishYear_error")%></div>
                         </c:if>
@@ -156,7 +172,7 @@
 
                     <div class="form-group">
                         <label for="txtPrice">Price:</label>
-                        <input type="number" id="txtPrice" name="txtPrice"/>
+                        <input type="number" id="txtPrice" name="txtPrice" value="${book.price}"/>
                         <c:if test="${not empty requestScope.txtPrice_error}">
                             <div class="error_message"><%= request.getAttribute("txtPrice_error")%></div>
                         </c:if>
@@ -164,7 +180,7 @@
 
                     <div class="form-group">
                         <label for="txtQuantity">Quantity:</label>
-                        <input type="number" id="txtQuantity" name="txtQuantity"/>
+                        <input type="number" id="txtQuantity" name="txtQuantity" value="${book.quantity}"/>
                         <c:if test="${not empty requestScope.txtQuantity_error}">
                             <div class="error_message"><%= request.getAttribute("txtQuantity_error")%></div>
                         </c:if>
@@ -172,8 +188,19 @@
 
                     <div class="form-group">
                         <label for="txtImage">Image:</label>
-                        <input type="text" id="txtImage" name="txtImage"/>
+                        <input type="text" id="txtImage" name="txtImage" value="${book.image}" placeholder="Enter image URL or base64 data"/>
+                        <c:if test="${not empty requestScope.txtImage_error}">
+                            <div class="error-message">${requestScope.txtImage_error}</div>
+                        </c:if>
+                        <c:if test="${not empty book.image}">
+                            <div class="image-preview">
+                                <img src="${book.image}" alt="${book.title}"/>
+                            </div>
+                        </c:if>
                     </div>
+
+
+
                     <div class="button-group">
                         <input type="submit" value="Save" class="save-btn"/>
                         <input type="reset" value="Reset" class="reset-btn"/>
@@ -191,6 +218,32 @@
                 </div>
             </c:if>
         </div>
+        <script>
+            // JavaScript để cải thiện trải nghiệm người dùng
+            document.addEventListener('DOMContentLoaded', function () {
+                // Preview image when URL is entered
+                document.getElementById('txtImage').addEventListener('input', function () {
+                    const imageUrl = this.value.trim();
+                    let previewContainer = document.querySelector('.image-preview');
 
+                    if (!previewContainer) {
+                        previewContainer = document.createElement('div');
+                        previewContainer.className = 'image-preview';
+                        this.parentNode.appendChild(previewContainer);
+                    }
+
+                    if (imageUrl) {
+                        // Check if it's a URL or base64 data
+                        if (imageUrl.startsWith('data:image') || imageUrl.startsWith('http')) {
+                                previewContainer.innerHTML = `<img src="${imageUrl}" alt="Preview" onerror="this.src='assets/images/placeholder.png'; this.alt='Image not available';">`;
+                        } else {
+                            previewContainer.innerHTML = '<p>Enter a valid image URL or base64 data</p>';
+                        }
+                    } else {
+                        previewContainer.innerHTML = '';
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

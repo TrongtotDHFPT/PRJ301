@@ -200,10 +200,15 @@
                                     <td>${b.quantity}</td>
 
                                     <c:if test ="${isAdmin}"> 
-                                        <td><a href="MainController?action=delete&id=${b.bookID}&searchTerm=${searchTerm}">
+                                        <td>
+                                            <a href="MainController?action=edit&id=${b.bookID} &searchTerm=${searchTerm}"">
+                                                <img src="assets/images/Edit-icon.png" style="height: 25px"/>
+                                            </a>
+                                            <a href="MainController?action=delete&id=${b.bookID}&searchTerm=${searchTerm}">
                                                 <img src="assets/images/Trash-can-icon.png" style="height: 25px"/>
-                                            </a></td>
-                                        </c:if>  
+                                            </a>
+                                        </td>
+                                    </c:if>  
                                 </tr>
                             </c:forEach>
                         </tbody>
