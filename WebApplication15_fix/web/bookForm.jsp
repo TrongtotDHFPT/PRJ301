@@ -170,10 +170,15 @@
                         </c:if>
                     </div>
 
+                    <div class="form-group">
+                        <label for="txtImage">Image:</label>
+                        <input type="text" id="txtImage" name="txtImage"/>
+                    </div>
                     <div class="button-group">
                         <input type="submit" value="Save" class="save-btn"/>
                         <input type="reset" value="Reset" class="reset-btn"/>
                     </div>
+
                 </form>
             </c:if>
 

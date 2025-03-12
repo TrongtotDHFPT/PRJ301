@@ -111,7 +111,8 @@ public class MainController extends HttpServlet {
                 int publishYear = Integer.parseInt(request.getParameter("txtPublishYear"));
                 double price = Double.parseDouble(request.getParameter("txtPrice"));
                 int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
-
+                String image = request.getParameter("txtImage");
+                
                 if (bookID == null || bookID.trim().isEmpty()) {
                     checkError = true;
                     request.setAttribute("txtBookID_error", "Book ID cannot be empty.");
@@ -122,7 +123,7 @@ public class MainController extends HttpServlet {
                     request.setAttribute("txtQuantity_error", "Quantity >=0.");
                 }
 
-                BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity);
+                BookDTO book = new BookDTO(bookID, title, author, publishYear, price, quantity,image);
 
                 if (!checkError) {
                     bookDAO.create(book);

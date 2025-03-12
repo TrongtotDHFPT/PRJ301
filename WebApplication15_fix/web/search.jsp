@@ -177,6 +177,7 @@
                         <thead>
                             <tr>
                                 <th>BookID</th>
+                                <th>Image</th>
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>PublishYear</th>
@@ -191,6 +192,7 @@
                             <c:forEach var="b" items = "${requestScope.books}">
                                 <tr>
                                     <td>${b.bookID}</td>
+                                    <td><img src="${b.image}" width="150px" /></td>
                                     <td>${b.title}</td>
                                     <td>${b.author}</td>
                                     <td>${b.publishYear}</td>
@@ -207,7 +209,7 @@
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${not isAdmin}">
+                <c:if test="${not isLoggedIn}">
                     You do not have permission to access this content.
                 </c:if>
             </c:if>        

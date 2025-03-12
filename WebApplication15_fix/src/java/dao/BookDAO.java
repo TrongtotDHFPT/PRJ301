@@ -84,7 +84,8 @@ public class BookDAO implements IDAO<BookDTO, String>{
                         rs.getString("Author"), 
                         rs.getInt("PublishYear"),
                         rs.getDouble("Price"), 
-                        rs.getInt("Quantity"));
+                        rs.getInt("Quantity"),
+                        rs.getString("Image"));
                 list.add(book);
             }
         } catch (Exception e) {
@@ -110,7 +111,8 @@ public class BookDAO implements IDAO<BookDTO, String>{
                         rs.getString("Author"), 
                         rs.getInt("PublishYear"),
                         rs.getDouble("Price"), 
-                        rs.getInt("Quantity"));
+                        rs.getInt("Quantity"),
+                        rs.getString("Image"));
                 list.add(book);
             }
         } catch (Exception e) {
