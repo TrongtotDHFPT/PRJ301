@@ -164,7 +164,7 @@
                             <input type="submit" value="Search" class="search-btn"/>
                         </form>
                     </div>
-                    <c:if test="${not isAdmin}">
+                    <c:if test="${isAdmin}">
                         <a href="bookForm.jsp" class="add-btn">
                             Add New Book    
                         </a> 
