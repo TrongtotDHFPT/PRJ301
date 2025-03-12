@@ -154,6 +154,8 @@
     <body> 
         <%@include file="header.jsp" %>
         <div style="min-height: 500px; padding: 10px">
+            <c:set var="isAdmin" value="<%=AuthUtils.isAdmin(session)%>"/>
+            <c:set var="isLoggedIn" value="<%=AuthUtils.isLoggedIn(session)%>"/>
             <c:if test="${not empty sessionScope.user}">
                 <c:set var="searchTerm" value="${requestScope.searchTerm == null ? '' : requestScope.searchTerm}"></c:set>
                     <div class="search-section">
@@ -161,54 +163,54 @@
                             <input type="hidden" name="action" value="search"/>
                             <label for="searchInput">Search Books:</label>
                             <input type="text" id="searchInput" name="searchTerm" value="${searchTerm}" class="search-input" placeholder="Enter book title, author or ID..."/>
-                            <input type="submit" value="Search" class="search-btn"/>
-                        </form>
-                    </div>
-                    <c:if test="${isAdmin}">
-                        <a href="bookForm.jsp" class="add-btn">
-                            Add New Book    
-                        </a> 
-                    </c:if>
+                        <input type="submit" value="Search" class="search-btn"/>
+                    </form>
+                </div>
+                <c:if test="${isAdmin}">
+                    <a href="bookForm.jsp" class="add-btn">
+                        Add
+                    </a>
+                </c:if>
 
-                    <c:if test="${not empty requestScope.books}">
-                        <table class="book-table">
-                            <thead>
+                <c:if test="${not empty requestScope.books}">
+                    <table class="book-table">
+                        <thead>
+                            <tr>
+                                <th>BookID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>PublishYear</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                    <c:if test ="${isAdmin}">
+                                    <th>Action</th>
+                                    </c:if>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="b" items = "${requestScope.books}">
                                 <tr>
-                                    <th>BookID</th>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>PublishYear</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                        <c:if test ="${isAdmin}">
-                                        <th>Action</th>
-                                        </c:if>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="b" items = "${requestScope.books}">
-                                    <tr>
-                                        <td>${b.bookID}</td>
-                                        <td>${b.title}</td>
-                                        <td>${b.author}</td>
-                                        <td>${b.publishYear}</td>
-                                        <td>${b.price}</td>
-                                        <td>${b.quantity}</td>
+                                    <td>${b.bookID}</td>
+                                    <td>${b.title}</td>
+                                    <td>${b.author}</td>
+                                    <td>${b.publishYear}</td>
+                                    <td>${b.price}</td>
+                                    <td>${b.quantity}</td>
 
-                                        <c:if test ="${isAdmin}"> 
-                                            <td><a href="MainController?action=delete&id=${b.bookID}&searchTerm=${searchTerm}">
-                                                    <img src="assets/images/Trash-can-icon.png" style="height: 25px"/>
-                                                </a></td>
+                                    <c:if test ="${isAdmin}"> 
+                                        <td><a href="MainController?action=delete&id=${b.bookID}&searchTerm=${searchTerm}">
+                                                <img src="assets/images/Trash-can-icon.png" style="height: 25px"/>
+                                            </a></td>
                                         </c:if>  
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:if>
-            <c:if test="${isAdmin}">
-                     You do not have permission to access this content.
-            </c:if>
-         </c:if>        
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </c:if>
+                <c:if test="${not isAdmin}">
+                    You do not have permission to access this content.
+                </c:if>
+            </c:if>        
         </div>
     </body>
 </html>

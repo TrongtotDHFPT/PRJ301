@@ -20,7 +20,7 @@ public class AuthUtils {
 
     public static UserDTO getUser(String strUserID) {
         UserDAO udao = new UserDAO();
-        UserDTO user = udao.readById(strUserID);
+        UserDTO user = udao.readByID(strUserID);
         return user;
     }
 
@@ -29,25 +29,22 @@ public class AuthUtils {
         return user != null && user.getPassword().equals(strPassword);
     }
 
+
     public static UserDTO getUser(HttpSession session) {
-//        if (session.getAttribute("user") != null) {
-//            return (UserDTO) session.getAttribute("user");
-//        } else {
-//            return null;
-//        }
-           Object obj = session.getAttribute("user");
-           return (obj!=null)?(UserDTO)obj:null;
+        if (!isLoggedIn(session)) {
+            return null;
+        }
+        return (UserDTO) session.getAttribute("user");
     }
 
     public static boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
-
-    public static boolean isAdmin(HttpSession session) {
+     public static boolean isAdmin(HttpSession session) {
         if (!isLoggedIn(session)) {
             return false;
         }
-        UserDTO user = (UserDTO) session.getAttribute("user");
+        UserDTO user = getUser(session);
         return user.getRoleID().equals(ADMIN_ROLE);
     }
 }

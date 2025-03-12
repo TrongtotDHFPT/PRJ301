@@ -93,6 +93,28 @@ public class UserDAO implements IDAO<UserDTO, String> {
         }
         return null;
     }
+    public UserDTO readByID(String id) {
+        String sql = "SELECT * FROM tblUsers WHERE userID = ?";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                UserDTO user = new UserDTO(
+                        rs.getString("userID"),
+                        rs.getString("fullName"),
+                        rs.getString("roleID"),
+                        rs.getString("password"));
+                return user;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
 
     @Override
