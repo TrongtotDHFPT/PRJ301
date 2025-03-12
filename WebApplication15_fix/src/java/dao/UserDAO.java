@@ -53,7 +53,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
             Connection conn = DBUtils.getConnection();
             conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 UserDTO user = new UserDTO(
                         rs.getString("userID"),
