@@ -15,7 +15,7 @@
     </head>
     <body>
         <%
-            UserDTO user = (UserDTO) request.getAttribute("user");
+//            UserDTO user = (UserDTO) request.getAttribute("user");
 
         %>
         <c:if test="${ not empty sessionScope.user}">
