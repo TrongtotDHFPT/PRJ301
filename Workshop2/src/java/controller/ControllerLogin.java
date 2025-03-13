@@ -5,10 +5,13 @@
  */
 package controller;
 
+import dao.ExamCategoryDAO;
 import dao.UserDAO;
+import dto.ExamCategoryDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +27,7 @@ import utils.AuthUtils;
 public class ControllerLogin extends HttpServlet {
 
     public static final String LOGIN_PAGE = "login.jsp";
-
+    public static final ExamCategoryDAO exCateDAO = new ExamCategoryDAO();
     
     
     
@@ -46,6 +49,10 @@ public class ControllerLogin extends HttpServlet {
                         UserDTO user = AuthUtils.getUser(strUsername);
                         request.getSession().setAttribute("user", user);
                         url = "search.jsp";
+                        
+                        //search
+                        List<ExamCategoryDTO> list = exCateDAO.readAll();
+                        request.setAttribute("list", list);
                     }else{
                         request.setAttribute("message", "Incorrect Username or Password!");
                         url = "login.jsp";

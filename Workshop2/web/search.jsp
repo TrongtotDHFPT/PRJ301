@@ -14,57 +14,44 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-//            UserDTO user = (UserDTO) request.getAttribute("user");
 
-        %>
         <c:if test="${ not empty sessionScope.user}">
             <c:set var="user" value="${sessionScope.user}"/>
             <h1>Hello ${user.name}</h1>
-
-
             <form action="ControllerLogin" >
                 <input type="hidden" name="action" value="logout"/>
                 <input type="submit" value="Logout"/>
             </form>
-            
-            
 
 
             <table border = 1>
                 <thead >
-                <th>Category Name</th>
-                <th>Description</th>
-                
-            </thead>
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <c:forEach var ="examCategory" items="${requestScope.list}">
+                    <tbody>
+                        <tr>
+                            <td>${examCategory.category_name}</td>
+                            <td>${examCategory.description}</td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
 
-            <tbody>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-
-            </tbody>
-
-        </table>
-
-
-
-
-
-
-
-    </c:if>
-    <c:if test="${empty sessionScope.user}">
-        <p>
-            Please 
-            <a href="login.jsp"  style="color: red"></a>
-            to access this page!
-        </p>
-    </c:if>
+        </c:if>
+        <c:if test="${empty sessionScope.user}">
+            <p>
+                Please 
+                <a href="login.jsp"  style="color: red"></a>
+                to access this page!
+            </p>
+        </c:if>
 
 
 
-    <h1></h1>
-</body>
+        <h1></h1>
+    </body>
 </html>
