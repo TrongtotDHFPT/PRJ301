@@ -9,13 +9,14 @@ import java.util.List;
 
 /**
  *
- * @author trong
+ * @author tungi
  */
-public interface IDAO <T, K>{
-    public List<T> readAll();
-    public T readByID(K id);
+public interface IDAO<T, K> {
     public boolean create(T entity);
-    public boolean delete(K id);
+    public List<T> readAll();
+    public T readById(K id);
     public boolean update(T entity);
-     public List<T> search(String searchTerm);
+    public boolean delete(K id);
+    public List<T> search(String searchTerm);
+    
 }

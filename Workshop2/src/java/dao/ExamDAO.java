@@ -6,42 +6,165 @@
 package dao;
 
 import dto.ExamDTO;
+import dto.UserDTO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utils.DBUtils;
 
 /**
  *
  * @author trong
  */
-public class ExamDAO  implements IDAO <ExamDTO , Integer> {
+public class ExamDAO implements IDAO<ExamDTO, Integer> {
 
     @Override
     public List<ExamDTO> readAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM tblExams";
+        List<ExamDTO> list = new ArrayList<>();
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ExamDTO exam = new ExamDTO(
+                        rs.getInt("exam_id"),
+                        rs.getString("exam_title"),
+                        rs.getString("subject"),
+                        rs.getInt("category_id"),
+                        rs.getInt("total_marks"),
+                        rs.getInt("Duration"));
+                list.add(exam);
+            }
+
+        } catch (Exception e) {
+        }
+        return list;
     }
 
     @Override
     public ExamDTO readByID(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM tblExams WHERE [exam_id] = ? ";
+
+        try {
+            Connection con;
+            con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ExamDTO exam = new ExamDTO(
+                        rs.getInt("exam_id"),
+                        rs.getString("exam_title"),
+                        rs.getString("subject"),
+                        rs.getInt("category_id"),
+                        rs.getInt("total_marks"),
+                        rs.getInt("Duration"));
+                return exam;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
     public boolean create(ExamDTO entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "INSERT INTO tblExams"
+                + "([exam_title], [subject],[category_id],[total_marks],Duration]) "
+                + "VALUES (?,?,?,?,?)";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, entity.getExam_title());
+            ps.setString(2, entity.getSubject());
+            ps.setInt(3, entity.getCategory_id());
+            ps.setInt(4, entity.getTotal_marks());
+            ps.setInt(5, entity.getDuration());
+            int ketQua = ps.executeUpdate();
+            return ketQua > 0;
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     @Override
     public boolean delete(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        String sql = "DELETE FROM tblExams WHERE [exam_id] = ?";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int ketQua = ps.executeUpdate();
+            return ketQua > 0;
 
-    @Override
-    public boolean update(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     @Override
     public List<ExamDTO> search(String searchTerm) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT * FROM tblExams WHERE"
+                + " [exam_title] like ?"
+                + " OR [subject] like ? ";
+        List<ExamDTO> list = new ArrayList<>();
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ExamDTO exam = new ExamDTO(
+                        rs.getInt("exam_id"),
+                        rs.getString("exam_title"),
+                        rs.getString("subject"),
+                        rs.getInt("category_id"),
+                        rs.getInt("total_marks"),
+                        rs.getInt("Duration"));
+                list.add(exam);
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
-    
+
+    @Override
+    public boolean update(ExamDTO entity) {
+        String sql = "UPDATE tblExams SET"
+                + "[exam_title] = ?,"
+                + "[subject] = ?,"
+                + "[category_id] = ?,"
+                + "[total_marks] = ?,"
+                + "[duration] = ?"
+                + "WHERE [exam_id] = ?";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, entity.getExam_title());
+            ps.setString(2, entity.getSubject());
+            ps.setInt(3, entity.getCategory_id());
+            ps.setInt(4, entity.getTotal_marks());
+            ps.setInt(5, entity.getDuration());
+            ps.setInt(6, entity.getCategory_id());
+            int ketQua = ps.executeUpdate();
+            return ketQua > 0;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
 }
