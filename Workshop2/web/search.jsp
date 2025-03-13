@@ -23,10 +23,27 @@
                 <input type="submit" value="Logout"/>
             </form>
 
+<a href="ControllerLogin?action=goToCreateExam">Create new exam</a>
+
+            <form action="ControllerLogin" method="get">
+                <input type="hidden" name="action" value="filter"/>
+
+                <select name ="category_id">
+                    <option value=""> Filter Exams By Category Name </option>
+                    <c:forEach var="exCategory" items="${requestScope.list}">
+                        <option value="${exCategory.category_id}">${exCategory.category_name}</option>
+                    </c:forEach>
+                </select>
+
+                <input type="submit" value="Filter"/>
+            </form>
+
+
 
             <table border = 1>
                 <thead >
                     <tr>
+
                         <th>Category Name</th>
                         <th>Description</th>
                     </tr>
@@ -34,6 +51,7 @@
                 <c:forEach var ="examCategory" items="${requestScope.list}">
                     <tbody>
                         <tr>
+
                             <td>${examCategory.category_name}</td>
                             <td>${examCategory.description}</td>
                         </tr>
@@ -42,6 +60,33 @@
             </table>
 
         </c:if>
+
+        <c:if test="${not empty requestScope.listExamDTO}">
+            <h3>Exam List ${exCategory.category_name}</h3>
+            <table border = 1>
+                <thead >
+                    <tr>
+                        <th>Exam Title</th>
+                        <th>Subject</th>
+                        <th>Total Marks</th>
+                        <th>Duration  (mins)</th>
+                    </tr>
+                </thead>
+                <c:forEach var ="exam" items="${requestScope.listExamDTO}">
+                    <tbody>
+                        <tr>
+                            <td>${exam.exam_title}</td>
+                            <td>${exam.subject}</td>
+                            <td>${exam.total_marks}</td>
+                            <td>${exam.duration}</td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+
+        </c:if>
+
+
         <c:if test="${empty sessionScope.user}">
             <p>
                 Please 

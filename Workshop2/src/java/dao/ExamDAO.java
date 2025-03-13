@@ -121,7 +121,7 @@ public class ExamDAO implements IDAO<ExamDTO, Integer> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, "%" + searchTerm + "%");
             ps.setString(2, "%" + searchTerm + "%");
-            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ExamDTO exam = new ExamDTO(
@@ -166,5 +166,49 @@ public class ExamDAO implements IDAO<ExamDTO, Integer> {
         }
         return false;
     }
+
+    public static List<ExamDTO> getExamCategoryByID(int category_id) {
+        String sql = "  SELECT exam_id, exam_title, subject,category_id, total_marks, duration"
+                + " FROM tblExams  "
+                + "WHERE category_id = ? ";
+        List<ExamDTO> list = new ArrayList<>();
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, category_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ExamDTO exam = new ExamDTO(
+                        rs.getInt("exam_id"),
+                        rs.getString("exam_title"),
+                        rs.getString("subject"),
+                        rs.getInt("category_id"),
+                        rs.getInt("total_marks"),
+                        rs.getInt("duration"));
+                list.add(exam);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    public static boolean insertExam(ExamDTO exam) {
+    String sql = "INSERT INTO tblExams (exam_title, subject, category_id, total_marks, duration) VALUES (?, ?, ?, ?, ?)";
+    try (Connection con = DBUtils.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, exam.getExam_title());
+        ps.setString(2, exam.getSubject());
+        ps.setInt(3, exam.getCategory_id());
+        ps.setInt(4, exam.getTotal_marks());
+        ps.setInt(5, exam.getDuration());
+
+        return ps.executeUpdate() > 0; // Trả về true nếu insert thành công
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
 }
