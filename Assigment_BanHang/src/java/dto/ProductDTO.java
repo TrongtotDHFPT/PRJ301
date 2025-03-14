@@ -14,19 +14,19 @@ public class ProductDTO {
     private String product_name;
     private String description;
     private int price;
-    private int stoc_quantity;
+    private int stock_quantity;
     private String image;
     private int category_id;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(int product_id, String product_name, String description, int price, int stoc_quantity, String image, int category_id) {
+    public ProductDTO(int product_id, String product_name, String description, int price, int stock_quantity, String image, int category_id) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.description = description;
         this.price = price;
-        this.stoc_quantity = stoc_quantity;
+        this.stock_quantity = stock_quantity;
         this.image = image;
         this.category_id = category_id;
     }
@@ -63,12 +63,12 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public int getStoc_quantity() {
-        return stoc_quantity;
+    public int getStock_quantity() {
+        return stock_quantity;
     }
 
-    public void setStoc_quantity(int stoc_quantity) {
-        this.stoc_quantity = stoc_quantity;
+    public void setStoc_quantity(int stock_quantity) {
+        this.stock_quantity = stock_quantity;
     }
 
     public String getImage() {
