@@ -16,15 +16,12 @@ import java.util.List;
  * @author tungi
  */
 public class PasswordUtils {
-
     public static String hashPassword(String plainPassword) {
         try {
             // Tạo MessageDigest với thuật toán SHA-256
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-
             // Mã hóa mật khẩu
             byte[] messageDigest = md.digest(plainPassword.getBytes());
-
             // Chuyển byte[] thành chuỗi hex
             StringBuilder hexString = new StringBuilder();
             for (byte b : messageDigest) {
@@ -39,33 +36,25 @@ public class PasswordUtils {
             return null;
         }
     }
-
     public static boolean checkPassword(String plainPassword, String hashedPassword) {
         String newHashedPassword = hashPassword(plainPassword);
         return newHashedPassword != null && newHashedPassword.equals(hashedPassword);
     }
-
     public static void migratePasswords() {
         UserDAO dao = new UserDAO();
         List<UserDTO> users = dao.readAll(); // Giả sử có phương thức để đọc tất cả người dùng
-
         for (UserDTO user : users) {
             // Lấy mật khẩu hiện tại (không mã hóa)
             String plainPassword = user.getPassword();
-
             // Mã hóa mật khẩu với MD5
             String hashedPassword = PasswordUtils.hashPassword(plainPassword);
-
             // Cập nhật mật khẩu mới
             user.setPassword(hashedPassword);
-
             // Lưu vào cơ sở dữ liệu
             dao.update(user); // Giả sử có phương thức update
         }
-
         System.out.println("Di chuyển mật khẩu sang MD5 hoàn tất");
     }
-    
     public static void main(String[] args) {
         /*
         ALTER TABLE [dbo].[tblUsers]
