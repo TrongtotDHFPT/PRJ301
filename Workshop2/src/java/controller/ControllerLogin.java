@@ -69,11 +69,9 @@ public class ControllerLogin extends HttpServlet {
                     request.setAttribute("message", "Incorrect Username or Password!");
                     url = LOGIN_PAGE;
                 }
-
             } else if (action.equals("logout")) {
                 session.invalidate();
                 url = LOGIN_PAGE;
-
             } else if (action.equals("filter")) {
 
                 String category_id = request.getParameter("category_id");
@@ -81,7 +79,11 @@ public class ControllerLogin extends HttpServlet {
                 if (category_id != null && !category_id.isEmpty()) {
                     int category_idInt = Integer.parseInt(category_id);
                     List<ExamDTO> listExamDTO = ExamDAO.getExamCategoryByID(category_idInt);
+                    String category_name = exCateDAO.getCategoryNameById(category_idInt);
                     request.setAttribute("listExamDTO", listExamDTO);
+                    request.setAttribute("category_name", category_name);
+                }else{
+                    request.setAttribute("message_Filter", "Please choose Category Name!");
                 }
                 List<ExamCategoryDTO> list = exCateDAO.readAll();
                 request.setAttribute("list", list);

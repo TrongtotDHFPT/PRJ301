@@ -23,23 +23,23 @@
                 <input type="submit" value="Logout"/>
             </form>
 
-<a href="ControllerLogin?action=goToCreateExam">Create new exam</a>
+            <a href="ControllerLogin?action=goToCreateExam">Create new exam</a>
 
-            <form action="ControllerLogin" method="get">
+            <form action="ControllerLogin" method="post">
                 <input type="hidden" name="action" value="filter"/>
 
                 <select name ="category_id">
-                    <option value=""> Filter Exams By Category Name </option>
+                    <option value=""> Filter Exams By Category</option>
                     <c:forEach var="exCategory" items="${requestScope.list}">
                         <option value="${exCategory.category_id}">${exCategory.category_name}</option>
                     </c:forEach>
                 </select>
-
+                <c:if test="${not empty requestScope.message_Filter}"><h3 style="color: red">${requestScope.message_Filter}</h3></c:if>
                 <input type="submit" value="Filter"/>
             </form>
 
 
-
+             <br>   <br> <br> 
             <table border = 1>
                 <thead >
                     <tr>
@@ -62,7 +62,8 @@
         </c:if>
 
         <c:if test="${not empty requestScope.listExamDTO}">
-            <h3>Exam List ${exCategory.category_name}</h3>
+            
+            <h3>Exam List ${requestScope.category_name}</h3>
             <table border = 1>
                 <thead >
                     <tr>

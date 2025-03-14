@@ -20,24 +20,24 @@ import utils.DBUtils;
  *
  * @author trong
  */
-public class ExamCategoryDAO implements IDAO<ExamCategoryDTO , Integer>{
+public class ExamCategoryDAO implements IDAO<ExamCategoryDTO, Integer> {
 
     @Override
     public List<ExamCategoryDTO> readAll() {
         String sql = "SELECT *  FROM [tblExamCategories]";
-        List<ExamCategoryDTO> list = new  ArrayList<>();
+        List<ExamCategoryDTO> list = new ArrayList<>();
         try {
             Connection con = DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 ExamCategoryDTO exCateDTO = new ExamCategoryDTO(
                         rs.getInt("category_id"),
-                        rs.getString("category_name"), 
+                        rs.getString("category_name"),
                         rs.getString("description"));
                 list.add(exCateDTO);
             }
-            
+
         } catch (Exception e) {
         }
         return list;
@@ -48,13 +48,13 @@ public class ExamCategoryDAO implements IDAO<ExamCategoryDTO , Integer>{
         String sql = "SELECT * FROM [tblExamCategories] WHERE [category_id] = ?";
         try {
             Connection con = DBUtils.getConnection();
-            PreparedStatement  ps = con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();;
-            while(rs.next()){
+            while (rs.next()) {
                 ExamCategoryDTO exCateDTO = new ExamCategoryDTO(
                         rs.getInt("category_id"),
-                        rs.getString("category_name"), 
+                        rs.getString("category_name"),
                         rs.getString("description"));
                 return exCateDTO;
             }
@@ -96,7 +96,6 @@ public class ExamCategoryDAO implements IDAO<ExamCategoryDTO , Integer>{
         return false;
     }
 
-
     @Override
     public List<ExamCategoryDTO> search(String searchTerm) {
         String sql = "SELECT * FROM ExamCategoryDTO WHERE"
@@ -108,12 +107,12 @@ public class ExamCategoryDAO implements IDAO<ExamCategoryDTO , Integer>{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, "%" + searchTerm + "%");
             ps.setString(2, "%" + searchTerm + "%");
-            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ExamCategoryDTO exCateDTO = new ExamCategoryDTO(
                         rs.getInt("category_id"),
-                        rs.getString("category_name"), 
+                        rs.getString("category_name"),
                         rs.getString("description"));
                 list.add(exCateDTO);
             }
@@ -144,5 +143,23 @@ public class ExamCategoryDAO implements IDAO<ExamCategoryDTO , Integer>{
         }
         return false;
     }
-    
+
+    public static String getCategoryNameById(int category_id) {
+        String sql = "SELECT category_name "
+                + "FROM tblExamCategories "
+                + "WHERE category_id = ?";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, category_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("category_name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
