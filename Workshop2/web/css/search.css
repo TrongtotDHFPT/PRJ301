@@ -1,0 +1,132 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 14, 2025, 3:30:52 PM
+    Author     : trong
+*/
+body {
+    background-color: #181818;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #FF9800;
+    margin-bottom: 20px;
+}
+
+form {
+    text-align: center;
+    margin: 20px 0;
+}
+
+input[type="text"],
+select {
+    padding: 10px;
+    width: 250px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c2c2c;
+    color: white;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #252525;
+    color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+table th {
+    background-color: #333;
+    color: #FF9800;
+    text-transform: uppercase;
+}
+
+table tr:hover {
+    background-color: #333333;
+}
+
+p {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.1em;
+}
+
+p a {
+    color: red;
+    text-decoration: underline;
+}
+
+h3[style*="color: red"] {
+    color: red;
+    margin-top: 10px;
+}
+
+a.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #FF9800; /* Màu cam nổi bật */
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+a.button:hover {
+    background-color: #e68900; /* Đậm màu hơn khi hover */
+    transform: translateY(-2px); /* Nhẹ nhàng nâng lên khi hover */
+}
+
+a.button:active {
+    transform: translateY(0); /* Khi nhấn sẽ ấn xuống như nút thật */
+}
+
+

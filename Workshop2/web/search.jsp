@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="utils.AuthUtils"%>
 <%@page import="dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,34 +13,43 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="css/search.css">
     </head>
     <body>
-
+        <c:set var="isInstructor" value="<%=AuthUtils.isInstructor(session)%>"></c:set>
+        <c:set var="isStudent" value="<%=AuthUtils.isStudent(session)%>"></c:set>
+        <c:set var="isLoggedIn" value="<%=AuthUtils.isLoggedIn(session)%>"/>
         <c:if test="${ not empty sessionScope.user}">
             <c:set var="user" value="${sessionScope.user}"/>
             <h1>Hello ${user.name}</h1>
-            <form action="ControllerLogin" >
-                <input type="hidden" name="action" value="logout"/>
-                <input type="submit" value="Logout"/>
-            </form>
+            <c:if test="${isLoggedIn}">            
+                <form action="ControllerLogin" >
+                    <input type="hidden" name="action" value="logout"/>
+                    <input type="submit" value="Logout"/>
+                </form>
+            </c:if>
+            <c:if test="${isInstructor}">
+                <a href="ControllerLogin?action=goToCreateExam" class="button">Create new exam</a>
+            </c:if>
 
-            <a href="ControllerLogin?action=goToCreateExam">Create new exam</a>
 
-            <form action="ControllerLogin" method="post">
-                <input type="hidden" name="action" value="filter"/>
+            <c:if test="${isStudent}">
+                <form action="ControllerLogin" method="post">
+                    <input type="hidden" name="action" value="filter"/>
 
-                <select name ="category_id">
-                    <option value=""> Filter Exams By Category</option>
-                    <c:forEach var="exCategory" items="${requestScope.list}">
-                        <option value="${exCategory.category_id}">${exCategory.category_name}</option>
-                    </c:forEach>
-                </select>
+                    <select name ="category_id">
+                        <option value=""> Filter Exams By Category</option>
+                        <c:forEach var="exCategory" items="${requestScope.list}">
+                            <option value="${exCategory.category_id}">${exCategory.category_name}</option>
+                            <c:if test="${param.category_id == exCategory.category_id}">selected="selected"</c:if>
+                        </c:forEach>
+                    </select>
+                    <input type="submit" value="Filter"/>
+                </form>
                 <c:if test="${not empty requestScope.message_Filter}"><h3 style="color: red">${requestScope.message_Filter}</h3></c:if>
-                <input type="submit" value="Filter"/>
-            </form>
+            </c:if>
 
-
-             <br>   <br> <br> 
+            <br>
             <table border = 1>
                 <thead >
                     <tr>
@@ -62,7 +72,7 @@
         </c:if>
 
         <c:if test="${not empty requestScope.listExamDTO}">
-            
+
             <h3>Exam List ${requestScope.category_name}</h3>
             <table border = 1>
                 <thead >
@@ -86,18 +96,12 @@
             </table>
 
         </c:if>
-
-
         <c:if test="${empty sessionScope.user}">
             <p>
                 Please 
-                <a href="login.jsp"  style="color: red"></a>
+                <a href="login.jsp"  style="color: red"> login</a>
                 to access this page!
             </p>
         </c:if>
-
-
-
-        <h1></h1>
     </body>
 </html>

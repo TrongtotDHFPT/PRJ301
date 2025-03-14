@@ -78,7 +78,7 @@ public class ExamDAO implements IDAO<ExamDTO, Integer> {
     @Override
     public boolean create(ExamDTO entity) {
         String sql = "INSERT INTO tblExams"
-                + "([exam_title], [subject],[category_id],[total_marks],Duration]) "
+                + "([exam_title], [subject],[category_id],[total_marks],[Duration]) "
                 + "VALUES (?,?,?,?,?)";
         try {
             Connection con = DBUtils.getConnection();
