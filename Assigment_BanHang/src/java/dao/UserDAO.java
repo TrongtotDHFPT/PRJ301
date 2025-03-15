@@ -98,14 +98,14 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
         try {
             Connection con = DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, entity.getUsername());   
-            ps.setString(2, entity.getName());       
-            ps.setString(3, entity.getPassword());   
-            ps.setString(4, entity.getRole());       
-            ps.setString(5, entity.getEmail());      
-            ps.setString(6, entity.getPhone());      
-            ps.setString(7, entity.getAddress());   
-            ps.setInt(8, entity.getUser_id());      
+            ps.setString(1, entity.getUsername());
+            ps.setString(2, entity.getName());
+            ps.setString(3, entity.getPassword());
+            ps.setString(4, entity.getRole());
+            ps.setString(5, entity.getEmail());
+            ps.setString(6, entity.getPhone());
+            ps.setString(7, entity.getAddress());
+            ps.setInt(8, entity.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -171,8 +171,7 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
         }
         return list;
     }
-    
-    
+
     public UserDTO getUserByUsername(String strUsername) {
         String sql = "SELECT *FROM [dbo].[Users] WHERE  [username] = ? ";
         try {
@@ -180,6 +179,7 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, strUsername);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 UserDTO user = new UserDTO(
                         rs.getInt("user_id"),

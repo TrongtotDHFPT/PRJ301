@@ -15,9 +15,9 @@ import java.sql.SQLException;
  */
 public class DBUtils {
 
-    public static final String DB_NAME = "";
-    public static final String DB_USERNAME = "";
-    public static final String DB_PASSWORD = "";
+    public static final String DB_NAME = "ClothingStoreManagement";
+    public static final String DB_USERNAME = "sa";
+    public static final String DB_PASSWORD = "12345";
     
     public static Connection getConnection() throws ClassNotFoundException, SQLException{
         Connection con ;

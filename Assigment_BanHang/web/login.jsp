@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,10 +13,14 @@
         <title>Login</title>
     </head>
     <body>
-        <form action="LoginServlet" method ="post">
-            <input type="hidden" name ="action" value="login"/>
-            User Name : <input  type="text" name="txtUsername" value=""/><br>
-            Password  : <input  type="password" name="txtPassword" value=""/>
+        <h2>Login Form</h2>
+        <form action="login" method="post">
+            <input type="hidden" name="action" value="login"/>
+            User Name: <input type="text" name="txtUsername"/><br>
+            Password: <input type="password" name="txtPassword"/><br>
+            <c:if test="${not empty message}">
+                <h3>${message}</h3>
+            </c:if>
             <input type="submit" value="Login"/>
         </form>
     </body>
