@@ -171,4 +171,30 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
         }
         return list;
     }
+    
+    
+    public UserDTO getUserByUsername(String strUsername) {
+        String sql = "SELECT *FROM [dbo].[Users] WHERE  [username] = ? ";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, strUsername);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                UserDTO user = new UserDTO(
+                        rs.getInt("user_id"),
+                        rs.getString("name"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("role"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"));
+                return user;
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }

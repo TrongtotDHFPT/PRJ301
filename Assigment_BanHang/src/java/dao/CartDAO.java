@@ -131,7 +131,6 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
 
     @Override
     public List<CartDTO> search(String searchTerm) {
-        // Search by product_id or user_id as String matching (you can adjust logic here)
         String sql = "SELECT * FROM [dbo].[Cart] "
                    + "WHERE CAST(user_id AS NVARCHAR) LIKE ? "
                    + "OR CAST(product_id AS NVARCHAR) LIKE ?";
