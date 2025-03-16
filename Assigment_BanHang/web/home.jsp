@@ -14,11 +14,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp"/>
-        <c:if test="${not empty sessionScope.user}">
-            <h1> Hello ${user.name}</h1> 
-
-            <a href="logout">Logout</a>
-        </c:if>
+        
         <jsp:include page="footer.jsp"/>
     </body>
 </html>

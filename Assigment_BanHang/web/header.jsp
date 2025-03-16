@@ -41,7 +41,7 @@
             <div class="menu">
                 <a href="home">Home</a>
                 <a href="cart">Cart</a>
-                <a href="profile">Account</a>
+                <a href="profile.jsp">Account</a>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
