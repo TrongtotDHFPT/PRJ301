@@ -21,19 +21,19 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
 
     @Override
     public boolean create(UserDTO entity) {
-        String sql = "INSERT INTO [dbo].[Users] "
+        String sql = "INSERT INTO [dbo].[Users]"
+                + "(name, username, password, role, email, phone, address) "
                 + "VALUES(?,?,?,?,?,?,?,?)";
         try {
             Connection con = DBUtils.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, entity.getUser_id());
-            ps.setString(2, entity.getName());
-            ps.setString(3, entity.getUsername());
-            ps.setString(4, entity.getPassword());
-            ps.setString(5, entity.getRole());
-            ps.setString(6, entity.getEmail());
-            ps.setString(7, entity.getPhone());
-            ps.setString(8, entity.getAddress());
+            ps.setString(1, entity.getName());
+            ps.setString(2, entity.getUsername());
+            ps.setString(3, entity.getPassword());
+            ps.setString(4, entity.getRole());
+            ps.setString(5, entity.getEmail());
+            ps.setString(6, entity.getPhone());
+            ps.setString(7, entity.getAddress());
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -197,4 +197,41 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
         }
         return null;
     }
+
+    public boolean insertUser(UserDTO user) {
+        String sql = "INSERT INTO [dbo].[Users] "
+                + "(name, username, password, role, email, phone, address) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = DBUtils.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, "USER");
+            ps.setString(5, user.getEmail());
+            ps.setString(6, user.getPhone());
+            ps.setString(7, user.getAddress());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean isExist(String strUsername){
+        String sql = "SELECT username FROM [dbo].[Users] WHERE username = ?";
+        try {
+            Connection con = DBUtils.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, strUsername);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); //khác null => usernmae đã tồn tại 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false ;
+    }
+
+    
+
 }

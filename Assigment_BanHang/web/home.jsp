@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <jsp:include page="header.jsp"/>
+        <c:if test="${not empty sessionScope.user}">
+            <h1> Hello ${user.name}</h1> 
+
+            <a href="logout">Logout</a>
+        </c:if>
+        <jsp:include page="footer.jsp"/>
     </body>
 </html>

@@ -7,6 +7,7 @@ package utils;
 
 import dao.UserDAO;
 import dto.UserDTO;
+import java.util.List;
 
 /**
  *
@@ -25,8 +26,11 @@ public class AuthUtils {
 
     public static boolean isValidLoggin(String strUsername, String strPassword) {
         UserDTO user = AuthUtils.getUser(strUsername);
-        System.out.println("User found: " + user);
-
         return user != null && (user.getPassword().equals(strPassword));
     }
+    public static boolean isExist(String strUsername){
+        UserDAO udao = new UserDAO();
+        return udao.isExist(strUsername);//true => đã tồn tại
+    }
+    
 }
