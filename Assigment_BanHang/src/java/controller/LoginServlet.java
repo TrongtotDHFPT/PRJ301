@@ -5,8 +5,12 @@
  */
 package controller;
 
+import dao.ProductDAO;
+import dao.UserDAO;
+import dto.ProductDTO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     public static final String LOGIN_PAGE = "login.jsp";
     public static final String HOME_PAGE = "home.jsp";
-
+    public static final UserDAO udao = new UserDAO();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,7 +38,10 @@ public class LoginServlet extends HttpServlet {
 
             if (AuthUtils.isValidLoggin(strUsername, strPassword)) {
                 UserDTO user = AuthUtils.getUser(strUsername);
+                ProductDAO pdao = new ProductDAO();
+                List<ProductDTO> list = pdao.readAll();
                 request.getSession().setAttribute("user", user);
+                request.setAttribute("list", list);
                 System.out.println(user);
                 url = HOME_PAGE;
             } else {

@@ -32,10 +32,10 @@
             </div>
 
             <div class="search-bar" style="margin-left: 20px;">
-                <form action="search" method="get">
+<!--                <form action="search" method="get">
                     <input type="text" name="keyword" placeholder="Search products..." required />
                     <button type="submit">🔍</button>
-                </form>
+                </form>-->
             </div>
 
             <div class="menu">
