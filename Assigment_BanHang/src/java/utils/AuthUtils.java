@@ -24,7 +24,7 @@ public class AuthUtils {
         return user;
     }
 
-    public static boolean isValidLoggin(String strUsername, String strPassword) {
+    public static boolean isValidLogin(String strUsername, String strPassword) {
         UserDTO user = AuthUtils.getUser(strUsername);
         return user != null && (user.getPassword().equals(strPassword));
     }

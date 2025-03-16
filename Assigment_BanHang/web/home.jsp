@@ -4,36 +4,69 @@
     Author     : trong
 --%>
 
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <meta charset="UTF-8">
+        <title>Home</title>
     </head>
     <body>
-        <jsp:include page="header.jsp"/>
-        <c:if test="${not empty sessionScope.user}">
-            <form action="search" method="get">
-                <input type="text" name="searchTerm" placeholder="Search products..." required />
-                <button type="submit">🔍</button>
-            </form>
 
-            <!-- Hiển thị sản phẩm -->
-            <c:forEach var="product" items="${list}">
+        <h1>Welcome to Home Page</h1>
+
+        <!-- Search Form -->
+        <form action="home" method="get">
+            <input type="text" name="searchTerm" placeholder="Search products..." value="${searchTerm}">
+            <button type="submit">Search</button>
+        </form>
+
+        <div class="product-list">
+            <c:forEach var="product" items="${productsForPage}">
+                <div class="image_product">
+                    <img src="${product.image} " style="width:150px;height:150px;"/> 
+                </div>    
+
+                <div class="name_product">
+                    ${product.product_name}
+                </div>
                 <div>
-                    <h3>${product.product_name}</h3>
-                    <p>${product.description}</p>
-                    <p>Price: ${product.price}</p>
-                    <img src="${product.image}" width="100px" height="100px">
-                    <p>Stock: ${product.stock_quantity}</p>
+                    ${product.description}
+                    ${product.price}
+                </div>
+                <div>
+                    <c:if test="${product.stock_quantity > 0}">
+                        <p> Còn hàng </p>
+                    </c:if>
+                    <c:if test="${product.stock_quantity <= 0}">
+                        <p> Sản phẩm đã hết hàng </p>
+                    </c:if>
                 </div>
             </c:forEach>
-            
-        </c:if>
-
-
-        <jsp:include page="footer.jsp"/>
+        </div>
+        <!--Phân trang-->
+        <div class="pagination">
+            <!-- Previous -->
+            <c:if test="${currentPage > 1}">
+                <a href ="home?page=${currentPage-1}&searchTerm=${searchTerm}">&laquo;Previous</a>
+            </c:if>
+            <c:forEach begin="1" end="${totalPages}" var="page">
+                <c:choose>
+                    <c:when test="${page == currentPage}">
+                        <span class="current-page">${page}</span> <!-- Trang hiện tại, ko click -->
+                    </c:when>
+                    <c:otherwise>
+                        <a href="home?page=${page}&searchTerm=${searchTerm}">${page}</a> <!-- Trang khác -->
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+                        
+            <!-- Next -->        
+            <c:if test="${currentPage < totalPages}">
+                <a href="home?page=${page+1}&searchTerm=${searchTerm}"> Next &laquo;</a>
+            </c:if>
+        </div>
     </body>
 </html>
