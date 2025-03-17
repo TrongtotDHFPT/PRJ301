@@ -26,7 +26,7 @@
         <div class="product-list">
             <c:forEach var="product" items="${productsForPage}">
                 <div class="image_product">
-                    <img src="${product.image} " style="width:150px;height:150px;"/> 
+                    <img src= "assets/img/${product.image}"style="width:150px;height:150px;"/> 
                 </div>    
 
                 <div class="name_product">
