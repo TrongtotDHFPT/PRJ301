@@ -1,64 +1,124 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import dto.CategoryDTO;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import utils.DBUtils;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author trong
- */
-public class CategoryDAO {
+public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
 
-    private Connection conn;
-
-    public CategoryDAO(Connection conn) {
-        this.conn = conn;
+    @Override
+    public boolean create(CategoryDTO entity) {
+        String sql = "INSERT INTO Category (category_name) VALUES (?)";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, entity.getName());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return false;
     }
 
-    public List<CategoryDTO> readAll() throws SQLException {
-        List<CategoryDTO> categories = new ArrayList<>();
+    @Override
+    public List<CategoryDTO> readAll() {
         String sql = "SELECT * FROM Category";
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+        List<CategoryDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                categories.add(new CategoryDTO(rs.getInt("category_id"), rs.getString("name")));
+                list.add(new CategoryDTO(
+                    rs.getInt("category_id"),
+                    rs.getString("category_name")
+                ));
             }
-        }
-        return categories;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return list;
     }
 
-    public boolean create(CategoryDTO category) throws SQLException {
-        String sql = "INSERT INTO Category (name) VALUES (?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, category.getName());
-            return stmt.executeUpdate() > 0;
-        }
-    }
-
-    public boolean update(CategoryDTO category) throws SQLException {
-        String sql = "UPDATE Category SET name = ? WHERE category_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, category.getName());
-            stmt.setInt(2, category.getCategory_id());
-            return stmt.executeUpdate() > 0;
-        }
-    }
-
-    public boolean delete(int category_id) throws SQLException {
+    @Override
+    public boolean delete(Integer id) {
         String sql = "DELETE FROM Category WHERE category_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, category_id);
-            return stmt.executeUpdate() > 0;
-        }
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return false;
+    }
+
+    @Override
+    public boolean update(CategoryDTO entity) {
+        String sql = "UPDATE Category SET category_name = ? WHERE category_id = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, entity.getName());
+            ps.setInt(2, entity.getCategory_id());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return false;
+    }
+
+    @Override
+    public CategoryDTO readByID(Integer id) {
+        String sql = "SELECT * FROM Category WHERE category_id = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new CategoryDTO(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return null;
+    }
+
+    @Override
+    public List<CategoryDTO> search(String searchTerm) {
+        String sql = "SELECT * FROM Category WHERE category_name LIKE ?";
+        List<CategoryDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new CategoryDTO(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return list;
     }
 }

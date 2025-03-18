@@ -1,36 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import dto.ProductDTO;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import utils.DBUtils;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author trong
- */
-public class ProductDAO {
-    private Connection conn;
+public class ProductDAO implements IDAO<ProductDTO, Integer> {
 
-    public ProductDAO(Connection conn) {
-        this.conn = conn;
+    @Override
+    public boolean create(ProductDTO entity) {
+        String sql = "INSERT INTO Product (title, author, price, stock, image, category_id, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, entity.getTitle());
+            ps.setString(2, entity.getAuthor());
+            ps.setDouble(3, entity.getPrice());
+            ps.setInt(4, entity.getStock());
+            ps.setString(5, entity.getImage());
+            ps.setInt(6, entity.getCategory_id());
+            ps.setString(7, entity.getDescription());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return false;
     }
 
-    public List<ProductDTO> readAll() throws SQLException {
-        List<ProductDTO> products = new ArrayList<>();
+    @Override
+    public List<ProductDTO> readAll() {
         String sql = "SELECT * FROM Product";
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        List<ProductDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                products.add(new ProductDTO(
+                list.add(new ProductDTO(
                     rs.getInt("product_id"),
                     rs.getString("title"),
                     rs.getString("author"),
@@ -41,56 +50,91 @@ public class ProductDAO {
                     rs.getString("description")
                 ));
             }
-        }
-        return products;
+            System.out.println("chắc là oke");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return list;
     }
 
-    public boolean create(ProductDTO product) throws SQLException {
-        String sql = "INSERT INTO Product (title, author, price, stock, image, category_id, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, product.getTitle());
-            stmt.setString(2, product.getAuthor());
-            stmt.setDouble(3, product.getPrice());
-            stmt.setInt(4, product.getStock());
-            stmt.setString(5, product.getImage());
-            stmt.setInt(6, product.getCategory_id());
-            stmt.setString(7, product.getDescription());
-            return stmt.executeUpdate() > 0;
-        }
-    }
-
-    public boolean update(ProductDTO product) throws SQLException {
-        String sql = "UPDATE Product SET title = ?, author = ?, price = ?, stock = ?, image = ?, category_id = ?, description = ? WHERE product_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, product.getTitle());
-            stmt.setString(2, product.getAuthor());
-            stmt.setDouble(3, product.getPrice());
-            stmt.setInt(4, product.getStock());
-            stmt.setString(5, product.getImage());
-            stmt.setInt(6, product.getCategory_id());
-            stmt.setString(7, product.getDescription());
-            stmt.setInt(8, product.getProduct_id());
-            return stmt.executeUpdate() > 0;
-        }
-    }
-
-    public boolean delete(int product_id) throws SQLException {
+    @Override
+    public boolean delete(Integer id) {
         String sql = "DELETE FROM Product WHERE product_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, product_id);
-            return stmt.executeUpdate() > 0;
-        }
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return false;
     }
 
-    public List<ProductDTO> searchByTerm(String searchTerm) throws SQLException {
-        List<ProductDTO> products = new ArrayList<>();
+    @Override
+    public boolean update(ProductDTO entity) {
+        String sql = "UPDATE Product SET title=?, author=?, price=?, stock=?, image=?, category_id=?, description=? WHERE product_id=?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, entity.getTitle());
+            ps.setString(2, entity.getAuthor());
+            ps.setDouble(3, entity.getPrice());
+            ps.setInt(4, entity.getStock());
+            ps.setString(5, entity.getImage());
+            ps.setInt(6, entity.getCategory_id());
+            ps.setString(7, entity.getDescription());
+            ps.setInt(8, entity.getProduct_id());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return false;
+    }
+
+    @Override
+    public ProductDTO readByID(Integer id) {
+        String sql = "SELECT * FROM Product WHERE product_id = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public List<ProductDTO> search(String searchTerm) {
         String sql = "SELECT * FROM Product WHERE title LIKE ? OR author LIKE ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "%" + searchTerm + "%");
-            stmt.setString(2, "%" + searchTerm + "%");
-            try (ResultSet rs = stmt.executeQuery()) {
+        List<ProductDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    products.add(new ProductDTO(
+                    list.add(new ProductDTO(
                         rs.getInt("product_id"),
                         rs.getString("title"),
                         rs.getString("author"),
@@ -102,7 +146,38 @@ public class ProductDAO {
                     ));
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return products;
+        return list;
+    }
+    public List<ProductDTO> searchByCategoryID(int category_id) {
+        String sql = " SELECT * FROM Product WHERE category_id = ?";
+        List<ProductDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, category_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 }
