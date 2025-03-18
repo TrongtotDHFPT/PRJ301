@@ -46,14 +46,18 @@
             <div class="low">
                 <p> Những Product có liên quan</p>
                 <c:forEach var="p" items="${list_sameCategory}">
-                    <div>
-                        <div class="image_product">
-                            <img src= "assets/img/${p.image}"style="width:150px;height:150px;"/> 
-                        </div> 
+                    <c:if test="${product.product_id != p.product_id}" >
                         <div>
-                            <a href="viewDetail?product_id=${p.product_id}">View Detail</a>
+                            <div class="image_product">
+                                <img src= "assets/img/${p.image}"style="width:150px;height:150px;"/> 
+                                ${p.title}
+                            </div> 
+                            <div>
+                                <a href="detail?product_id=${p.product_id}">View Detail</a>
+                            </div>
                         </div>
-                    </div>
+                        <p>============================</p>
+                    </c:if>
                 </c:forEach>
             </div>
 

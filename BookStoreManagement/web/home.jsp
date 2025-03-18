@@ -47,7 +47,7 @@
                     </c:if>
                 </div>
                     
-                    <a href="viewDetail?product_id=${product.product_id}">View Detail</a>
+                    <a href="detail?product_id=${product.product_id}">View Detail</a>
                     <p>---------------------------------------------------------------------------------------------</p>    
             </c:forEach>
             

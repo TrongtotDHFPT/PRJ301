@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Controller;
+package controller;
+
 
 import dao.ProductDAO;
 import dto.ProductDTO;
@@ -14,12 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  *
  * @author trong
  */
-public class ViewDetailServlet extends HttpServlet {
-
+public class DetailServlet extends HttpServlet{
     public static final String VIEW_PAGE = "viewDetail.jsp";
     public static final ProductDAO pdao = new ProductDAO();
 
@@ -31,7 +32,7 @@ public class ViewDetailServlet extends HttpServlet {
         try {
             int product_id = Integer.parseInt(strProduct_id);
             ProductDTO product = pdao.readByID(product_id);
-            List<ProductDTO> list_sameCategory = pdao.searchByCategoryID(product_id);
+            List<ProductDTO> list_sameCategory = pdao.searchByCategoryID(product.getCategory_id());
             request.setAttribute("product", product);
             request.setAttribute("list_sameCategory", list_sameCategory);
             url = VIEW_PAGE;
@@ -40,7 +41,11 @@ public class ViewDetailServlet extends HttpServlet {
         }finally{
             request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);//To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
