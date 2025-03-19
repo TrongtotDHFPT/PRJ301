@@ -13,8 +13,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-
-        <c:if test="${not empty product}">
+        <%@include file="header.jsp" %>
+        <c:if test="${not empty user}">
             <div>
                 <div class="image_product">
                     <img src= "assets/img/${product.image}"style="width:150px;height:150px;"/> 
@@ -32,15 +32,15 @@
                 <form action="cart" method="post">
                     <input type="hidden" name="action" value="AddToCart"/>
                     <input type="hidden" name="product_id" value="${product.product_id}"/>
-                    <input type="hidden" name="stock" value="${product.stock}"/>
+                    <!--<input type="hidden" name="stock" value="$//{product.stock}"/>-->
 
                     <button type="button" onclick="decrease()">−</button>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" readonly >
                     <button type="button" onclick="increase()">+</button>
                     <button type="submit">Add to Cart</button>
 
                     <c:if test="${not empty message}">
-                        <p> message </p>
+                        <p style="color: red;"> ${message} </p>
                     </c:if>
                 </form>
                 <div>
@@ -77,6 +77,9 @@
 
 
         </c:if>
+        <c:if test="${empty user}">
+            <a href="login.jsp">login đê bro</a>
+        </c:if>
         <script>
             function increase() {
                 let quantityInput = document.getElementById("quantity");
@@ -90,5 +93,6 @@
                 }
             }
         </script>
+        <%@include file="footer.jsp" %>
     </body>
 </html>

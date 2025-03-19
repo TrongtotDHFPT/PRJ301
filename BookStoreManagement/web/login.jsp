@@ -15,7 +15,6 @@
     <body>
         <h2>Login Form</h2>
         <form action="login" method="post">
-            <input type="hidden" name="action" value="login"/>
             User Name: <input type="text" name="txtUsername"/><br>
             Password: <input type="password" name="txtPassword"/><br>
             <c:if test="${not empty message}">
@@ -23,7 +22,7 @@
             </c:if>
             <input type="submit" value="Login"/>
         </form>
-        <a href="home?searchTerm=">Try for guest</a>
+        <a href="home">Try for guest</a>
         <a href="register.jsp">Register</a>
         
     </body>

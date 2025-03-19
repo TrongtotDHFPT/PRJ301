@@ -5,7 +5,6 @@
  */
 package controller;
 
-import dao.UserDAO;
 import dto.UserDTO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -21,8 +20,7 @@ import utils.AuthUtils;
 public class LoginServlet extends HttpServlet {
 
     public static final String LOGIN_PAGE = "login.jsp";
-    public static final String HOME_SERVLET = "home";//sang servlet để xử lí sản phẩm
-    public static final UserDAO udao = new UserDAO();
+    public static final String HOME_SERVLET = "home";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,6 +36,7 @@ public class LoginServlet extends HttpServlet {
                 request.getSession().setAttribute("user", user);
                 System.out.println("User login thành công: " + user);
                 response.sendRedirect(HOME_SERVLET);
+                return ;
             } else {
                 request.setAttribute("message", "Incorrect Username or Password!");
                 request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);

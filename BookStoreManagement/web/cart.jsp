@@ -17,10 +17,10 @@
         <body>
             <h2>Your Cart</h2>
 
-            <c:if test="${empty sessionScope.carts}">
+            <c:if test="${empty sessionScope.listCarts}">
                 <p>Cart is empty!</p>
             </c:if>
-            <c:if test="${not empty sessionScope.carts}">
+            <c:if test="${not empty sessionScope.listCarts}">
                 <c:forEach var="cart" items="${sessionScope.carts}">
                     <p>Product ID: ${cart.product_id}, Quantity: ${cart.quantity}</p>
                 </c:forEach>

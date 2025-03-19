@@ -40,7 +40,7 @@
 
             <div class="menu">
                 <a href="home">Home</a>
-                <a href="cart.jsp">Cart</a>
+                <a href="viewCart">Cart</a>
                 <a href="profile.jsp">Account</a>
 
                 <c:choose>
