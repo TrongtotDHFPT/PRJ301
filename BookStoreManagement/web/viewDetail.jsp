@@ -29,6 +29,20 @@
                     <h5>$${product.price} </h5>
                     Product ID :    ${product.product_id} 
                 </div>
+                <form action="cart" method="post">
+                    <input type="hidden" name="action" value="AddToCart"/>
+                    <input type="hidden" name="product_id" value="${product.product_id}"/>
+                    <input type="hidden" name="stock" value="${product.stock}"/>
+
+                    <button type="button" onclick="decrease()">−</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    <button type="button" onclick="increase()">+</button>
+                    <button type="submit">Add to Cart</button>
+
+                    <c:if test="${not empty message}">
+                        <p> message </p>
+                    </c:if>
+                </form>
                 <div>
                     <c:if test="${product.stock > 0}">
                         <p> In stock  </p>
@@ -63,5 +77,18 @@
 
 
         </c:if>
+        <script>
+            function increase() {
+                let quantityInput = document.getElementById("quantity");
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+            }
+
+            function decrease() {
+                let quantityInput = document.getElementById("quantity");
+                if (quantityInput.value > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                }
+            }
+        </script>
     </body>
 </html>
