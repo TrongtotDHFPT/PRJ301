@@ -11,21 +11,37 @@
 <!DOCTYPE html
 
     <html>
-        <head>
-            <title>Shopping Cart</title>
-        </head>
-        <body>
-            <h2>Your Cart</h2>
+<head>
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h2>Your Cart</h2>
 
-            <c:if test="${empty sessionScope.listCarts}">
-                <p>Cart is empty!</p>
-            </c:if>
-            <c:if test="${not empty sessionScope.listCarts}">
-                <c:forEach var="cart" items="${sessionScope.carts}">
-                    <p>Product ID: ${cart.product_id}, Quantity: ${cart.quantity}</p>
-                </c:forEach>
-            </c:if>
-            <a href="home">Continue Shopping</a>
-        </body>
-    </html>
+    <c:if test="${empty listCarts}">
+        <p>${message}</p>
+    </c:if>
+    <c:if test="${not empty listCarts}">
+        
+        <table border="1">
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <c:forEach var="item" items="${listCarts}">
+                <tr>
+                    <td><img src="assets/img/${item.product.image}" width="50"></td>
+                    <td>${item.product.title}</td>
+                    <td>${item.product.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.product.price * item.quantity}</td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    <a href="home">Continue Shopping</a>
+</body>
+</html>
 

@@ -21,8 +21,9 @@ import javax.servlet.http.HttpSession;
  * @author trong
  */
 public class ViewCartServlet extends HttpServlet {
-    
+
     public static final CartDAO cartDAO = new CartDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -32,9 +33,10 @@ public class ViewCartServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        
-        List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());//lấy ra giỏ hàng của user theo id
+
+        List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
         request.setAttribute("listCarts", listCarts);
+
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 

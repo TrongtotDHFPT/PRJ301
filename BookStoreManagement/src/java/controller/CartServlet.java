@@ -37,7 +37,6 @@ public class CartServlet extends HttpServlet {
         String url = VIEW_PAGE;
 
         try {
-            // Kiểm tra user đã đăng nhập chưa
             UserDTO user = (UserDTO) session.getAttribute("user");
             if (user == null) {
                 request.setAttribute("message", "Please Login!");

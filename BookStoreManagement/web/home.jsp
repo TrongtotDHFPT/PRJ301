@@ -14,6 +14,7 @@
         <title>Home</title>
     </head>
     <body>
+        
         <%@include file="header.jsp" %>
         <h1>Welcome to Home Page</h1>
 

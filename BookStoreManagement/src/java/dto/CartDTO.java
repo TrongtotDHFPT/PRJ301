@@ -11,21 +11,23 @@ import java.sql.Date;
  * @author trong
  */
 public class CartDTO {
-    private int cart_id;
-    private int user_id;
-    private int product_id;
-    private int quantity;
-    private Date addedAt;
+        private int cart_id;
+        private int user_id;
+        private int product_id;
+        private int quantity;
+        private Date addedAt;
+        private ProductDTO product;
 
     public CartDTO() {
     }
 
-    public CartDTO(int cart_id, int user_id, int product_id, int quantity, Date addedAt) {
+    public CartDTO(int cart_id, int user_id, int product_id, int quantity, Date addedAt, ProductDTO product) {
         this.cart_id = cart_id;
         this.user_id = user_id;
         this.product_id = product_id;
         this.quantity = quantity;
         this.addedAt = addedAt;
+        this.product = product;
     }
 
     public int getCart_id() {
@@ -60,17 +62,24 @@ public class CartDTO {
         this.quantity = quantity;
     }
 
-    public Date getAdded_at() {
+    public Date getAddedAt() {
         return addedAt;
     }
 
-    public void setAdded_at(Date addedAt) {
+    public void setAddedAt(Date addedAt) {
         this.addedAt = addedAt;
+    }
+
+    public ProductDTO getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     @Override
     public String toString() {
-        return "CartDTO{" + "cart_id=" + cart_id + ", user_id=" + user_id + ", product_id=" + product_id + ", quantity=" + quantity + ", addedAt=" + addedAt + '}';
+        return "CartDTO{" + "cart_id=" + cart_id + ", user_id=" + user_id + ", product_id=" + product_id + ", quantity=" + quantity + ", addedAt=" + addedAt + ", product=" + product + '}';
     }
-    
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import dto.CartDTO;
+import dto.ProductDTO;
 import utils.DBUtils;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
             ps.setInt(1, entity.getUser_id());
             ps.setInt(2, entity.getProduct_id());
             ps.setInt(3, entity.getQuantity());
-            ps.setDate(4, entity.getAdded_at());
+            ps.setDate(4, entity.getAddedAt());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,24 +31,37 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
 
     @Override
     public List<CartDTO> readAll() {
-        String sql = "SELECT * FROM Cart";
+        String sql = "SELECT c.cart_id, c.user_id, c.product_id, c.quantity, c.added_at, "
+                + "p.title, p.author, p.price, p.stock, p.image, p.category_id, p.description "
+                + "FROM Cart c JOIN Product p ON c.product_id = p.product_id";
+
         List<CartDTO> list = new ArrayList<>();
+
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
+                ProductDTO product = new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description"));
+
                 list.add(new CartDTO(
                         rs.getInt("cart_id"),
                         rs.getInt("user_id"),
                         rs.getInt("product_id"),
                         rs.getInt("quantity"),
-                        rs.getDate("added_at")
-                ));
+                        rs.getDate("added_at"),
+                        product));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -75,7 +89,7 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
             ps.setInt(1, entity.getUser_id());
             ps.setInt(2, entity.getProduct_id());
             ps.setInt(3, entity.getQuantity());
-            ps.setDate(4, entity.getAdded_at());
+            ps.setDate(4, entity.getAddedAt());
             ps.setInt(5, entity.getCart_id());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -99,8 +113,8 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
                             rs.getInt("user_id"),
                             rs.getInt("product_id"),
                             rs.getInt("quantity"),
-                            rs.getDate("added_at")
-                    );
+                            rs.getDate("added_at"),
+                            null);
                 }
             }
         } catch (SQLException e) {
@@ -165,21 +179,34 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
     }
 
     public List<CartDTO> getCartByUserID(int user_id) {
-        String sql = " SELECT cart_id, user_id, product_id, quantity, added_at "
-                + "FROM Cart "
-                + "WHERE user_id = ?";
+        String sql = "SELECT c.cart_id, c.user_id, c.product_id, c.quantity, c.added_at, "
+                + "p.title, p.author, p.price, p.stock, p.image, p.category_id, p.description "
+                + "FROM Cart c "
+                + "JOIN Product p ON c.product_id = p.product_id "
+                + "WHERE c.user_id = ?";
         List<CartDTO> list = new ArrayList<>();
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, user_id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                ProductDTO product = new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")); 
+                
                 CartDTO cart = new CartDTO(
                         rs.getInt("cart_id"),
                         rs.getInt("user_id"),
                         rs.getInt("product_id"),
                         rs.getInt("quantity"),
-                        rs.getDate("added_at"));
+                        rs.getDate("added_at"),
+                        product);
                 list.add(cart);
             }
         } catch (SQLException e) {

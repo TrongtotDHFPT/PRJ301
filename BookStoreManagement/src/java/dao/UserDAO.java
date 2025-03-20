@@ -174,7 +174,7 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, strUsername);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); //khác null => usernmae đã tồn tại 
+            return rs.next();  
         } catch (Exception e) {
             e.printStackTrace();
         }
