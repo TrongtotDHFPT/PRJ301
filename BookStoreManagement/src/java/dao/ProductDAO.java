@@ -14,7 +14,7 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
     public boolean create(ProductDTO entity) {
         String sql = "INSERT INTO Product (title, author, price, stock, image, category_id, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, entity.getTitle());
             ps.setString(2, entity.getAuthor());
             ps.setDouble(3, entity.getPrice());
@@ -27,7 +27,7 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
         return false;
     }
 
@@ -36,18 +36,18 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         String sql = "SELECT * FROM Product";
         List<ProductDTO> list = new ArrayList<>();
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new ProductDTO(
-                    rs.getInt("product_id"),
-                    rs.getString("title"),
-                    rs.getString("author"),
-                    rs.getDouble("price"),
-                    rs.getInt("stock"),
-                    rs.getString("image"),
-                    rs.getInt("category_id"),
-                    rs.getString("description")
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
                 ));
             }
             System.out.println("chắc là oke");
@@ -55,7 +55,7 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return list;
     }
 
@@ -63,14 +63,14 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
     public boolean delete(Integer id) {
         String sql = "DELETE FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
         return false;
     }
 
@@ -78,7 +78,7 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
     public boolean update(ProductDTO entity) {
         String sql = "UPDATE Product SET title=?, author=?, price=?, stock=?, image=?, category_id=?, description=? WHERE product_id=?";
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, entity.getTitle());
             ps.setString(2, entity.getAuthor());
             ps.setDouble(3, entity.getPrice());
@@ -92,7 +92,7 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return false;
     }
 
@@ -100,19 +100,19 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
     public ProductDTO readByID(Integer id) {
         String sql = "SELECT * FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new ProductDTO(
-                        rs.getInt("product_id"),
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getDouble("price"),
-                        rs.getInt("stock"),
-                        rs.getString("image"),
-                        rs.getInt("category_id"),
-                        rs.getString("description")
+                            rs.getInt("product_id"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getDouble("price"),
+                            rs.getInt("stock"),
+                            rs.getString("image"),
+                            rs.getInt("category_id"),
+                            rs.getString("description")
                     );
                 }
             }
@@ -129,20 +129,20 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         String sql = "SELECT * FROM Product WHERE title LIKE ? OR author LIKE ?";
         List<ProductDTO> list = new ArrayList<>();
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + searchTerm + "%");
             ps.setString(2, "%" + searchTerm + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new ProductDTO(
-                        rs.getInt("product_id"),
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getDouble("price"),
-                        rs.getInt("stock"),
-                        rs.getString("image"),
-                        rs.getInt("category_id"),
-                        rs.getString("description")
+                            rs.getInt("product_id"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getDouble("price"),
+                            rs.getInt("stock"),
+                            rs.getString("image"),
+                            rs.getInt("category_id"),
+                            rs.getString("description")
                     ));
                 }
             }
@@ -153,23 +153,24 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         }
         return list;
     }
-    public List<ProductDTO> searchByCategoryID(int category_id) {
+
+    public List<ProductDTO> getProductByCategoryID(int category_id) {
         String sql = " SELECT * FROM Product WHERE category_id = ?";
         List<ProductDTO> list = new ArrayList<>();
         try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, category_id);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new ProductDTO(
-                        rs.getInt("product_id"),
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getDouble("price"),
-                        rs.getInt("stock"),
-                        rs.getString("image"),
-                        rs.getInt("category_id"),
-                        rs.getString("description")
+                            rs.getInt("product_id"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getDouble("price"),
+                            rs.getInt("stock"),
+                            rs.getString("image"),
+                            rs.getInt("category_id"),
+                            rs.getString("description")
                     ));
                 }
             }
@@ -180,4 +181,57 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         }
         return list;
     }
+
+    public List<ProductDTO> readAllOrder(String orderByX) {//mặc định là asc
+        String sql = "SELECT * FROM Product ORDER BY  [price] " + orderByX;
+        List<ProductDTO> list = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public ProductDTO getLatestProduct() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT TOP 1 * FROM Product ORDER BY product_id DESC"; 
+
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                ProductDTO product  = new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description"));
+                return product;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }

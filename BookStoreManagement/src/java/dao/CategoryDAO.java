@@ -35,7 +35,7 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
             while (rs.next()) {
                 list.add(new CategoryDTO(
                     rs.getInt("category_id"),
-                    rs.getString("category_name")
+                    rs.getString("name")
                 ));
             }
         } catch (SQLException e) {
@@ -120,5 +120,22 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
             Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return list;
+    }
+    public List<String> readAllgetName() {
+        String sql = "SELECT [name] from Category";
+        List<String> listCateName = new ArrayList<>();
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String category_name = rs.getString("name");
+                listCateName.add(category_name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        return listCateName;
     }
 }

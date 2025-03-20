@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CartDAO implements IDAO<CartDTO, Integer> {
+public class CartDAO  {
 
-    @Override
     public boolean create(CartDTO entity) {
         String sql = "INSERT INTO [dbo].[Cart] (user_id, product_id, quantity, added_at) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBUtils.getConnection();
@@ -29,7 +28,6 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
         return false;
     }
 
-    @Override
     public List<CartDTO> readAll() {
         String sql = "SELECT c.cart_id, c.user_id, c.product_id, c.quantity, c.added_at, "
                 + "p.title, p.author, p.price, p.stock, p.image, p.category_id, p.description "
@@ -66,12 +64,12 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
         return list;
     }
 
-    @Override
-    public boolean delete(Integer id) {
-        String sql = "DELETE FROM Cart WHERE cart_id = ?";
+    public boolean delete(int user_id, int product_id) {
+        String sql = "DELETE FROM Cart WHERE user_id = ? and product_id = ?";
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setInt(1, user_id);
+            ps.setInt(2, product_id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,7 +79,7 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
         return false;
     }
 
-    @Override
+
     public boolean update(CartDTO entity) {
         String sql = "UPDATE Cart SET user_id=?, product_id=?, quantity=?, added_at=? WHERE cart_id=?";
         try (Connection conn = DBUtils.getConnection();
@@ -100,7 +98,6 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
         return false;
     }
 
-    @Override
     public CartDTO readByID(Integer id) {
         String sql = "SELECT * FROM Cart WHERE cart_id = ?";
         try (Connection conn = DBUtils.getConnection();
@@ -125,11 +122,7 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
         return null;
     }
 
-    @Override
-    public List<CartDTO> search(String searchTerm) {
-        return new ArrayList<>(); // Không có trường nào phù hợp để tìm kiếm theo chuỗi
-    }
-    // Hàm kiểm tra user_id có tồn tại không
+
 
     private boolean isUserExists(int user_id) {
         String sql = "SELECT COUNT(*) FROM Users WHERE user_id = ?";
@@ -148,7 +141,6 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
     }
 
     public boolean addToCart(int user_id, int product_id, int quantity) {
-        // Kiểm tra xem user_id có tồn tại không
         if (!isUserExists(user_id)) {
             System.out.println("Error: User ID không tồn tại!");
             return false;
@@ -256,6 +248,6 @@ public class CartDAO implements IDAO<CartDTO, Integer> {
             e.printStackTrace();
         }
         return false;
-    }
+    }//khả nawg xóa
 
 }

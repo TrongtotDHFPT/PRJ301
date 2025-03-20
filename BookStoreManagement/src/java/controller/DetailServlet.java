@@ -35,7 +35,7 @@ public class DetailServlet extends HttpServlet{
             UserDTO user = (UserDTO)session.getAttribute("user");
             int product_id = Integer.parseInt(strProduct_id);
             ProductDTO product = pdao.readByID(product_id);
-            List<ProductDTO> list_sameCategory = pdao.searchByCategoryID(product.getCategory_id());
+            List<ProductDTO> list_sameCategory = pdao.getProductByCategoryID(product.getCategory_id());
             request.setAttribute("user", user);
             request.setAttribute("product", product);
             request.setAttribute("list_sameCategory", list_sameCategory);
