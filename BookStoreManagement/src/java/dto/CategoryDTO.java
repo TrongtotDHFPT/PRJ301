@@ -19,19 +19,21 @@ public class CategoryDTO {
         this.categor_name = categor_name;
     }
 
-    public int getCategory_id() {
+    public int getCategor_id() {
         return categor_id;
     }
 
-    public void setCategory_id(int categor_id) {
+    public void setCategor_id(int categor_id) {
         this.categor_id = categor_id;
     }
 
-    public String getName() {
+    public String getCategor_name() {
         return categor_name;
     }
 
-    public void setName(String categor_name) {
+    public void setCategor_name(String categor_name) {
         this.categor_name = categor_name;
     }
+
+    
 }

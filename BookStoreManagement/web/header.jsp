@@ -32,16 +32,21 @@
             </div>
 
             <div class="search-bar" style="margin-left: 20px;">
-<!--                <form action="search" method="get">
-                    <input type="text" name="keyword" placeholder="Search products..." required />
-                    <button type="submit">🔍</button>
-                </form>-->
+                <!--                <form action="search" method="get">
+                                    <input type="text" name="keyword" placeholder="Search products..." required />
+                                    <button type="submit">🔍</button>
+                                </form>-->
             </div>
 
             <div class="menu">
                 <a href="home">Home</a>
                 <a href="viewCart">Cart</a>
+                <c:if test="${not empty sessionScope.user}">
+                    <a href="managerProducts?action=null">Manager Product</a>
+                </c:if>
+                
                 <a href="profile.jsp">Account</a>
+
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">

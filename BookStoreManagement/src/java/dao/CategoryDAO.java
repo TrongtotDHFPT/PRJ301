@@ -15,7 +15,7 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         String sql = "INSERT INTO Category (category_name) VALUES (?)";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, entity.getName());
+            ps.setString(1, entity.getCategor_name());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,8 +66,8 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         String sql = "UPDATE Category SET category_name = ? WHERE category_id = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, entity.getName());
-            ps.setInt(2, entity.getCategory_id());
+            ps.setString(1, entity.getCategor_name());
+            ps.setInt(2, entity.getCategor_id());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,21 +121,23 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         } 
         return list;
     }
-    public List<String> readAllgetName() {
-        String sql = "SELECT [name] from Category";
-        List<String> listCateName = new ArrayList<>();
-        try (Connection conn = DBUtils.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                String category_name = rs.getString("name");
-                listCateName.add(category_name);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }  
-        return listCateName;
-    }
+//    public List<String> readAllgetName() {
+//        String sql = "SELECT [name] from Category";
+//        List<String> listCateName = new ArrayList<>();
+//        try (Connection conn = DBUtils.getConnection();
+//             PreparedStatement ps = conn.prepareStatement(sql);
+//             ResultSet rs = ps.executeQuery()) {
+//            while (rs.next()) {
+//                String category_name = rs.getString("name");
+//                listCateName.add(category_name);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }  
+//        return listCateName;
+//    }
+    
+    
 }

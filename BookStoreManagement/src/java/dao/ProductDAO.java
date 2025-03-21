@@ -157,22 +157,56 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
     public List<ProductDTO> getProductByCategoryID(int category_id) {
         String sql = " SELECT * FROM Product WHERE category_id = ?";
         List<ProductDTO> list = new ArrayList<>();
-        try (Connection conn = DBUtils.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, category_id);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(new ProductDTO(
-                            rs.getInt("product_id"),
-                            rs.getString("title"),
-                            rs.getString("author"),
-                            rs.getDouble("price"),
-                            rs.getInt("stock"),
-                            rs.getString("image"),
-                            rs.getInt("category_id"),
-                            rs.getString("description")
-                    ));
-                }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public List<ProductDTO> searchBySearchAndCategoryID(String searchTerm, int category_id) {
+        String sql = " SELECT * FROM Product  "
+                + "WHERE (title LIKE ? OR author LIKE ?)"
+                + " AND category_id = ? ";
+        List<ProductDTO> list = new ArrayList<>();
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setString(2, "%" + searchTerm + "%");
+            ps.setInt(3, category_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -208,14 +242,24 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return list;
     }
 
-    public ProductDTO getLatestProduct() throws SQLException, ClassNotFoundException {
-        String sql = "SELECT TOP 1 * FROM Product ORDER BY product_id DESC"; 
+    public ProductDTO getLatestProduct(int category_id) throws SQLException, ClassNotFoundException {
+        String sql = "";
+        if (category_id != -1) {
+            sql = "SELECT TOP 1 * FROM Product "
+                    + "WHERE category_id = ?"
+                    + " ORDER BY product_id DESC";
+        } else {
+            sql = "SELECT TOP 1 * FROM Product ORDER BY product_id DESC";
+        }
 
         try (Connection conn = DBUtils.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);) {
+            if (category_id != -1) {
+                ps.setInt(1, category_id);
+            }
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                ProductDTO product  = new ProductDTO(
+                ProductDTO product = new ProductDTO(
                         rs.getInt("product_id"),
                         rs.getString("title"),
                         rs.getString("author"),
@@ -226,12 +270,54 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
                         rs.getString("description"));
                 return product;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public List<ProductDTO> getProductsAndOrderBy(String searchTerm, int category_id, String orderBy) {
+        List<ProductDTO> listP = new ArrayList<>();
+        String sql = "SELECT * FROM Product WHERE title LIKE ? ";
+
+        if (category_id != -1) {
+            sql += " AND category_id = ? ";
+        }
+
+        if (orderBy.equals("asc")) {
+            sql += " ORDER BY price ASC ";
+        } else if (orderBy.equals("desc")) {
+            sql += " ORDER BY price DESC ";
+        }
+
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + searchTerm + "%");
+
+            if (category_id != -1) {
+                ps.setInt(2, category_id);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductDTO product = new ProductDTO(
+                        rs.getInt("product_id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("image"),
+                        rs.getInt("category_id"),
+                        rs.getString("description"));
+                listP.add(product);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listP;
     }
 
 }

@@ -22,7 +22,7 @@
             </c:if>
             <input type="submit" value="Login"/>
         </form>
-        <a href="home">Try for guest</a>
+        <a href="home?search=">Try for guest</a>
         <a href="register.jsp">Register</a>
         
     </body>

@@ -13,6 +13,7 @@
         <meta charset="UTF-8">
         <title>Home</title>
         <style>
+            /* Tổng thể */
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -20,117 +21,113 @@
                 background-color: #f4f4f4;
             }
 
-            .main-content {
-                padding: 20px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-
-            h1 {
-                text-align: center;
-                color: #333;
-            }
-
-            form {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            form input[type="text"], form select {
-                padding: 10px;
-                margin-right: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-
-            form button {
-                padding: 10px 20px;
-                background-color: #28a745;
+            /* Header */
+            header {
+                background-color: #222;
                 color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
+                padding: 15px;
+                text-align: center;
+                font-size: 24px;
             }
 
-            form button:hover {
-                background-color: #218838;
-            }
-
-            .last-product {
-                background-color: #fff;
+            /* Nội dung chính */
+            .main-content {
+                width: 90%;
+                max-width: 1200px;
+                margin: auto;
                 padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Thanh tìm kiếm */
+            form {
+                display: flex;
+                gap: 10px;
                 margin-bottom: 20px;
+            }
+
+            input, select, button {
+                padding: 8px;
+                font-size: 16px;
+            }
+
+            /* Bố cục chia hai phần: Last Product & Product List */
+            .main-container {
+                display: flex;
+                width: 100%;
+                gap: 20px;
+            }
+
+            /* Last Product */
+            .last-product {
+                flex: 1;
+                max-width: 250px;
+                background: white;
+                padding: 10px;
                 border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .last-product .product-item {
                 text-align: center;
             }
 
+            .last-product img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+            /* Danh sách sản phẩm */
             .product-list {
+                flex: 3;
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 20px;
             }
 
             .product-item {
-                background-color: #fff;
+                background: white;
                 padding: 15px;
                 border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 text-align: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
 
             .product-item img {
-                max-width: 100%;
-                height: auto;
-                border-radius: 4px;
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+                border-radius: 8px;
             }
 
-            .product-item h3 {
-                font-size: 18px;
-                margin: 10px 0;
-            }
-
-            .product-item h5 {
-                font-size: 16px;
-                color: #28a745;
-                margin: 10px 0;
-            }
-
-            .product-item a {
-                display: inline-block;
-                margin-top: 10px;
-                padding: 10px 15px;
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-            }
-
-            .product-item a:hover {
-                background-color: #0056b3;
-            }
-
+            /* Phân trang */
             .pagination {
-                text-align: center;
                 margin-top: 20px;
+                text-align: center;
             }
 
-            .pagination a, .pagination span {
+            .pagination a, .pagination .current-page {
+                display: inline-block;
+                padding: 8px 12px;
                 margin: 0 5px;
-                padding: 10px 15px;
-                background-color: #007bff;
-                color: white;
+                border-radius: 5px;
                 text-decoration: none;
-                border-radius: 4px;
             }
 
-            .pagination a:hover {
-                background-color: #0056b3;
+            .pagination a {
+                background: #007bff;
+                color: white;
             }
 
             .pagination .current-page {
-                background-color: #28a745;
+                background: #333;
+                color: white;
             }
+
         </style>
     </head>
     <body>
@@ -143,9 +140,17 @@
             <form action="home" method="get">
                 <input type="text" name="searchTerm" placeholder="Search products..." value="${searchTerm}">
                 <select name="orderBy">
-                    <option >----Order by----</option>
-                    <option value="desc" >Decreasing by price</option>
-                    <option value="asc">Ascending by price</option>
+                    <option value="">Sắp xếp theo giá</option>  
+                    <option value="desc" ${orderBy == 'desc' ? 'selected' : ''}>Giảm dần</option>
+                    <option value="asc" ${orderBy == 'asc' ? 'selected' : ''}>Tăng dần</option>
+                </select>
+                <select name="category_id">
+                    <option value="">Danh mục sản phẩm</option>   
+                    <c:forEach var="cate" items="${cateList}">
+                        <option value="${cate.categor_id}">
+                            ${cate.categor_name}
+                        </option>
+                    </c:forEach>
                 </select>
                 <button type="submit">Search</button>
             </form>

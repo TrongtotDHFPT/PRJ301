@@ -22,51 +22,61 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
-        if (user == null) {
-            System.out.println("Session user is null, redirecting to login...");
-            response.sendRedirect("login.jsp");
-            return;
-        } else {
-            System.out.println("User found in session: " + user.getUsername());
-        }
+//        if (user == null) {
+//            System.out.println("Session user is null, redirecting to login...");
+//            response.sendRedirect("login.jsp");
+//            return;
+//        } else {
+//            System.out.println("User found in session: " + user.getUsername());
+//        }
 
         try {
-            //lastProduct
-            ProductDTO lastProduct = pdao.getLatestProduct();
-            request.setAttribute("lastProduct", lastProduct);
-            
-            //list category name chưa xong
-//            CategoryDAO cdao = new CategoryDAO();
-//            List<CategoryDTO> cateList = cdao.readAll();
-//            request.setAttribute("cateList", cateList);
 
+//            list category name chưa xong
+            CategoryDAO cdao = new CategoryDAO();
+            List<CategoryDTO> cateList = cdao.readAll();
+            request.setAttribute("cateList", cateList);
 
             String searchTerm = request.getParameter("searchTerm");
             String orderBy = request.getParameter("orderBy");
+            String categoryPara = request.getParameter("category_id");
             if (searchTerm == null || searchTerm.trim().isEmpty()) {
                 searchTerm = "";
             }
             if (orderBy == null || orderBy.trim().isEmpty()) {
                 orderBy = "";
             }
-            
-            
+
+            int category_id = -1;
+            if (categoryPara != null && !categoryPara.trim().isEmpty()) {
+                try {
+                    category_id = Integer.parseInt(categoryPara);
+                } catch (NumberFormatException e) {
+                    System.out.println("NumberFormatException category_id: " + e.getMessage());
+                }
+            }
+
+            List<ProductDTO> allProducts = null;
+            if (!searchTerm.isEmpty() && category_id != -1) {
+                allProducts = pdao.searchBySearchAndCategoryID(searchTerm, category_id);
+            } else if (searchTerm.isEmpty() && category_id == -1) {
+                allProducts = pdao.readAll();
+            } else if (!searchTerm.isEmpty() && category_id == -1) {
+                allProducts = pdao.search(searchTerm);
+            } else if (searchTerm.isEmpty() && category_id != -1) {
+                allProducts = pdao.getProductByCategoryID(category_id);
+            }
+            allProducts = pdao.getProductsAndOrderBy(searchTerm, category_id, orderBy);
+
+            //lastProduct
+            ProductDTO lastProduct = pdao.getLatestProduct(category_id);
+            request.setAttribute("lastProduct", lastProduct);
+            //Phân trang =======================================================
             String pageParameter = request.getParameter("page");
             int currentPage = 1;
-            if (pageParameter != null && !pageParameter.isEmpty()) { // còn nếu k thì lấy current
+            if (pageParameter != null && !pageParameter.isEmpty()) {
                 currentPage = Integer.parseInt(pageParameter);
             }
-
-            List<ProductDTO> allProducts;
-            if (searchTerm.trim().isEmpty()) {
-                allProducts = pdao.readAll();
-                allProducts = pdao.readAllOrder(orderBy);
-            } else {
-                allProducts = pdao.search(searchTerm);
-                allProducts = pdao.readAllOrder(orderBy);
-            }
-
-            //Phân trang 
             int totalProducts = allProducts.size();
             int totalPages = (int) Math.ceil((double) totalProducts / PRODUCTS_PER_PAGE);
 
@@ -75,12 +85,7 @@ public class HomeServlet extends HttpServlet {
             int endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, totalProducts);
             List<ProductDTO> productsForPage = allProducts.subList(startIndex, endIndex);
 
-            if (productsForPage == null) {
-                request.setAttribute("message_ForSearch", "88888888888888888888");
-                //cái này sai nhưng để đây để nhắc nhở nếu search k có gì thì sẽ làm gì
-            }
             request.setAttribute("productsForPage", productsForPage);
-
             request.setAttribute("currentPage", currentPage);
             request.setAttribute("searchTerm", searchTerm);
             request.setAttribute("orderBy", orderBy);
