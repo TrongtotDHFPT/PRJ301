@@ -17,10 +17,15 @@
         <h1>Manager Product</h1>
         <form action="managerProducts" method="get">
             <input type="hidden" name="action" value="search" />
-                <input type="text" name="searchTerm" placeholder="Search products..." value="${(not empty searchTerm) ?searchTerm: ""}"/>
-                <input type="submit" value="Search"/>
+            <input type="text" name="searchTerm" placeholder="Search products..." value="${(not empty searchTerm) ?searchTerm: ""}"/>
+            <input type="submit" value="Search"/>
         </form>
-        <a href="addProduct">+Add product</a><br>
+        <a href="addProduct.jsp">+Add product</a><br>
+        
+        <c:if test="${not empty message}">
+            <span style="color: red;">${message}</span>
+        </c:if>
+        
         <c:if test="${not empty list}">
             <table border="1">
                 <thead>
@@ -39,26 +44,27 @@
                 </thead>
                 <tbody>
                     <c:forEach var="product" items="${list}">
-                    <tr>
-                        <td>${product.product_id}</td>
-                        <td><img src="assets/img/${product.image}" style="width: 100px;"></td>
-                        <td>${product.title}</td>
-                        <td>${product.author}</td>
-                        <td>${product.description}</td>
-                        <td>${product.price}</td>
-                        <td>${product.stock}</td>
-                        <td>${product.category_id}</td>
-                        <td>
-                            <a href="managerProducts?action=delete&product_id=${product.product_id}"><img src="icon/trash_icon.png" style="width: 25px"> </a>
-                        </td>
-                        <td>
-                            
-                        </td>
-                        
-                    </tr>
+                        <tr>
+                            <td>${product.product_id}</td>
+                            <td><img src="assets/img/${product.image}" style="width: 100px;"></td>
+                            <td>${product.title}</td>
+                            <td>${product.author}</td>
+                            <td>${product.description}</td>
+                            <td>${product.price}</td>
+                            <td>${product.stock}</td>
+                            <td>${product.category_id}</td>
+                            <td>
+                                <a href="managerProducts?action=delete&product_id=${product.product_id}"><img src="icon/trash_icon.png" style="width: 25px"> </a>
+                            </td>
+                            <td>
+
+                            </td>
+
+                        </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            
             <!-- Pagination -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">

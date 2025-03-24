@@ -15,7 +15,7 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         String sql = "INSERT INTO Category (category_name) VALUES (?)";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, entity.getCategor_name());
+            ps.setString(1, entity.getCategory_name());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,8 +66,8 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         String sql = "UPDATE Category SET category_name = ? WHERE category_id = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, entity.getCategor_name());
-            ps.setInt(2, entity.getCategor_id());
+            ps.setString(1, entity.getCategory_name());
+            ps.setInt(2, entity.getCategory_id());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -147,8 +147,8 @@
                 <select name="category_id">
                     <option value="">Danh mục sản phẩm</option>   
                     <c:forEach var="cate" items="${cateList}">
-                        <option value="${cate.categor_id}">
-                            ${cate.categor_name}
+                        <option value="${cate.category_id}">
+                            ${cate.category_name}
                         </option>
                     </c:forEach>
                 </select>
