@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ProductDAO implements IDAO<ProductDTO, Integer> {
-
-    @Override
+public class ProductDAO  {
+//implements IDAO<ProductDTO, Integer>
     public boolean create(ProductDTO entity) {
         String sql = "INSERT INTO Product (title, author, price, stock, image, category_id, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtils.getConnection();
@@ -31,7 +30,6 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return false;
     }
 
-    @Override
     public List<ProductDTO> readAll() {
         String sql = "SELECT * FROM Product";
         List<ProductDTO> list = new ArrayList<>();
@@ -59,7 +57,6 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return list;
     }
 
-    @Override
     public boolean delete(Integer id) {
         String sql = "DELETE FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
@@ -74,7 +71,6 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return false;
     }
 
-    @Override
     public boolean update(ProductDTO entity) {
         String sql = "UPDATE Product SET title=?, author=?, price=?, stock=?, image=?, category_id=?, description=? WHERE product_id=?";
         try (Connection conn = DBUtils.getConnection();
@@ -96,12 +92,11 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return false;
     }
 
-    @Override
-    public ProductDTO readByID(Integer id) {
+    public ProductDTO readByID(int product_id) {
         String sql = "SELECT * FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setInt(1, product_id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new ProductDTO(
@@ -124,7 +119,6 @@ public class ProductDAO implements IDAO<ProductDTO, Integer> {
         return null;
     }
 
-    @Override
     public List<ProductDTO> search(String searchTerm) {
         String sql = "SELECT * FROM Product WHERE title LIKE ? OR author LIKE ?";
         List<ProductDTO> list = new ArrayList<>();

@@ -42,7 +42,6 @@ public class CartServlet extends HttpServlet {
             List<CartDTO> listCarts = cdao.getCartByUserID(user.getUser_id());
             request.setAttribute("listCarts", listCarts);
 
-            // 🔹 Hiển thị lại trang giỏ hàng
             request.getRequestDispatcher("cart.jsp").forward(request, response);
         }
         //===delete
