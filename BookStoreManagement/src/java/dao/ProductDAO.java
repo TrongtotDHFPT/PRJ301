@@ -92,7 +92,7 @@ public class ProductDAO  {
         return false;
     }
 
-    public ProductDTO readByID(int product_id) {
+    public ProductDTO getProductById(int product_id) {
         String sql = "SELECT * FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {

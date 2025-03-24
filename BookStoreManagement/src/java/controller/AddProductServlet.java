@@ -33,6 +33,16 @@ public class AddProductServlet extends HttpServlet {
         String url = "managerProducts.jsp";
         try {
             boolean checkError = false;
+            String productIdParam = request.getParameter("product_id");
+            int product_id = 0;
+
+            if (productIdParam != null && !productIdParam.trim().isEmpty()) {
+                try {
+                    product_id = Integer.parseInt(productIdParam);
+                } catch (NumberFormatException e) {
+                    checkError = true;
+                }
+            }
 
             String title = request.getParameter("title");
             String author = request.getParameter("author");
@@ -84,8 +94,7 @@ public class AddProductServlet extends HttpServlet {
                 checkError = true;
                 request.setAttribute("txtCategoryID_error", "Category ID must be a valid number.");
             }
-            
-            
+
             //làm rõ hơn
             Part filePart = request.getPart("image");
             if (filePart != null && filePart.getSize() > 0) {
@@ -97,16 +106,27 @@ public class AddProductServlet extends HttpServlet {
                 imagePath = "default.jpg";
             }
 
-            ProductDTO product = new ProductDTO(0, title, author, price, stock, imagePath, category_id, description);
-
+            ProductDTO product = new ProductDTO(product_id, title, author, price, stock, imagePath, category_id, description);
+            ProductDAO pdao = new ProductDAO();
             if (!checkError) {
-                ProductDAO productDAO = new ProductDAO();
-                productDAO.create(product);
-                request.setAttribute("message", "Add product Successfully");
+                if (product_id > 0) {
+                    if (pdao.update(product)) {
+                        request.setAttribute("message", "Update Book successfully.");
+                    } else {
+                        request.setAttribute("message", "Update fail");
+                    }
+
+                } else {
+                    if (pdao.create(product)) {
+                        request.setAttribute("message", "Add Book Successfully");
+                    } else {
+                        request.setAttribute("message", "Add fail");
+                    }
+                }
                 url = "addProduct.jsp";
             } else {
                 request.setAttribute("product", product);
-                request.setAttribute("message", "Add product fail");
+                request.setAttribute("message", "Action Fail");
                 url = "addProduct.jsp";
             }
         } catch (Exception e) {

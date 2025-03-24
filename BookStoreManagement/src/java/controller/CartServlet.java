@@ -75,7 +75,7 @@ public class CartServlet extends HttpServlet {
 
                 boolean isAdded = cdao.addToCart(user.getUser_id(), product_id, quantity);
                 ProductDAO pdao = new ProductDAO();
-                ProductDTO product = pdao.readByID(product_id);
+                ProductDTO product = pdao.getProductById(product_id);
                 request.setAttribute("product", product);
                 List<ProductDTO> list_sameCategory = pdao.getProductByCategoryID(product.getCategory_id());
                 request.setAttribute("list_sameCategory", list_sameCategory);

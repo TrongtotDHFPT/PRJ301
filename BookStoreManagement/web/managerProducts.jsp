@@ -21,11 +21,11 @@
             <input type="submit" value="Search"/>
         </form>
         <a href="addProduct.jsp">+Add product</a><br>
-        
+
         <c:if test="${not empty message}">
             <span style="color: red;">${message}</span>
         </c:if>
-        
+
         <c:if test="${not empty list}">
             <table border="1">
                 <thead>
@@ -57,14 +57,14 @@
                                 <a href="managerProducts?action=delete&product_id=${product.product_id}"><img src="icon/trash_icon.png" style="width: 25px"> </a>
                             </td>
                             <td>
-
+                                <a href="addProduct.jsp?product_id=${product.product_id}"><img src="icon/update_icon.png" style="width: 25px"> </a>
                             </td>
 
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
-            
+
             <!-- Pagination -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">
