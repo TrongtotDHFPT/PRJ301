@@ -18,7 +18,6 @@
 </head>
 <body>
     <%@include file="header.jsp" %>
-    <h2>Your Cart</h2>
 
     <c:if test="${empty listCarts}">
         Giỏ hàng(0 sản phẩm)
@@ -27,7 +26,7 @@
     </c:if>
         
     <c:if test="${not empty listCarts}">
-
+        <h3>Giỏ hàng(${listCarts.size()} sản phẩm)</h3>
         <table border="1">
             <tr>
                 <th>No</th>
