@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CartDAO  {
+public class CartDAO {
 
     public boolean create(CartDTO entity) {
         String sql = "INSERT INTO [dbo].[Cart] (user_id, product_id, quantity, added_at) VALUES (?, ?, ?, ?)";
@@ -79,7 +79,6 @@ public class CartDAO  {
         return false;
     }
 
-
     public boolean update(CartDTO entity) {
         String sql = "UPDATE Cart SET user_id=?, product_id=?, quantity=?, added_at=? WHERE cart_id=?";
         try (Connection conn = DBUtils.getConnection();
@@ -121,8 +120,6 @@ public class CartDAO  {
         }
         return null;
     }
-
-
 
     private boolean isUserExists(int user_id) {
         String sql = "SELECT COUNT(*) FROM Users WHERE user_id = ?";
@@ -190,8 +187,8 @@ public class CartDAO  {
                         rs.getInt("stock"),
                         rs.getString("image"),
                         rs.getInt("category_id"),
-                        rs.getString("description")); 
-                
+                        rs.getString("description"));
+
                 CartDTO cart = new CartDTO(
                         rs.getInt("cart_id"),
                         rs.getInt("user_id"),
@@ -238,16 +235,56 @@ public class CartDAO  {
         return false;
     }
 
-    public boolean clearCart(int user_id) throws ClassNotFoundException {
-        String sql = "DELETE FROM Cart WHERE user_id = ?";
+    public CartDTO getCart(int userId, int productId) {
+        CartDTO cart = null;
+        String sql = "SELECT c.cart_id, c.user_id, c.product_id, c.quantity, c.added_at, "
+                + "p.title, p.price, p.stock, p.image, p.category_id, p.description "
+                + "FROM Cart c JOIN Product p ON c.product_id = p.product_id "
+                + "WHERE c.user_id = ? AND c.product_id = ?";
+
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, user_id);
+
+            ps.setInt(1, userId);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                ProductDTO product = new ProductDTO();
+                product.setProduct_id(productId);
+                product.setTitle(rs.getString("title"));
+                product.setPrice(rs.getDouble("price"));
+                product.setStock(rs.getInt("stock"));
+                product.setImage(rs.getString("image"));
+                product.setCategory_id(rs.getInt("category_id"));
+                product.setDescription(rs.getString("description"));
+
+                cart = new CartDTO();
+                cart.setCart_id(rs.getInt("cart_id"));
+                cart.setUser_id(rs.getInt("user_id"));
+                cart.setProduct_id(productId);
+                cart.setQuantity(rs.getInt("quantity"));
+                cart.setAddedAt(rs.getDate("added_at"));
+                cart.setProduct(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cart;
+    }
+
+    public boolean updateCartQuantity(int user_id, int product_id, int quantity) {
+        String sql = "UPDATE Cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, user_id);
+            ps.setInt(3, product_id);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
-    }//khả nawg xóa
+    }
 
 }

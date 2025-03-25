@@ -12,6 +12,8 @@ import dto.ProductDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,9 +48,8 @@ public class CartServlet extends HttpServlet {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
         }
         //===delete
-
         try {
-
+            //add
             if (user == null) {
                 request.setAttribute("message", "Please Login!");
                 request.getRequestDispatcher(url).forward(request, response);
@@ -66,7 +67,6 @@ public class CartServlet extends HttpServlet {
             try {
                 int product_id = Integer.parseInt(productIdParam);
                 int quantity = Integer.parseInt(quantityParam);
-
 
                 boolean isAdded = cdao.addToCart(user.getUser_id(), product_id, quantity);
 
@@ -91,4 +91,10 @@ public class CartServlet extends HttpServlet {
         }
         request.getRequestDispatcher(url).forward(request, response);
     }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request, response); 
+    }
+
 }

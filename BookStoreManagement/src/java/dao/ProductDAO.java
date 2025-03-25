@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ProductDAO  {
+public class ProductDAO {
 //implements IDAO<ProductDTO, Integer>
+
     public boolean create(ProductDTO entity) {
         String sql = "INSERT INTO Product (title, author, price, stock, image, category_id, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtils.getConnection();
@@ -92,7 +93,7 @@ public class ProductDAO  {
         return false;
     }
 
-    public ProductDTO getProductById(int product_id) {
+    public static ProductDTO getProductById(int product_id) {
         String sql = "SELECT * FROM Product WHERE product_id = ?";
         try (Connection conn = DBUtils.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -312,6 +313,21 @@ public class ProductDAO  {
             e.printStackTrace();
         }
         return listP;
+    }
+
+    public boolean updateStock(int productId, int quantityPurchased) {
+        String sql = "UPDATE [dbo].[Product] SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantityPurchased);
+            ps.setInt(2, productId);
+            ps.setInt(3, quantityPurchased);  
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }
