@@ -65,7 +65,9 @@
 
                 <div class="menu">
                     <a href="home">Home</a>
-                    <a href="viewCart">Cart</a>
+                    <c:if test="${not empty sessionScope.user}">
+                        <a href="viewCart">Cart</a>
+                    </c:if>
                     <c:if test="${not empty sessionScope.user}">
                         <a href="managerProducts?action=">Manager Product</a>
                     </c:if>

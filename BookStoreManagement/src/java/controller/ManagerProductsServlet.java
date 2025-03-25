@@ -30,30 +30,35 @@ public class ManagerProductsServlet extends HttpServlet {
 
     private String processSearch(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException {
         String url = MANAGER_PRODUCTS;
+        HttpSession session = request.getSession();
         List<ProductDTO> listProduct;
         String searchTerm = request.getParameter("searchTerm");
 
         try {
-            if ("delete".equals(action)) {
-                String strProduct_id = request.getParameter("product_id");
-                int product_id = 0;
-                try {
-                    product_id = Integer.parseInt(strProduct_id);
-                } catch (NumberFormatException e) {
-                    log("NumberFormatException at ManagerProductServlet: " + e.toString());
+            if (AuthUtils.isAdmin(session)) {
+                if ("delete".equals(action)) {
+                    String strProduct_id = request.getParameter("product_id");
+                    int product_id = 0;
+                    try {
+                        product_id = Integer.parseInt(strProduct_id);
+                    } catch (NumberFormatException e) {
+                        log("NumberFormatException at DELETE ManagerProductServlet: " + e.toString());
+                    }
+                    pdao.delete(product_id);
                 }
-                pdao.delete(product_id);
             }
 
             if ("search".equals(action)) {
                 listProduct = pdao.search(searchTerm);
 
-            } else {
+            }else {
                 listProduct = pdao.readAll();
             }
             if (listProduct == null) {
                 request.setAttribute("message", "Không tìm thấy dữ liệu");
+                url = MANAGER_PRODUCTS;
             }
+            
             String pageParameter = request.getParameter("page");
             int currentPage = 1;
             if (pageParameter != null && !pageParameter.isEmpty()) {
@@ -65,7 +70,7 @@ public class ManagerProductsServlet extends HttpServlet {
             int startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
             int endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, totalProducts);
             List<ProductDTO> list = listProduct.subList(startIndex, endIndex);
-            
+
             request.setAttribute("list", list);
             request.setAttribute("currentPage", currentPage);
             request.setAttribute("totalPages", totalPages);

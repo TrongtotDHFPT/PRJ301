@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.AuthUtils;
+import utils.PasswordUtils;
 
 /**
  *
@@ -24,6 +25,8 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");  
+        response.setContentType("text/html;charset=UTF-8");  
         try {
             String strName = request.getParameter("name");
             String strUsername = request.getParameter("username");
@@ -42,7 +45,7 @@ public class RegisterServlet extends HttpServlet {
             if (strUsername == null || strUsername.trim().isEmpty()) {
                 request.setAttribute("Error_strUsername", "Username cannot be empty!");
                 hasError = true;
-            } else if (AuthUtils.isExist(strUsername)) { // Check username đã tồn tại
+            } else if (AuthUtils.isExist(strUsername)) {
                 request.setAttribute("Error_strUsername", "Username existed!");
                 hasError = true;
             }
@@ -51,20 +54,18 @@ public class RegisterServlet extends HttpServlet {
                 request.setAttribute("Error_strPassword", "Password cannot be empty!");
                 hasError = true;
             } else if (strPassword.length() < 6) {
-                request.setAttribute("Error_strPassword", "Password must be at least 6 characters!");
+                request.setAttribute("Error_strPassword", "Password must be at least 8 characters!");
                 hasError = true;
             }
 
-            // Validate Email
             if (strPhone == null || strPhone.trim().isEmpty()) {
                 request.setAttribute("Error_strPhone", "Phone cannot be empty!");
                 hasError = true;
-            } else if (!strPhone.matches("\\d{10,11}")) { // Số điện thoại 10-11 số
+            } else if (!strPhone.matches("\\d{10,11}")) {
                 request.setAttribute("Error_strPhone", "Invalid phone number!");
                 hasError = true;
             }
 
-            // Validate Address
             if (strAddress == null || strAddress.trim().isEmpty()) {
                 request.setAttribute("Error_strAddress", "Address cannot be empty!");
                 hasError = true;
@@ -73,7 +74,8 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
-            UserDTO user = new UserDTO(0, strName, strUsername, strPassword, "", strEmail, strPhone, strAddress);
+            String hashedPassword = PasswordUtils.hashPassword(strPassword);
+            UserDTO user = new UserDTO(0, strName, strUsername, hashedPassword, "", strEmail, strPhone, strAddress);
             UserDAO udao = new UserDAO();
             boolean isInserted = udao.insertUser(user);
             if (isInserted) {
@@ -93,7 +95,7 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response); //To change body of generated methods, choose Tools | Templates.
+        doPost(request, response);
     }
 
 }
