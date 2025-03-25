@@ -7,6 +7,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -170,7 +172,7 @@
                                 By ${product.author}
                             </div>
                             <div>
-                                <h5>$${product.price}</h5>
+                                <h5><fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" /> ₫</h5>
                                 Product ID: ${product.product_id}
                             </div>
                             <div>
@@ -201,7 +203,7 @@
                             By ${product.author}
                         </div>
                         <div>
-                            <h5>$${product.price}</h5>
+                            <h5><fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" /> ₫</h5>
                             Product ID: ${product.product_id}
                         </div>
                         <div>

@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -77,26 +79,26 @@
                 </div>
 
                 <div>
-                    <h5>$${product.price} </h5>
+                    <h5><fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" /> ₫</h5>
                     Product ID :    ${product.product_id} 
                 </div>
                 <form action="cart" method="post">
                     <input type="hidden" name="action" value="AddToCart"/>
                     <input type="hidden" name="product_id" value="${product.product_id}"/>
-                    <!--<input type="hidden" name="stock" value="$//{product.stock}"/>-->
+<!--                    <input type="hidden" name="stock" value="$//{product.stock}"/>-->
 
                     <button type="button" onclick="decrease()">−</button>
-                    <input type="number" id="quantity" name="quantity" value="1" min="1" readonly >
+                    <input type="number" id="quantity" name="quantity" value="1" min="1"  readonly >
                     <button type="button" onclick="increase()">+</button>
                     <button type="submit">Add to Cart</button>
-
+                    <button type="submit">Buy Now</button>
                     <c:if test="${not empty message}">
                         <p style="color: red;"> ${message} </p>
                     </c:if>
                 </form>
                 <div>
                     <c:if test="${product.stock > 0}">
-                        <p> In stock  </p>
+                        <p> In stock ${product.stock} </p>
                     </c:if>
                     <c:if test="${product.stock <= 0}">
                         <p> Out stock </p>

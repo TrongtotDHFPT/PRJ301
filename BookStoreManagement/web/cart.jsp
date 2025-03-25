@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@ page import="java.util.List" %>
 <%@ page import="dto.CartDTO" %>
 <!DOCTYPE html
@@ -45,7 +47,7 @@
                     <td>${item.product.title}</td>
                     <td>${item.product.price}</td>
                     <td>${item.quantity}</td>
-                    <td>${item.product.price * item.quantity}</td>
+                    <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" groupingUsed="true"/> ₫</td>
                     <td>
                         <form action="cart" method="post">
                             <input type="hidden" name="action" value="delete"/>

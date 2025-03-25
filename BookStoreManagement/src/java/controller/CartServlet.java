@@ -26,6 +26,7 @@ public class CartServlet extends HttpServlet {
 
     public static final String VIEW_PAGE = "viewDetail.jsp";
     public static final CartDAO cdao = new CartDAO();
+    public static final ProductDAO pdao = new ProductDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,7 +57,6 @@ public class CartServlet extends HttpServlet {
 
             String productIdParam = request.getParameter("product_id");
             String quantityParam = request.getParameter("quantity");
-
             if (productIdParam == null || quantityParam == null) {
                 request.setAttribute("message", "Invalid product data!");
                 request.getRequestDispatcher(url).forward(request, response);
@@ -67,14 +67,9 @@ public class CartServlet extends HttpServlet {
                 int product_id = Integer.parseInt(productIdParam);
                 int quantity = Integer.parseInt(quantityParam);
 
-                if (quantity <= 0) {
-                    request.setAttribute("message", "Quantity must be greater than 0!");
-                    request.getRequestDispatcher(url).forward(request, response);
-                    return;
-                }
 
                 boolean isAdded = cdao.addToCart(user.getUser_id(), product_id, quantity);
-                ProductDAO pdao = new ProductDAO();
+
                 ProductDTO product = pdao.getProductById(product_id);
                 request.setAttribute("product", product);
                 List<ProductDTO> list_sameCategory = pdao.getProductByCategoryID(product.getCategory_id());
@@ -85,7 +80,7 @@ public class CartServlet extends HttpServlet {
                 } else {
                     request.setAttribute("message", "Failed to add to cart!");
                 }
-
+                url = VIEW_PAGE;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }

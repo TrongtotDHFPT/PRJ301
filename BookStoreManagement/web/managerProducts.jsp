@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@page import="utils.AuthUtils"%>
 
 <!DOCTYPE html>
@@ -55,7 +57,7 @@
                             <td>${product.title}</td>
                             <td>${product.author}</td>
                             <td>${product.description}</td>
-                            <td>${product.price}</td>
+                            <td><fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" /> ₫</td>
                             <td>${product.stock}</td>
                             <td>${product.category_id}</td>
                             <td>

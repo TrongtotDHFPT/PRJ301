@@ -22,17 +22,12 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
-//        if (user == null) {
-//            System.out.println("Session user is null, redirecting to login...");
-//            response.sendRedirect("login.jsp");
-//            return;
-//        } else {
-//            System.out.println("User found in session: " + user.getUsername());
-//        }
-
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         try {
 
-//            list category name chưa xong
             CategoryDAO cdao = new CategoryDAO();
             List<CategoryDTO> cateList = cdao.readAll();
             request.setAttribute("cateList", cateList);
