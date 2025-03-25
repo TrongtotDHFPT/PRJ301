@@ -28,15 +28,12 @@ public class LoginServlet extends HttpServlet {
         try {
             String strUsername = request.getParameter("txtUsername");
             String strPassword = request.getParameter("txtPassword");
-            System.out.println("Username: " + strUsername);
-            System.out.println("Password: " + strPassword);
 
             if (AuthUtils.isValidLogin(strUsername, strPassword)) {
                 UserDTO user = AuthUtils.getUser(strUsername);
                 request.getSession().setAttribute("user", user);
-                System.out.println("User login thành công: " + user);
                 response.sendRedirect(HOME_SERVLET);
-                return ;
+                return;
             } else {
                 request.setAttribute("message", "Incorrect Username or Password!");
                 request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);

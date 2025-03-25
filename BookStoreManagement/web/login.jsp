@@ -24,6 +24,6 @@
         </form>
         <a href="home?search=">Try for guest</a>
         <a href="register.jsp">Register</a>
-        
+
     </body>
 </html>
