@@ -19,13 +19,16 @@
     <h2>Your Cart</h2>
 
     <c:if test="${empty listCarts}">
-        <p>${message}</p>
-        --chỗ này để cái ảnh vào--  
+        Giỏ hàng(0 sản phẩm)
+        <p>Chưa có sản phẩm trong giỏ hàng của bạn.</p>
+        <img src="assets/img/cart_null.jpg">
     </c:if>
+        
     <c:if test="${not empty listCarts}">
 
         <table border="1">
             <tr>
+                <th>No</th>
                 <th>Image</th>
                 <th>Title</th>
                 <th>Price</th>
@@ -33,26 +36,25 @@
                 <th>Total</th>
                 <th>Action</th>
             </tr>
+            <%int count = 0;%>
             <c:forEach var="item" items="${listCarts}">
+                <%count++;%>
                 <tr>
+                    <td><%=count%></td>
                     <td><img src="assets/img/${item.product.image}" width="50"></td>
                     <td>${item.product.title}</td>
                     <td>${item.product.price}</td>
                     <td>${item.quantity}</td>
                     <td>${item.product.price * item.quantity}</td>
                     <td>
-                        <form action="cart" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                        <form action="cart" method="post">
                             <input type="hidden" name="action" value="delete"/>
                             <input type="hidden" name="product_id" value="${item.product.product_id}"/>
                             <input type="hidden" name="user_id" value="${user.user_id}"/>
-                            <button type="submit">🗑 Delete</button>
+                            <button type="submit">Remove</button>
                         </form>
                     </td>
-
                 </tr>
-                <c:if test="${not empty error_Delete}">
-                    ${error_Delete}
-                </c:if>
             </c:forEach>
         </table>
     </c:if>

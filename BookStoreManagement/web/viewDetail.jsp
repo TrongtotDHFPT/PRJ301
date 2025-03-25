@@ -126,7 +126,6 @@
                     </c:forEach>
                 </div>
 
-                <!-- PHÂN TRANG -->
                 <c:if test="${totalPages > 1}">
                     <div class="pagination">
                         <c:if test="${currentPage > 1}">
