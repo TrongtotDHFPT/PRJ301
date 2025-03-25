@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="utils.AuthUtils"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,6 +16,9 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
+        <%
+            if (AuthUtils.isAdmin(session)) {
+        %>
         <h1>Manager Product</h1>
         <form action="managerProducts" method="get">
             <input type="hidden" name="action" value="search" />
@@ -87,7 +92,7 @@
                 </c:if>
             </div>
         </c:if>
-
+        <%}%>
         <%@include file="footer.jsp" %>
     </body>
 </html>

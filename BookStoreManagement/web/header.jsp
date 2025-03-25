@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="utils.AuthUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -65,13 +66,18 @@
 
                 <div class="menu">
                     <a href="home">Home</a>
+                    <%
+                        if (AuthUtils.isAdmin(session)) {
+                    %>    
+                        <a href="managerProducts?action=">Manager Product</a>
+                    <%}%>
                     <c:if test="${not empty sessionScope.user}">
                         <a href="viewCart">Cart</a>
+                        <a href="profile.jsp">Account</a>
                     </c:if>
-                    <c:if test="${not empty sessionScope.user}">
-                        <a href="managerProducts?action=">Manager Product</a>
-                    </c:if>
-                    <a href="profile.jsp">Account</a>
+
+                    
+                    
 
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">

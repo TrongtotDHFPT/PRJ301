@@ -40,6 +40,9 @@
     %>
     <body>
         <%@include file="header.jsp" %>
+        <%
+            if (AuthUtils.isAdmin(session)) {
+        %>
         <h1>Book Form ${product != null ? "UPDATE BOOK" : "ADD BOOK"}</h1>
 
         <form action="addProduct" method="post" enctype="multipart/form-data">
@@ -114,6 +117,13 @@
         </form>
         <a href="managerProducts?action=search&searchTerm=">Back to Product List</a>
 
+        <%}%>
+        
+        <%
+            if (!AuthUtils.isAdmin(session)) {
+        %>
+        <p> Dont permission to access this page!</p>
+        <%}%>
         <%@include file="footer.jsp" %>
     </body>
 </html>

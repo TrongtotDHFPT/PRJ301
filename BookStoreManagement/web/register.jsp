@@ -45,7 +45,6 @@
 
             <input type="submit" value="Register"/><br><br>
             <p><a href="login.jsp">Click here to login</a></p>
-            <%-- Thông báo đăng ký thành công/thất bại --%>
             <c:if test="${not empty message}">
                 <p style="color: green;">${message}</p>
                 

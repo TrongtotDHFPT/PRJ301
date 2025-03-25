@@ -15,21 +15,29 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import utils.AuthUtils;
 
 /**
  *
  * @author trong
  */
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // >= 2MB lưu tạm vào RAM
-        maxFileSize = 1024 * 1024 * 10, // 10MB         // tối đa 10MB Server từ chối
-        maxRequestSize = 1024 * 1024 * 50)    //   tổng dung lượng các file trong request không vượt quá50MB
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB: Nếu file > 2MB sẽ lưu vào ổ cứng thay vì RAM
+    maxFileSize = 1024 * 1024 * 10, // 10MB: Giới hạn tối đa 1 file là 10MB
+    maxRequestSize = 1024 * 1024 * 50 // 50MB: Tổng dung lượng của tất cả file không được quá 50MB
+)
 public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        //if isadmin    
+        HttpSession session = request.getSession();
+        if(!AuthUtils.isAdmin(session)){
+            response.sendRedirect("login.jsp");
+            return;
+        }
         String url = "managerProducts.jsp";
         try {
             boolean checkError = false;

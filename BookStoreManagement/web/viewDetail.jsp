@@ -11,6 +11,57 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            .low {
+                margin-top: 30px;
+            }
+
+            .related-products-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .related-product {
+                width: 23%;
+                text-align: center;
+                border: 1px solid #ddd;
+                padding: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+
+            .related-product img {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+            }
+
+            .pagination {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .pagination a {
+                margin: 0 5px;
+                text-decoration: none;
+                padding: 5px 10px;
+                border: 1px solid #ddd;
+                border-radius: 3px;
+                color: #333;
+                background-color: #fff;
+            }
+
+            .pagination a:hover {
+                background-color: #eee;
+            }
+
+            .pagination a.active {
+                font-weight: bold;
+                color: red;
+                background-color: #ddd;
+            }
+        </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
@@ -58,21 +109,42 @@
                 <p>${product.description}</p>
             </div>
             <div class="low">
-                <p> Những Product có liên quan</p>
-                <c:forEach var="p" items="${list_sameCategory}">
-                    <c:if test="${product.product_id != p.product_id}" >
-                        <div>
-                            <div class="image_product">
-                                <img src= "assets/img/${p.image}"style="width:150px;height:150px;"/> 
-                                ${p.title}
-                            </div> 
-                            <div>
-                                <a href="detail?product_id=${p.product_id}">View Detail</a>
+                <h3>Sản phẩm cùng loại</h3>
+                <div class="related-products-container">
+                    <c:forEach var="p" items="${list_sameCategory}" varStatus="status">
+                        <c:if test="${product.product_id != p.product_id}">
+                            <div class="related-product">
+                                <div class="image_product">
+                                    <img src="assets/img/${p.image}" />
+                                </div> 
+                                <div>
+                                    <p>${p.title}</p>
+                                    <a href="detail?product_id=${p.product_id}">View Detail</a>
+                                </div>
                             </div>
-                        </div>
-                        <p>============================</p>
-                    </c:if>
-                </c:forEach>
+                        </c:if>
+                    </c:forEach>
+                </div>
+
+                <!-- PHÂN TRANG -->
+                <c:if test="${totalPages > 1}">
+                    <div class="pagination">
+                        <c:if test="${currentPage > 1}">
+                            <a href="detail?product_id=${product.product_id}&page=${currentPage - 1}">← Previous</a>
+                        </c:if>
+
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <a href="detail?product_id=${product.product_id}&page=${i}"
+                               class="${i == currentPage ? 'active' : ''}">
+                                ${i}
+                            </a>
+                        </c:forEach>
+
+                        <c:if test="${currentPage < totalPages}">
+                            <a href="detail?product_id=${product.product_id}&page=${currentPage + 1}">Next →</a>
+                        </c:if>
+                    </div>
+                </c:if>
             </div>
 
 
