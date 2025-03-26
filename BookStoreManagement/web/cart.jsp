@@ -51,7 +51,7 @@
                         <td><img src="assets/img/${item.product.image}" width="50"></td>
                         <td>${item.product.title}</td>
                         <td><fmt:formatNumber value="${item.product.price}" type="number" groupingUsed="true"/> ₫</td>
-                        <td><input type="number" name="quantity" value="${item.quantity}" min ="1" /></td> 
+                        <td><input type="number" name="quantity" value="${item.quantity}" min ="1"  required=""/></td> 
                         <td><fmt:formatNumber value="${item.product.price * item.quantity}" type="number" groupingUsed="true"/> ₫</td>
                         <td>
                             <a href="cart?action=delete&product_id=${item.product.product_id}">Remove</a>

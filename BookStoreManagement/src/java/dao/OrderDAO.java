@@ -25,4 +25,28 @@ public class OrderDAO {
         }
         return false;
     }
+
+    public List<OrderDTO> getOrdersByUser(int userId) throws ClassNotFoundException {
+        List<OrderDTO> orders = new ArrayList<>();
+        String sql = "SELECT order_id, user_id, total_price, status FROM Orders WHERE user_id = ? ORDER BY order_id DESC";
+
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                double totalPrice = rs.getDouble("total_price");
+                String status = rs.getString("status");
+
+                orders.add(new OrderDTO(orderId, userId, totalPrice, status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
 }

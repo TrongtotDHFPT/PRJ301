@@ -7,15 +7,12 @@ package controller;
 
 import static controller.ViewCartServlet.cartDAO;
 import dao.CartDAO;
-import dao.OrderDAO;
 import dao.ProductDAO;
 import dto.CartDTO;
-import dto.OrderDTO;
 import dto.ProductDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,9 +26,8 @@ import javax.servlet.http.HttpSession;
  */
 public class CheckOutServlet extends HttpServlet {
 
-    ProductDAO pdao = new ProductDAO();
-    OrderDAO orderdao = new OrderDAO();
-    CartDAO cartdao = new CartDAO();
+    private final ProductDAO pdao = new ProductDAO();
+    private final CartDAO cartdao = new CartDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,72 +42,41 @@ public class CheckOutServlet extends HttpServlet {
         String[] selectedProducts_id = request.getParameterValues("selectedProducts");
         String[] quantities = request.getParameterValues("quantity");
 
-        if (selectedProducts_id == null || selectedProducts_id.length == 0) {
+        if (selectedProducts_id == null || selectedProducts_id.length == 0 || quantities == null || quantities.length == 0) {
+            request.setAttribute("message", "Bạn chưa chọn sản phẩm nào để thanh toán.");
             List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
             request.setAttribute("listCarts", listCarts);
-            request.setAttribute("message", "Bạn chưa chọn sản phẩm nào để thanh toán.");
             request.getRequestDispatcher("cart.jsp").forward(request, response);
             return;
         }
 
         List<CartDTO> selectedProducts = new ArrayList<>();
-        boolean outStock = false;
-        StringBuilder stockMessage = new StringBuilder();
-
+        double totalPrice = 0;
         for (int i = 0; i < selectedProducts_id.length; i++) {
-
             int product_id = Integer.parseInt(selectedProducts_id[i]);
             int newQuantity = Integer.parseInt(quantities[i]);
 
-            CartDTO cartProduct = cartdao.getCart(user.getUser_id(), product_id);
             ProductDTO product = pdao.getProductById(product_id);
+            if (product == null || newQuantity > product.getStock()) {
+                request.setAttribute("message", "Sản phẩm " + (product != null ? product.getTitle() : "") + " không đủ số lượng.");
+                List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
+                request.setAttribute("listCarts", listCarts);
+                request.getRequestDispatcher("cart.jsp").forward(request, response);
+                return;
+            }
 
-            if (cartProduct == null || product == null) {
-                outStock = true;
-                stockMessage.append("Sản phẩm không tồn tại.<br>");
-            } else {
-                 if (newQuantity > product.getStock()) {
-                    outStock = true;
-                    stockMessage.append("Sản phẩm ").append(product.getTitle())
-                            .append(" chỉ còn ").append(product.getStock()).append(" sản phẩm!<br>");
-                } else {
-                    cartdao.updateCartQuantity(user.getUser_id(), product_id, newQuantity);
-                    cartProduct.setQuantity(newQuantity);
-                    selectedProducts.add(cartProduct);
-                }
+            CartDTO cartItem = cartdao.getCart(user.getUser_id(), product_id);
+            if (cartItem != null) {
+                cartItem.setQuantity(newQuantity);
+                selectedProducts.add(cartItem);
+                totalPrice += newQuantity * product.getPrice();
             }
         }
 
-        if (outStock) {
-            List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
-            request.setAttribute("listCarts", listCarts);
-            request.setAttribute("message", stockMessage.toString());
-            request.getRequestDispatcher("cart.jsp").forward(request, response);
-            return;
-        }
-
-        double totalPrice = 0;
-        for (CartDTO cart : selectedProducts) {
-            totalPrice += cart.getQuantity() * cart.getProduct().getPrice();
-        }
-
-        OrderDTO newOrder = new OrderDTO(0, user.getUser_id(), totalPrice, "Pending");
-        boolean isOrderCreated = orderdao.createOrder(newOrder);
-
-        if (isOrderCreated) {
-            for (CartDTO item : selectedProducts) {
-                pdao.updateStock(item.getProduct().getProduct_id(), item.getQuantity()); 
-            }
-            for (CartDTO item : selectedProducts) {
-                cartDAO.removeFromCart(user.getUser_id(), item.getProduct().getProduct_id()); 
-            }
-            request.setAttribute("message", "Thanh toán thành công!");
-        } else {
-            request.setAttribute("message", "Thanh toán thất bại!");
-        }
+        session.setAttribute("selectedProducts", selectedProducts);
         request.setAttribute("totalPrice", totalPrice);
-        List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
-        request.setAttribute("listCarts", listCarts);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        request.setAttribute("user", user);
+        request.getRequestDispatcher("checkOut.jsp").forward(request, response);
     }
+
 }
