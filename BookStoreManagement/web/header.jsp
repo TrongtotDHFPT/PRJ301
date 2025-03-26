@@ -1,93 +1,52 @@
-<%-- 
-    Document   : header
-    Created on : Mar 16, 2025, 3:05:23 PM
-    Author     : trong
---%>
-
-<%@page import="utils.AuthUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My Book Store</title>
-        <style>
- 
-            * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-            html, body { height: 100%; display: flex; flex-direction: column; }
-
-    
-            .wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-            .main-content { flex: 1; padding: 20px; }
-
-            /* Header */
-            .header {
-                position: fixed;  
-                width: 100%;   
-                background: #333; 
-                color: white; 
-                padding: 10px 20px; 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center;
-            }
-            .header a { color: white; margin: 0 10px; text-decoration: none; }
-            .header a:hover { text-decoration: underline; }
-            .logo { font-size: 24px; font-weight: bold; }
-
-            /* Menu */
-            .menu { display: flex; align-items: center; }
-            .search-bar input[type="text"] { padding: 5px; width: 800px; }
-            .search-bar button { padding: 5px; cursor: pointer; }
-
-             .footer {
-                background: #333; 
-                color: white; 
-                text-align: center; 
-                padding: 20px;
-                margin-top: auto;  
-            }
-            .footer a { color: #FFD700; text-decoration: none; }
-            .footer a:hover { text-decoration: underline; }
-        </style>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
     <body>
-
-        <div class="wrapper">
-            <div class="header">
+        <header class="header">
+            <div class="header-container">
                 <div class="logo">
-                    <a href="home" style="color: white; text-decoration: none;">🛍️ Book Store</a>
+                    <a href="home"><i class="fas fa-book-open logo-icon"></i> Book Store</a>
                 </div>
 
-                <div class="search-bar" style="margin-left: 20px;">
-                </div>
 
-                <div class="menu">
-                    <a href="home">Home</a>
-                    <%
-                        if (AuthUtils.isAdmin(session)) {
-                    %>    
-                    <a href="managerProducts?action=">Manager Product</a>
-                    <a href="addCategory">Manager Category</a>
-                    <%}%>
-                    <c:if test="${not empty sessionScope.user}">
-                        <a href="viewCart">Cart</a>
-                        <a href="account.jsp">Account</a>
+                <nav class="menu">
+                    <a href="home"><i class="fas fa-home"></i> Home</a>
+
+                    <c:if test="${sessionScope.user.role == 'ADMIN'}">
+                        <a href="managerProducts?action="><i class="fas fa-boxes"></i> Manage Products</a>
+                        <a href="addCategory"><i class="fas fa-tags"></i> Manage Categories</a>
                     </c:if>
 
-
-
+                    <c:if test="${not empty sessionScope.user}">
+                        <a href="viewCart" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <c:if test="${sessionScope.cartCount > 0}">
+                                <span class="cart-count">${sessionScope.cartCount}</span>
+                            </c:if>Cart
+                        </a>
+                        <a href="account.jsp"><i class="fas fa-user"></i> Account</a>
+                    </c:if>
 
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
-                            <span>Hello, ${sessionScope.user.name} | <a href="logout">Logout</a></span>
+                            <span class="user-greeting">Hello, ${sessionScope.user.name} | <a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></span>
                         </c:when>
                         <c:otherwise>
-                            <a href="login.jsp">Login</a> | <a href="register.jsp">Register</a>
+                            <a href="login.jsp"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="register.jsp"><i class="fas fa-user-plus"></i> Register</a>
                         </c:otherwise>
                     </c:choose>
-                </div>
+                </nav>
             </div>
+        </header>
 
-            <div class="main-content">
+        <div class="main-content">
