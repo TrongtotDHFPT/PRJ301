@@ -19,9 +19,7 @@ public class HomeServlet extends HttpServlet {
     ProductDAO pdao = new ProductDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
+            throws ServletException, IOException {        
         try {
 
             CategoryDAO cdao = new CategoryDAO();

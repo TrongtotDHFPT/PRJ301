@@ -5,6 +5,7 @@ import utils.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,5 +199,18 @@ public class UserDAO implements IDAO<UserDTO, Integer> {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean updateUser(int userId, String name, String phone, String address, String email) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE users SET name = ?, phone = ?, address = ?, email = ? WHERE user_id = ? ";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, phone);
+            ps.setString(3, address);
+            ps.setString(4, email);
+            ps.setInt(5, userId);
+            return ps.executeUpdate() > 0;
+        }
     }
 }

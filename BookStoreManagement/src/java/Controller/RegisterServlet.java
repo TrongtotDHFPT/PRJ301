@@ -8,6 +8,7 @@ package controller;
 import dao.UserDAO;
 import dto.UserDTO;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +26,8 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");  
-        response.setContentType("text/html;charset=UTF-8");  
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         try {
             String strName = request.getParameter("name");
             String strUsername = request.getParameter("username");
@@ -34,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
             String strEmail = request.getParameter("email");
             String strPhone = request.getParameter("phone");
             String strAddress = request.getParameter("address");
-            //chưa bắt lỗi
+            //chưa bắt lỗi xong
 
             boolean hasError = false;
             if (strName == null || strName.trim().isEmpty()) {
@@ -53,7 +54,7 @@ public class RegisterServlet extends HttpServlet {
             if (strPassword == null || strPassword.trim().isEmpty()) {
                 request.setAttribute("Error_strPassword", "Password cannot be empty!");
                 hasError = true;
-            } else if (strPassword.length() < 6) {
+            } else if (strPassword.length() < 8) {
                 request.setAttribute("Error_strPassword", "Password must be at least 8 characters!");
                 hasError = true;
             }
@@ -62,7 +63,15 @@ public class RegisterServlet extends HttpServlet {
                 request.setAttribute("Error_strPhone", "Phone cannot be empty!");
                 hasError = true;
             } else if (!strPhone.matches("\\d{10,11}")) {
-                request.setAttribute("Error_strPhone", "Invalid phone number!");
+                request.setAttribute("Error_strPhone", "Invalid phone number! Must be 10-11 digits.");
+                hasError = true;
+            }
+
+            if (strEmail == null || strEmail.trim().isEmpty()) {
+                request.setAttribute("Error_strEmail", "Email cannot be empty!");
+                hasError = true;
+            } else if (!Pattern.matches("^[A-Za-z0-9+_.-]+@gmail\\.com$", strEmail)) {
+                request.setAttribute("Error_strEmail", "Email must be in the format 'xxxxx@gmail.com'!");
                 hasError = true;
             }
 
@@ -78,6 +87,7 @@ public class RegisterServlet extends HttpServlet {
             UserDTO user = new UserDTO(0, strName, strUsername, hashedPassword, "", strEmail, strPhone, strAddress);
             UserDAO udao = new UserDAO();
             boolean isInserted = udao.insertUser(user);
+
             if (isInserted) {
                 request.setAttribute("message", "Register successfully!");
                 request.setAttribute("user", user);

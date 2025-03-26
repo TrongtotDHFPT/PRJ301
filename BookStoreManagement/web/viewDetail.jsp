@@ -13,61 +13,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <style>
-            .low {
-                margin-top: 30px;
-            }
 
-            .related-products-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-
-            .related-product {
-                width: 23%;
-                text-align: center;
-                border: 1px solid #ddd;
-                padding: 10px;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-            }
-
-            .related-product img {
-                width: 150px;
-                height: 150px;
-                object-fit: cover;
-            }
-
-            .pagination {
-                margin-top: 20px;
-                text-align: center;
-            }
-
-            .pagination a {
-                margin: 0 5px;
-                text-decoration: none;
-                padding: 5px 10px;
-                border: 1px solid #ddd;
-                border-radius: 3px;
-                color: #333;
-                background-color: #fff;
-            }
-
-            .pagination a:hover {
-                background-color: #eee;
-            }
-
-            .pagination a.active {
-                font-weight: bold;
-                color: red;
-                background-color: #ddd;
-            }
-        </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
-        
             <div>
                 <div class="image_product">
                     <img src= "assets/img/${product.image}"style="width:150px;height:150px;"/> 
@@ -145,9 +94,6 @@
                     </div>
                 </c:if>
             </div>
-        <c:if test="${empty user}">
-            <a href="login.jsp">login đê bro</a>
-        </c:if>
         <script>
             function increase() {
                 let quantityInput = document.getElementById("quantity");

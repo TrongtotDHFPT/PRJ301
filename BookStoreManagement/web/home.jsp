@@ -138,7 +138,6 @@
         <div class="main-content">
             <h1>Welcome to Home Page</h1>
 
-            <!-- Search Form -->
             <form action="home" method="get">
                 <input type="text" name="searchTerm" placeholder="Search products..." value="${searchTerm}">
                 <select name="orderBy">
@@ -157,9 +156,7 @@
                 <button type="submit">Search</button>
             </form>
 
-            <!-- cateList chưa làm -->    
 
-            <!-- New Product -->
             <div class="last-product">
                 <c:if test="${not empty lastProduct}">
                     <c:forEach var="product" items="${[lastProduct]}">
@@ -191,7 +188,6 @@
 
 
 
-            <!-- Product List -->
             <div class="product-list">
                 <c:forEach var="product" items="${productsForPage}">
                     <div class="product-item">
@@ -221,7 +217,6 @@
 
 
 
-            <!-- Pagination -->
             <div class="pagination">
                 <c:if test="${currentPage > 1}">
                     <a href ="home?page=${currentPage-1}&searchTerm=${searchTerm}">&laquo;Previous</a>

@@ -48,6 +48,10 @@
         <servlet-name>ConfirmCheckOutServlet</servlet-name>
         <servlet-class>controller.ConfirmCheckOutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>controller.AccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmCheckOutServlet</servlet-name>
         <url-pattern>/confirmCheckout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

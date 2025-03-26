@@ -31,8 +31,10 @@
             </c:if>
 
             Email: <input type="text" name="email" value="${param.email}"/><br>
-            <%-- chưa check lỗi email--%>
-
+            <c:if test="${not empty Error_strEmail}">
+                <span style="color: red;">${Error_strEmail}</span><br>
+            </c:if>
+                
             Phone: <input type="text" name="phone" value="${param.phone}"/><br>
             <c:if test="${not empty Error_strPhone}">
                 <span style="color: red;">${Error_strPhone}</span><br>
