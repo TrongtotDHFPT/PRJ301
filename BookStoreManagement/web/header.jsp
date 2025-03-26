@@ -70,6 +70,7 @@
                         if (AuthUtils.isAdmin(session)) {
                     %>    
                         <a href="managerProducts?action=">Manager Product</a>
+                        <a href="addCategory">Manager Category</a>
                     <%}%>
                     <c:if test="${not empty sessionScope.user}">
                         <a href="viewCart">Cart</a>

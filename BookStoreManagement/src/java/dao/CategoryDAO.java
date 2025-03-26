@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
-
-    @Override
-    public boolean create(CategoryDTO entity) {
-        String sql = "INSERT INTO Category (category_name) VALUES (?)";
+public class CategoryDAO {
+//implements IDAO<CategoryDTO, Integer> 
+    public boolean create(String category_name) {
+        String sql = "INSERT INTO Category (name) VALUES (?)";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, entity.getCategory_name());
+            ps.setString(1, category_name);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,9 +24,8 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         return false;
     }
 
-    @Override
     public List<CategoryDTO> readAll() {
-        String sql = "SELECT * FROM Category";
+        String sql = "SELECT * FROM Category order by category_id";
         List<CategoryDTO> list = new ArrayList<>();
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -46,7 +44,6 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         return list;
     }
 
-    @Override
     public boolean delete(Integer id) {
         String sql = "DELETE FROM Category WHERE category_id = ?";
         try (Connection conn = DBUtils.getConnection();
@@ -61,7 +58,6 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         return false;
     }
 
-    @Override
     public boolean update(CategoryDTO entity) {
         String sql = "UPDATE Category SET category_name = ? WHERE category_id = ?";
         try (Connection conn = DBUtils.getConnection();
@@ -77,7 +73,6 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         return false;
     }
 
-    @Override
     public CategoryDTO readByID(Integer id) {
         String sql = "SELECT * FROM Category WHERE category_id = ?";
         try (Connection conn = DBUtils.getConnection();
@@ -99,7 +94,7 @@ public class CategoryDAO implements IDAO<CategoryDTO, Integer> {
         return null;
     }
 
-    @Override
+
     public List<CategoryDTO> search(String searchTerm) {
         String sql = "SELECT * FROM Category WHERE category_name LIKE ?";
         List<CategoryDTO> list = new ArrayList<>();
