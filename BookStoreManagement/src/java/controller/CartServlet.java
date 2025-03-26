@@ -34,7 +34,11 @@ public class CartServlet extends HttpServlet {
         String url = VIEW_PAGE;
         UserDTO user = (UserDTO) session.getAttribute("user");
         String action = request.getParameter("action");
-
+        if (session.getAttribute("user") == null) {
+            request.setAttribute("message", "Please login");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         //===delete
         if ("delete".equals(action)) {
             int productId = Integer.parseInt(request.getParameter("product_id"));
@@ -93,7 +97,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response); 
+        doPost(request, response);
     }
 
 }

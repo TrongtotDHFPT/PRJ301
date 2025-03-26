@@ -30,7 +30,7 @@ public class DetailServlet extends HttpServlet {
         String url = VIEW_PAGE;
         String strProduct_id = request.getParameter("product_id");
         HttpSession session = request.getSession();
-
+      
         try {
             UserDTO user = (UserDTO) session.getAttribute("user");
             int product_id = Integer.parseInt(strProduct_id);

@@ -67,7 +67,7 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <c:if test="${not empty user}">
+        
             <div>
                 <div class="image_product">
                     <img src= "assets/img/${product.image}"style="width:150px;height:150px;"/> 
@@ -145,9 +145,6 @@
                     </div>
                 </c:if>
             </div>
-
-
-        </c:if>
         <c:if test="${empty user}">
             <a href="login.jsp">login đê bro</a>
         </c:if>
