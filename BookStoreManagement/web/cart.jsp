@@ -22,7 +22,7 @@
     <c:if test="${empty listCarts}">
         Giỏ hàng(0 sản phẩm)
         <p>Chưa có sản phẩm trong giỏ hàng của bạn.</p>
-        <img src="assets/img/cart_null.jpg">
+        <img src="assets/img/emptycart.jpg" >
     </c:if>
 
     <c:if test="${not empty listCarts}">
@@ -70,18 +70,5 @@
     <a href="home">Mua sắm ngay</a>
     <%@include file="footer.jsp" %>
 </body>
-<!--<script>
-    function increase(productId) {
-        let input = document.getElementById("quantity_" + productId);
-        input.value = parseInt(input.value) + 1;
-    }
-
-    function decrease(productId) {
-        let input = document.getElementById("quantity_" + productId);
-        if (input.value > 1) {
-            input.value = parseInt(input.value) - 1;
-        }
-    }
-</script>-->
 </html>
 

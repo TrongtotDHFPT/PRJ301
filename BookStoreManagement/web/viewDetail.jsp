@@ -85,13 +85,11 @@
                 <form action="cart" method="post">
                     <input type="hidden" name="action" value="AddToCart"/>
                     <input type="hidden" name="product_id" value="${product.product_id}"/>
-<!--                    <input type="hidden" name="stock" value="$//{product.stock}"/>-->
 
                     <button type="button" onclick="decrease()">−</button>
                     <input type="number" id="quantity" name="quantity" value="1" min="1"  readonly >
                     <button type="button" onclick="increase()">+</button>
                     <button type="submit">Add to Cart</button>
-                    <button type="submit">Buy Now</button>
                     <c:if test="${not empty message}">
                         <p style="color: red;"> ${message} </p>
                     </c:if>

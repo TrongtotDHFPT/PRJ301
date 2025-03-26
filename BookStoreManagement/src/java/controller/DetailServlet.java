@@ -24,7 +24,7 @@ public class DetailServlet extends HttpServlet {
 
     public static final String VIEW_PAGE = "viewDetail.jsp";
     public static final ProductDAO pdao = new ProductDAO();
-    public static final int itemsPerPage = 4;
+    public static final int itemsPerPage = 5;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = VIEW_PAGE;
