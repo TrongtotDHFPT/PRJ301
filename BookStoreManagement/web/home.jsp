@@ -22,19 +22,21 @@
     </head>
     <title>Home</title>
 
-    
+
 </head>
 <body>
     <%@include file="header.jsp" %>
 
     <div class="main-content">
-        <form action="home" method="get">
+        <form action="home" method="get" class="search-form">
             <input type="text" name="searchTerm" placeholder="Search products..." value="${searchTerm}">
+
             <select name="orderBy">
                 <option value="">Sắp xếp theo giá</option>  
                 <option value="desc" ${orderBy == 'desc' ? 'selected' : ''}>Giảm dần</option>
                 <option value="asc" ${orderBy == 'asc' ? 'selected' : ''}>Tăng dần</option>
             </select>
+
             <select name="category_id">
                 <option value="">Danh mục sản phẩm</option>   
                 <c:forEach var="cate" items="${cateList}">
@@ -43,8 +45,10 @@
                     </option>
                 </c:forEach>
             </select>
+
             <button type="submit">Search</button>
         </form>
+
 
 
         <div class="last-product">
@@ -52,7 +56,7 @@
                 <c:forEach var="product" items="${[lastProduct]}">
                     <div class="product-item">
                         <div class="image_product">
-                            <img src="assets/img/${product.image}" alt="${product.title}">
+                            <img src="assets/img/${product.image}" alt="${product.title}" >
                         </div>    
                         <div class="name_product">
                             <h3>${product.title}</h3>

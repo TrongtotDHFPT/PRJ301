@@ -115,3 +115,74 @@
 //        request.getRequestDispatcher("cart.jsp").forward(request, response);
 //    }
 //}
+
+
+//last-product {
+//    background: linear-gradient(to right, #4ca1af, #2c3e50);
+//    color: black;
+//    padding: 20px;
+//    border-radius: 8px;
+//    margin-bottom: 20px;
+//    box-shadow: 0px 0px 15px rgba(76, 161, 175, 0.8); /* Ánh sáng xanh */
+//    text-align: center;
+//    transition: 0.3s ease-in-out;
+//}
+//
+//.last-product:hover {
+//    box-shadow: 0px 0px 25px rgba(76, 161, 175, 1); /* Hiệu ứng sáng hơn khi hover */
+//}
+//
+//.last-product .product-item {
+//    display: flex;
+//    align-items: center;
+//    justify-content: center;
+//    gap: 20px;
+//}
+//.last-product {
+//    position: relative;
+//}
+//
+//.last-product::before {
+//    content: " New book 🔥";
+//    position: absolute;
+//    top: -10px;
+//    left: -10px;
+//    background: indianred;
+//    color: white;
+//    font-size: 14px;
+//    font-weight: bold;
+//    padding: 5px 10px;
+//    border-radius: 5px;
+//    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+//}
+//
+//
+//.last-product img {
+//    width: 140px;
+//    height: 170px;
+//    object-fit: cover;
+//    border-radius: 5px;
+//    border: 3px solid white;
+//    transition: transform 0.3s ease;
+//}
+//
+//.last-product img:hover {
+//    transform: scale(1.1); /* Phóng to khi di chuột vào */
+//}
+//
+//.last-product h3 {
+//    font-size: 22px;
+//    font-weight: bold;
+//}
+//
+//.last-product a {
+//    color: #f1c40f;
+//    font-weight: bold;
+//    text-decoration: none;
+//    transition: all 0.3s ease;
+//}
+//
+//.last-product a:hover {
+//    color: #e67e22;
+//    text-decoration: underline;
+//}
