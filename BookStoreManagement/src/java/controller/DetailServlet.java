@@ -52,7 +52,6 @@ public class DetailServlet extends HttpServlet {
 
             List<ProductDTO> paginatedList = fullList.subList(start, end);
 
-            // Tính tổng số trang
             int totalPages = (int) Math.ceil((double) fullList.size() / itemsPerPage);
 
             request.setAttribute("user", user);

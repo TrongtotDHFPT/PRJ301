@@ -57,7 +57,7 @@ public class CheckOutServlet extends HttpServlet {
             int newQuantity = Integer.parseInt(quantities[i]);
 
             ProductDTO product = pdao.getProductById(product_id);
-            if (product == null || newQuantity > product.getStock()) {
+            if (newQuantity > product.getStock()|| product == null ) {
                 request.setAttribute("message", "Sản phẩm " + (product != null ? product.getTitle() : "") + " không đủ số lượng.");
                 List<CartDTO> listCarts = cartDAO.getCartByUserID(user.getUser_id());
                 request.setAttribute("listCarts", listCarts);

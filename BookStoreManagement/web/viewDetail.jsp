@@ -75,7 +75,6 @@
             </div>
         </div>
 
-        <!-- Script tăng giảm số lượng -->
         <script>
             function increase() {
                 let quantityInput = document.getElementById("quantity");
