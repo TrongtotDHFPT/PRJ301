@@ -1,0 +1,86 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 27, 2025, 9:59:10 AM
+    Author     : trong
+*/
+
+/* Định dạng container chính */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Tiêu đề */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #005f73;
+    border-bottom: 2px solid #005f73;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Bảng danh sách đơn hàng */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+table th {
+    background: #005f73;
+    color: white;
+    font-weight: bold;
+}
+
+/* Hàng chẵn có màu nền nhạt */
+table tr:nth-child(even) {
+    background: #f1f1f1;
+}
+
+/* Trạng thái đơn hàng */
+.status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Màu sắc theo trạng thái */
+.status.processing {
+    color: #ff9800;
+}
+
+.status.completed {
+    color: #2d6a4f;
+}
+
+.status.cancelled {
+    color: #d62828;
+}
+
+/* Link quay lại */
+.back-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #005f73;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

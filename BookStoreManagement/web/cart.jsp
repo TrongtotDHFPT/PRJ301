@@ -15,6 +15,10 @@
     <html>
 <head>
     <title>Shopping Cart</title>
+    <!--<link rel="stylesheet" type="text/css" href="assets/css/cart.css">-->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart.css">
+
+
 </head>
 <body>
     <%@include file="header.jsp" %>
@@ -63,8 +67,8 @@
         </form>
         <c:if test="${not empty message}">${message} <br></c:if>
         <c:if test="${not empty totalPrice}">
-                    <h3>Tổng số tiền ${totalPrice}</h3>
-                </c:if>
+            <h3>Tổng số tiền ${totalPrice}</h3>
+        </c:if>
     </c:if>
 
     <a href="home">Mua sắm ngay</a>

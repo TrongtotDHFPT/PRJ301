@@ -27,6 +27,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>View Order</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/viewOrder.css">
+
     </head>
     <body>
         <%@include file="header.jsp" %>

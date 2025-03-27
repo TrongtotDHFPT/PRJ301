@@ -12,21 +12,23 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Manager Category </title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/category.css">
+
     </head>
     <body>
         <%@include file="header.jsp" %>
         <%
             if (AuthUtils.isAdmin(session)) {
         %>    
-        
+
         <form action="addCategory">
             <input type="hidden" name="action" value="addCate"/>
             Add new category:<input type="text" name="category_name" value="${not empty category_name ? category_name : ''}"/>
             <input type="submit" value="Add"/>
         </form>
-            <c:if test="${not empty message}">
-                <p>${message}</p>
-            </c:if>
+        <c:if test="${not empty message}">
+            <p>${message}</p>
+        </c:if>
         <c:if test="${not empty cateList}">
             <table border="1">
                 <thead>
@@ -37,10 +39,10 @@
                 </thead>
                 <tbody>
                     <c:forEach var="cate" items="${cateList}">
-                    <tr>
-                        <td>${cate.category_id}</td>
-                        <td>${cate.category_name}</td>
-                    </tr>
+                        <tr>
+                            <td>${cate.category_id}</td>
+                            <td>${cate.category_name}</td>
+                        </tr>
                     </c:forEach>
                 </tbody>
             </table>

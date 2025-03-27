@@ -15,6 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>ManagerProduct</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/managerProducts.css">
     </head>
     <body>
         <%@include file="header.jsp" %>
