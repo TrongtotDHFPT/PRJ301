@@ -4,6 +4,7 @@
     Author     : trong
 --%>
 
+<%@page import="utils.AuthUtils"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="dto.ProductDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -17,6 +18,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Add Product</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/addProduct.css">
+
     </head>
     <%
         CategoryDAO cdao = new CategoryDAO();
@@ -118,7 +121,7 @@
         <a href="managerProducts?action=search&searchTerm=">Back to Product List</a>
 
         <%}%>
-        
+
         <%
             if (!AuthUtils.isAdmin(session)) {
         %>

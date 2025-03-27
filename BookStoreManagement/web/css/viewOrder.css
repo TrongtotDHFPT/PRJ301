@@ -84,3 +84,25 @@ table tr:nth-child(even) {
 .back-link:hover {
     text-decoration: underline;
 }
+
+/* Đảm bảo khoảng cách giữa header và nội dung */
+.container {
+    margin-top: 20px; /* Tạo khoảng cách với header */
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Đảm bảo bảng không bị mất phần trên */
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Nếu có thẻ h2 bị ẩn */
+h2 {
+    margin-top: 20px;
+}
+

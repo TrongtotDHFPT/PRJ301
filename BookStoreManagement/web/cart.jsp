@@ -65,13 +65,13 @@
             </table>
             <button type="submit">Mua hàng</button>
         </form>
-        <c:if test="${not empty message}">${message} <br></c:if>
+                <c:if test="${not empty message}"><p style="color: red">${message}</p> <br></c:if>
         <c:if test="${not empty totalPrice}">
             <h3>Tổng số tiền ${totalPrice}</h3>
         </c:if>
     </c:if>
 
-    <a href="home">Mua sắm ngay</a>
+    <a href="home">Mua sắm ngay </a>
     <%@include file="footer.jsp" %>
 </body>
 </html>

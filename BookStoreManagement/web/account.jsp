@@ -12,9 +12,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Manager Account</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/account.css">
+
     </head>
     <body>
-
+        <br><br><br>
         <%@include file="header.jsp" %>
         <h1>Hồ sơ cá nhân</h1>
         <c:if test="${not empty user}">
