@@ -1,0 +1,72 @@
+/* Định dạng tổng thể trang */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #2c3e50, #4ca1af); /* Màu nền giống header */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Chiều cao toàn màn hình */
+    margin: 0;
+}
+
+/* Khung chứa form */
+.login-container {
+    background: white;
+    color: #2c3e50; /* Màu chữ */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 320px;
+}
+
+/* Tiêu đề */
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+/* Ô nhập */
+.login-container input {
+    width: 94%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+/* Nút đăng nhập */
+.login-container input[type="submit"] {
+    background: #2c3e50;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container input[type="submit"]:hover {
+    background: #4ca1af;
+}
+
+/* Thông báo lỗi */
+.login-container h3 {
+    color: red;
+    font-size: 14px;
+}
+
+/* Liên kết */
+.login-container a {
+    color: #2c3e50;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}

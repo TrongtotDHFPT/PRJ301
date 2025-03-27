@@ -13,7 +13,6 @@
 <html>
     <head>
         <meta charset="UTF-8">
-    <head>
         <!-- Các thẻ meta khác -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">

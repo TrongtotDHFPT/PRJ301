@@ -4,56 +4,60 @@
     Author     : trong
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Register</title>
+        <title>Register</title>        
+        <!--<link rel="stylesheet" type="text/css" href="css/register.css">-->
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/register.css">
+
     </head>
     <body>
-
+        <h1>Register Form</h1>
         <form action="register" method="post">
-            Name: <input type="text" name="name" value="${param.name}"/><br>
+            <label>Name:</label>
+            <input type="text" name="name" value="${param.name}"/>
             <c:if test="${not empty Error_strName}">
-                <span style="color: red;">${Error_strName}</span><br>
+                <span class="error">${Error_strName}</span>
             </c:if>
 
-            Username: <input type="text" name="username" value="${param.username}"/><br>
+            <label>Username:</label>
+            <input type="text" name="username" value="${param.username}"/>
             <c:if test="${not empty Error_strUsername}">
-                <span style="color: red;">${Error_strUsername}</span><br>
+                <span class="error">${Error_strUsername}</span>
             </c:if>
 
-            Password: <input type="password" name="password"/><br>
+            <label>Password:</label>
+            <input type="password" name="password"/>
             <c:if test="${not empty Error_strPassword}">
-                <span style="color: red;">${Error_strPassword}</span><br>
+                <span class="error">${Error_strPassword}</span>
             </c:if>
 
-            Email: <input type="text" name="email" value="${param.email}"/><br>
+            <label>Email:</label>
+            <input type="text" name="email" value="${param.email}"/>
             <c:if test="${not empty Error_strEmail}">
-                <span style="color: red;">${Error_strEmail}</span><br>
+                <span class="error">${Error_strEmail}</span>
             </c:if>
-                
-            Phone: <input type="text" name="phone" value="${param.phone}"/><br>
+
+            <label>Phone:</label>
+            <input type="text" name="phone" value="${param.phone}"/>
             <c:if test="${not empty Error_strPhone}">
-                <span style="color: red;">${Error_strPhone}</span><br>
+                <span class="error">${Error_strPhone}</span>
             </c:if>
 
-            Address: <input type="text" name="address" value="${param.address}"/><br>
+            <label>Address:</label>
+            <input type="text" name="address" value="${param.address}"/>
             <c:if test="${not empty Error_strAddress}">
-                <span style="color: red;">${Error_strAddress}</span><br>
+                <span class="error">${Error_strAddress}</span>
             </c:if>
 
-            <input type="submit" value="Register"/><br><br>
+            <input type="submit" value="Register"/>
             <p><a href="login.jsp">Click here to login</a></p>
-            <c:if test="${not empty message}">
-                <p style="color: green;">${message}</p>
-                
-            </c:if>
         </form>
-            
-
 
 
     </body>
